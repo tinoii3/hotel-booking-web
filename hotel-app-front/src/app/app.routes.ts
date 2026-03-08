@@ -18,6 +18,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/payment-page/payment-page').then((m) => m.PaymentPage),
       },
+      {
+        path: 'roombooking',
+        loadComponent: () =>
+          import('./features/roombooking/roombooking-page').then((m) => m.RoombookingPage),
+      },
     ],
   },
 

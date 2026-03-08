@@ -1,0 +1,90 @@
+.container {
+  max-width: 1000px;
+}
+.room-image {
+  height: 220px;
+  object-fit: cover;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* =========================================
+   Search Box Styles (ทำไอคอนให้อยู่ในช่องสีเทา)
+========================================= */
+.search-input-wrapper {
+  position: relative;
+  
+  i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none;
+  }
+
+  .form-control, .form-select {
+    background-color: #f0f1f3; /* สีเทาอ่อนแบบในรูป */
+    border: none;
+    padding-left: 38px; /* เว้นที่ให้ไอคอน */
+    height: 42px;
+    
+    &:focus {
+      background-color: #e2e4e8;
+      box-shadow: none;
+    }
+  }
+
+  /* ปรับแต่งไอคอนปฏิทิน */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+ul {
+  list-style-type: disc;
+  li {
+    line-height: 1.8; 
+  }
+}
+.border-dark-subtle {
+  border-color: #e5e7eb !important; 
+}
+
+/* =========================================
+   Modal Gallery Styles
+========================================= */
+.main-gallery-img {
+  height: 400px;
+}
+.thumbnail-img {
+  width: 90px;
+  height: 60px;
+  object-fit: cover;
+  opacity: 0.6; 
+  transition: all 0.2s ease-in-out;
+  border: 2px solid transparent;
+}
+.active-thumbnail {
+  opacity: 1;
+  border-color: #212529; 
+}
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+}
+.btn-light, .btn-dark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+}
