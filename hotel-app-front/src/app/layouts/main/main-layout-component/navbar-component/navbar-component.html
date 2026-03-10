@@ -1,15 +1,18 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-  <a class="navbar-brand" routerLink="/">Hotel</a>
+<nav class="navbar navbar-expand-lg px-3 shadow-sm">
+  <a class="navbar-brand fw-bold" routerLink="/">Hotel</a>
 
   <div class="ms-auto">
     @if (auth.isLoggedIn()) {
-      <button class="btn btn-outline-light" (click)="logout()">
-        Logout
-      </button>
+      <button class="btn btn-outline-light" (click)="logout()">Logout</button>
     } @else {
-      <a routerLink="/login" class="btn btn-outline-light">
-        Login
-      </a>
+      <div style="display: flex; gap: 20px;">
+        <div>
+          <a routerLink="/auth/login" class="btn btn-outline-light fw-semibold" style="width: 100px;"> Login </a>
+        </div>
+        <div>
+          <a routerLink="/auth/register" class="btn bg-white text-primary fw-semibold shadow-sm" style="width: 100px;"> Register </a>
+        </div>
+      </div>
     }
   </div>
 </nav>

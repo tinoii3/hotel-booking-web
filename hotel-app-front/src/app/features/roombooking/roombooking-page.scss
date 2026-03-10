@@ -25,13 +25,13 @@
   }
 
   .form-control, .form-select {
-    background-color: #f0f1f3; /* สีเทาอ่อนแบบในรูป */
+    background-color: #f3f4f6; /* สีเทาอ่อนแบบในรูป */
     border: none;
     padding-left: 38px; /* เว้นที่ให้ไอคอน */
     height: 42px;
     
     &:focus {
-      background-color: #e2e4e8;
+      background-color: #eef2f6;
       box-shadow: none;
     }
   }
