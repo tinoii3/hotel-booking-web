@@ -1,0 +1,181 @@
+<div class="bg-light min-vh-100 py-4">
+    <div class="container" style="max-width: 1000px;">
+        <div class="bg-white border border-dark-subtle rounded-3 p-4 mb-4 shadow-sm">
+            <div class="row g-3 align-items-end">
+                <div class="col-md">
+                    <label class="form-label fw-semibold small mb-2 px-1">เช็คอิน</label>
+                    <div class="search-input-wrapper">
+                        <i class="bi bi-calendar"></i>
+                        <input type="date" class="form-control rounded-3 text-secondary" [(ngModel)]="f_checkin">
+                    </div>
+                </div>
+                <div class="col-md">
+                    <label class="form-label fw-semibold small mb-2 px-1">เช็คเอาต์</label>
+                    <div class="search-input-wrapper">
+                        <i class="bi bi-calendar"></i>
+                        <input type="date" class="form-control rounded-3 text-secondary" [(ngModel)]="f_checkout">
+                    </div>
+                </div>
+                <div class="col-md">
+                    <label class="form-label fw-semibold small mb-2 px-1">ประเภทห้อง</label>
+                    <div class="search-input-wrapper">
+                        <i class="bi bi-house"></i>
+                        <select class="form-select rounded-3 text-secondary" [(ngModel)]="f_type">
+                            @for (type of roomTypes; track type) {
+                                <option [value]="type">{{ type }}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <label class="form-label fw-semibold small mb-2 px-1">จำนวนผู้เข้าพัก</label>
+                    <div class="search-input-wrapper">
+                        <i class="bi bi-people"></i>
+                        <select class="form-select rounded-3 text-secondary" [(ngModel)]="f_guest">
+                            <option value="1-0">ผู้ใหญ่ 1 : เด็ก 0</option>
+                            <option value="2-0">ผู้ใหญ่ 2 : เด็ก 0</option>
+                            <option value="2-1">ผู้ใหญ่ 2 : เด็ก 1</option>
+                            <option value="2-2">ผู้ใหญ่ 2 : เด็ก 2</option>
+                            <option value="3-0">ผู้ใหญ่ 3 : เด็ก 0</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-auto">
+                    <button class="btn btn-dark w-100 rounded-3 fw-semibold px-4" style="height: 42px;" (click)="searchRooms()">ค้นหา</button>
+                </div>
+            </div>
+        </div>
+
+        @for (room of filteredRooms; track room.id) {
+        <div class="bg-white border border-dark-subtle rounded-3 p-4 mb-4 shadow-sm">
+            <div class="row mb-4">
+                <div class="col-md-5">
+                    <img [src]="room.imageUrl" class="img-fluid rounded-3 w-100 object-fit-cover room-image cursor-pointer" alt="Room" (click)="openDetailModal(room)">
+                </div>
+                <div class="col-md-7 d-flex flex-column justify-content-center">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h4 class="fw-bold mb-0">{{ room.name }}</h4>
+                    </div>
+                    
+                    <p class="text-muted small mb-3 lh-base">{{ room.description }}</p>
+                    <div><a href="javascript:void(0)" class="text-dark small text-decoration-underline fw-bold" (click)="openDetailModal(room)">รายละเอียดห้อง</a></div>
+                </div>
+            </div>
+
+            <div class="border rounded-3 p-4">
+                <h6 class="fw-bold mb-3">รายละเอียด</h6>
+                <ul class="small mb-4 ps-3 text-dark">
+                    @for (item of room.amenities | slice:0:3; track $index) {
+                        <li class="mb-1">{{ item }}</li>
+                    }
+                </ul>
+                
+                <div class="d-flex justify-content-between align-items-end pt-3 border-top">
+                    <div>
+                        <p class="mb-0 small text-muted">{{ room.priceNote }}</p>
+                        <p class="mb-0 small text-muted">THB {{ room.pricePerNight | number }} / คืน</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-4">
+                        <h5 class="mb-0 fw-bold">THB {{ room.totalPrice | number }}</h5>
+                        <button class="btn btn-dark px-4 py-2 rounded-3 fw-semibold" (click)="addToCart(room)">เพิ่ม</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+
+        <div class="bg-white border border-dark-subtle rounded-3 p-4 mt-4 shadow-sm">
+            @if (bookingSummary) {
+                <div class="row">
+                    <div class="col-md-6 d-flex align-items-baseline gap-4 mb-4 mb-md-0">
+                        <h5 class="fw-bold mb-0">สรุปการจอง</h5>
+                        <span class="text-muted">{{ bookingSummary.nights }} คืน</span>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+                            <span class="text-muted">{{ bookingSummary.roomName }}</span>
+                            <span class="fw-bold">THB {{ bookingSummary.totalPrice | number:'1.2-2' }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <h5 class="mb-0 fw-bold">ทั้งหมด</h5>
+                            <h4 class="mb-0 fw-bold text-dark">THB {{ bookingSummary.totalPrice | number:'1.2-2' }}</h4>
+                        </div>
+                        <div class="d-flex justify-content-end mb-4">
+                            <small class="text-muted">รวมภาษีมูลค่าเพิ่ม</small>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-dark py-2 px-4 rounded-3 fw-semibold text-nowrap" style="min-width: max-content;">
+                                ดำเนินการต่อ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            } @else {
+                <h5 class="fw-bold mb-4">สรุปการจอง</h5>
+                <div class="text-center py-4 text-muted">
+                    <i class="bi bi-cart-x fs-1 mb-3 d-block"></i>
+                    <p class="mb-0">กรุณาเลือกห้องพักที่ต้องการเพื่อดูสรุปราคารวม</p>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" [class.show]="isDetailModalOpen" [style.display]="isDetailModalOpen ? 'block' : 'none'" tabindex="-1" style="background-color: rgba(0,0,0,0.6);">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        @if (selectedRoom) {
+        <div class="modal-content border-0 rounded-4">
+            
+            <div class="modal-body p-4 p-md-5">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-4" (click)="closeDetailModal()"></button>
+                
+                <h4 class="fw-bold mb-3">{{ selectedRoom.name }}</h4>
+                <div class="d-flex gap-4 text-muted small mb-4 fw-semibold">
+                    <span><i class="bi bi-aspect-ratio me-1"></i> {{ selectedRoom.sqm }} sqm.</span>
+                    <span><i class="bi bi-tv me-1"></i> {{ selectedRoom.bedType }}</span>
+                    <span><i class="bi bi-people me-1"></i> {{ selectedRoom.maxAdults + selectedRoom.maxChildren }} ท่าน</span>
+                </div>
+
+                <div class="position-relative mb-3">
+                    <img [src]="selectedRoom.images[currentImageIndex]" class="img-fluid w-100 rounded-3 object-fit-cover main-gallery-img">
+                    
+                    <div class="position-absolute bottom-0 end-0 m-3 d-flex gap-2">
+                        <button class="btn btn-light bg-white border-0 shadow-sm rounded-1 p-2" (click)="prevImage()">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button class="btn btn-dark border-0 shadow-sm rounded-1 p-2" (click)="nextImage()">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 overflow-auto mb-4 custom-scrollbar pb-2">
+                    @for (img of selectedRoom.images; track $index) {
+                        <img [src]="img" 
+                             class="rounded-2 thumbnail-img cursor-pointer" 
+                             [class.active-thumbnail]="currentImageIndex === $index"
+                             (click)="selectImage($index)">
+                    }
+                </div>
+
+                <p class="text-muted small lh-lg mb-4">{{ selectedRoom.description }}</p>
+
+                <h6 class="fw-bold mb-3">สิ่งอำนวยความสะดวกในห้อง</h6>
+                <div class="row">
+                    @for (item of selectedRoom.amenities; track $index) {
+                        <div class="col-6 mb-2">
+                            <small class="text-dark d-flex align-items-center">
+                                <span class="me-2 text-muted" style="font-size: 8px;">●</span> {{ item }}
+                            </small>
+                        </div>
+                    }
+                </div>
+                
+            </div>
+        </div>
+        }
+    </div>
+</div>

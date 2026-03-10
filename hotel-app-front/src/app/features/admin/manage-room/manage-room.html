@@ -53,13 +53,13 @@
                     </td>
                     <td class="pe-3">
                         <div class="d-flex gap-2 justify-content-end">
-                            <button class="btn btn-delete btn-sm rounded-3 d-flex align-items-center gap-1"
-                                (click)="openDeleteModal(i)">
-                                <i class="bi bi-trash2"></i> ลบ
-                            </button>
                             <button class="btn btn-edit btn-sm rounded-3 d-flex align-items-center gap-1"
                                 (click)="openEditModal(r, i)">
                                 <i class="bi bi-pencil"></i> แก้ไข
+                            </button>
+                            <button class="btn btn-admin-delete btn-sm rounded-3 d-flex align-items-center gap-1"
+                                (click)="openDeleteModal(i)">
+                                <i class="bi bi-trash2"></i> ลบ
                             </button>
                         </div>
                     </td>

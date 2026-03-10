@@ -10,6 +10,23 @@ export const routes: Routes = [
   },
 
   {
+    path: 'auth',
+    children: [
+      {
+        path: 'login',
+        loadComponent: () =>
+          import('./features/auth/pages/login-page/login-page').then((m) => m.LoginPage),
+      },
+      {
+        path: 'register',
+        loadComponent: () =>
+          import('./features/auth/pages/register-page/register-page').then((m) => m.RegisterPage),
+      },
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
+    ],
+  },
+
+  {
     path: 'hotel',
     component: MainLayoutComponent,
     children: [
@@ -17,6 +34,11 @@ export const routes: Routes = [
         path: 'payment',
         loadComponent: () =>
           import('./features/payment-page/payment-page').then((m) => m.PaymentPage),
+      },
+      {
+        path: 'roombooking',
+        loadComponent: () =>
+          import('./features/roombooking/roombooking-page').then((m) => m.RoombookingPage),
       },
     ],
   },

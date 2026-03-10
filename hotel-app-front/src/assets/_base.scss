@@ -1,0 +1,14 @@
+body {
+  background-color: $color-bg-main;
+  color: $color-text-main;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.card,
+.bg-white {
+  background: $color-bg-card;
+}
+
+.border-dark-subtle {
+  border-color: $color-border !important;
+}

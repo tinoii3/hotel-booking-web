@@ -1,12 +1,33 @@
 @import "variables";
 
 .btn-primary {
-  color: #fff;
+  background-color: $color-primary;
+  border: none;
+
+  &:hover {
+    background-color: $color-primary-hover;
+  }
 }
 
 .btn-edit {
-    background-color: $btn-edit-color;
-    border: 1px solid rgba(20, 115, 255, .2);
-    color: $color-main;
-    font-weight: bold;
+  background-color: $btn-edit-color;
+  border: 1px solid rgba($color-primary, 0.2);
+  color: $color-primary;
+  font-weight: 600;
+
+  &:hover {
+    background-color: $color-primary;
+    color: #fff;
+  }
+}
+
+.btn-admin-delete {
+  background-color: $bg-color-admin-del;
+  border: 1px solid $border-color-admin-del;
+  color: $color-admin-del;
+
+  &:hover {
+    background-color: $bg-color-admin-del-hover;
+    color: $color-admin-del-hover;
+  }
 }

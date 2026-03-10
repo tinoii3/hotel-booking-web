@@ -1,0 +1,2 @@
+export const ACCESS_TOKEN_EXPIRE = "15m";
+export const ACCESS_TOKEN_EXPIRE_SECONDS = 15 * 60;

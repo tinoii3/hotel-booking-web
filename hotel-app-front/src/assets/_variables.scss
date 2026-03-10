@@ -1,7 +1,29 @@
-$color-main: #1473FF;
-$color-main-light: #79AFFF;
+$color-primary: #1e3a5f;
+$color-primary-light: #2f4f75;
+$color-primary-hover: #162d49;
 
-$btn-edit-color: rgba($color-main-light, 0.4);
+$color-accent: #cba135;
 
-$primary: $color-main;
-$secondary: #d4af37;
+$color-text-main: #1f2933;
+$color-text-muted: #6b7280;
+
+$color-bg-main: #f6f7f9;
+$color-bg-card: #ffffff;
+
+$color-border: #e5e7eb;
+
+$primary: $color-primary;
+$secondary: #6c757d;
+
+/* =====================================
+   ADMIN COLORS
+===================================== */
+
+$bg-color-admin-del: #ffbebe;
+$border-color-admin-del: #ff9696;
+$color-admin-del: #ff0000;
+
+$bg-color-admin-del-hover: #ffa0a0;
+$color-admin-del-hover: #cc0000;
+
+$btn-edit-color: rgba($color-primary-light, 0.15);

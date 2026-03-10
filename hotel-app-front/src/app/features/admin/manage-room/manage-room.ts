@@ -29,14 +29,70 @@ export class ManageRoom implements OnInit {
 
   // mockup
   rooms: Room[] = [
-    { no: '001', type: 'สวีทชูพรีม', floor: 'ชั้น 4', capacity: '3 คน', user: 'สมบูรณ์ กขค', status: 'เช็คอิน' },
-    { no: '002', type: 'สวีทชูพรีม', floor: 'ชั้น 4', capacity: '3 คน', user: 'สมบูรณ์ กขค', status: 'เช็คอิน' },
-    { no: '003', type: 'ดีลักซ์', floor: 'ชั้น 3', capacity: '2 คน', user: 'วิไล มงคล', status: 'ว่าง' },
-    { no: '004', type: 'สวีทชูพรีม', floor: 'ชั้น 4', capacity: '3 คน', user: 'สมบูรณ์ กขค', status: 'เช็คอิน' },
-    { no: '005', type: 'สแตนดาร์ด', floor: 'ชั้น 2', capacity: '1 คน', user: 'ประทีป ศรี', status: 'ไม่พร้อมใช้งาน' },
-    { no: '006', type: 'สวีทชูพรีม', floor: 'ชั้น 4', capacity: '3 คน', user: 'สมบูรณ์ กขค', status: 'เช็คอิน' },
-    { no: '007', type: 'ดีลักซ์', floor: 'ชั้น 3', capacity: '2 คน', user: 'วิไล มงคล', status: 'ว่าง' },
-    { no: '008', type: 'สวีทชูพรีม', floor: 'ชั้น 4', capacity: '3 คน', user: 'สมบูรณ์ กขค', status: 'เช็คอิน' },
+    {
+      no: '001',
+      type: 'สวีทชูพรีม',
+      floor: 'ชั้น 4',
+      capacity: '3 คน',
+      user: 'สมบูรณ์ กขค',
+      status: 'เช็คอิน',
+    },
+    {
+      no: '002',
+      type: 'สวีทชูพรีม',
+      floor: 'ชั้น 4',
+      capacity: '3 คน',
+      user: 'สมบูรณ์ กขค',
+      status: 'เช็คอิน',
+    },
+    {
+      no: '003',
+      type: 'ดีลักซ์',
+      floor: 'ชั้น 3',
+      capacity: '2 คน',
+      user: 'วิไล มงคล',
+      status: 'ว่าง',
+    },
+    {
+      no: '004',
+      type: 'สวีทชูพรีม',
+      floor: 'ชั้น 4',
+      capacity: '3 คน',
+      user: 'สมบูรณ์ กขค',
+      status: 'เช็คอิน',
+    },
+    {
+      no: '005',
+      type: 'สแตนดาร์ด',
+      floor: 'ชั้น 2',
+      capacity: '1 คน',
+      user: 'ประทีป ศรี',
+      status: 'ไม่พร้อมใช้งาน',
+    },
+    {
+      no: '006',
+      type: 'สวีทชูพรีม',
+      floor: 'ชั้น 4',
+      capacity: '3 คน',
+      user: 'สมบูรณ์ กขค',
+      status: 'เช็คอิน',
+    },
+    {
+      no: '007',
+      type: 'ดีลักซ์',
+      floor: 'ชั้น 3',
+      capacity: '2 คน',
+      user: 'วิไล มงคล',
+      status: 'ว่าง',
+    },
+    {
+      no: '008',
+      type: 'สวีทชูพรีม',
+      floor: 'ชั้น 4',
+      capacity: '3 คน',
+      user: 'สมบูรณ์ กขค',
+      status: 'เช็คอิน',
+    },
   ];
 
   filteredRooms: Room[] = [];
@@ -70,7 +126,7 @@ export class ManageRoom implements OnInit {
     if (type === 'all') {
       this.filteredRooms = [...this.rooms];
     } else {
-      this.filteredRooms = this.rooms.filter(r => r.type === type);
+      this.filteredRooms = this.rooms.filter((r) => r.type === type);
     }
   }
 
@@ -97,7 +153,7 @@ export class ManageRoom implements OnInit {
   }
 
   closeRoomModal() {
-    this.isRoomModalOpen = false
+    this.isRoomModalOpen = false;
   }
 
   saveRoom() {

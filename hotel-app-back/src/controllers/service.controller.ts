@@ -1,9 +1,9 @@
 import { type Request, type Response } from "express";
-import { prisma } from "../lib/prisma.js";
+import * as serviceService from "../services/service.service.js";
 
 export const getService = async (_req: Request, res: Response) => {
   try {
-    const services = await prisma.services.findMany();
+    const services = await serviceService.getAllServices();
     res.json(services); 
   } catch (error) {
     console.error(error)

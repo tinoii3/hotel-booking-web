@@ -1,0 +1,39 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h3>Welcome</h3>
+      <p>Sign in to continue booking your stay</p>
+    </div>
+
+    <form>
+      <div class="form-group mb-3">
+        <label>Email</label>
+        <input
+          type="email"
+          class="form-control"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="Enter your email"
+        />
+      </div>
+
+      <div class="form-group mb-4">
+        <label>Password</label>
+        <input
+          type="password"
+          class="form-control"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="Enter your password"
+        />
+      </div>
+
+      <button class="btn btn-primary w-100 mb-3" (click)="login()">Login</button>
+    </form>
+
+    <div class="auth-footer">
+      <span>Don't have an account?</span>
+      <a routerLink="/auth/register">Register</a>
+    </div>
+  </div>
+</div>

@@ -27,7 +27,7 @@ export class ComponentPage {
       }
     });
 
-    this.http.get('/api/users').subscribe({
+    this.http.get('/api/service').subscribe({
       next: (response: any) => {
         console.log('✅ ได้รับข้อมูลสำเร็จ:', response);
         

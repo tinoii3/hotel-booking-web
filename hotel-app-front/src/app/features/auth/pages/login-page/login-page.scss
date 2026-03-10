@@ -1,0 +1,51 @@
+@import "../../../../../assets/styles.scss";
+
+.auth-page {
+  min-height: 100vh;
+  background: $color-bg-main;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-card {
+  width: 420px;
+  background: white;
+  padding: 40px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  border: 1px solid $color-border;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 30px;
+
+  h3 {
+    font-weight: 700;
+    color: $color-primary;
+  }
+
+  p {
+    font-size: 14px;
+    color: $color-text-muted;
+  }
+}
+
+.form-control {
+  height: 45px;
+  border-radius: 8px;
+}
+
+.auth-footer {
+  text-align: center;
+  font-size: 14px;
+
+  a {
+    margin-left: 6px;
+    color: $color-primary;
+    font-weight: 600;
+    text-decoration: none;
+  }
+}
