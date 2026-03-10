@@ -8,7 +8,7 @@ interface Room {
   name: string;
   description: string;
   imageUrl: string;
-  images: string[]; // อาร์เรย์รูปภาพสำหรับแสดงในป๊อปอัพ
+  images: string[];
   sqm: number;      
   bedType: string;  
   amenities: string[];
