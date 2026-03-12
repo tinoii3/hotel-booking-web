@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AdminLayout } from './features/admin/admin-layout/admin-layout';
+import { AdminLayout } from './layouts/admin/admin-layout-component/admin-layout-component';
 import { ComponentPage } from './core/component-page/component-page';
 import { MainLayoutComponent } from './layouts/main/main-layout-component/main-layout-component';
 
