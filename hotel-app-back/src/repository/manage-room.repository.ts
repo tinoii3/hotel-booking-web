@@ -6,7 +6,10 @@ export const roomFindAll = async (skip: number, take: number) => {
             skip: skip,
             take: take,
             orderBy: { room_number: 'asc' },
-            include: { room_types: true }
+            include: { 
+                room_types: true,
+                staff: true
+            }
         }),
         prisma.rooms.count()
     ]);

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PaginationLayoutComponent } from '../../../layouts/pagination/pagination-layout-conponent/pagination-layout-component';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -33,6 +32,8 @@ export class ManageRoom implements OnInit {
 
   f_room_number = '';
   f_room_type_id = '';
+  f_floor: number | '' = '';
+  f_staff_id: number | '' = '';
   f_status = 'available';
 
   ngOnInit() {
@@ -49,13 +50,6 @@ export class ManageRoom implements OnInit {
         this.rooms = response.data || [];
         this.currentPage = response.meta.currentPage || 1;
         this.totalPages = response.meta.totalPages || 1;
-        // Swal.fire({
-        //   icon: 'success',
-        //   title: 'สำเร็จ!',
-        //   text: `ดึงข้อมูลสำเร็จ พบข้อมูลห้องพักจำนวน ${response.data.length} รายการ (หน้า ${page})`,
-        //   timer: 1500,
-        //   showConfirmButton: false
-        // });
         this.cdr.detectChanges();
       },
       error: (error) => {
@@ -92,6 +86,8 @@ export class ManageRoom implements OnInit {
     const payload = {
       room_number: this.f_room_number,
       room_type_id: Number(this.f_room_type_id),
+      floor: this.f_floor ? Number(this.f_floor) : null,
+      staff_id: this.f_staff_id ? Number(this.f_staff_id) : null,
       status: this.f_status
     };
 
@@ -176,6 +172,8 @@ export class ManageRoom implements OnInit {
     this.editId = null;
     this.f_room_number = '';
     this.f_room_type_id = this.roomTypes.length > 0 ? this.roomTypes[0].id : '';
+    this.f_floor = '';
+    this.f_staff_id = '';
     this.f_status = 'available';
     this.isRoomModalOpen = true;
   }
@@ -184,6 +182,8 @@ export class ManageRoom implements OnInit {
     this.editId = room.id;
     this.f_room_number = room.room_number;
     this.f_room_type_id = room.room_type_id;
+    this.f_floor = room.floor;
+    this.f_staff_id = room.staff_id;
     this.f_status = room.status;
     this.isRoomModalOpen = true;
   }

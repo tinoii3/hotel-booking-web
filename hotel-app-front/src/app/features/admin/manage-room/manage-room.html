@@ -18,7 +18,7 @@
         </div>
 
         <button class="btn btn-primary d-flex align-items-center gap-2 fw-semibold rounded-3" (click)="openAddModal()">
-            <i class="bi bi-plus-lg"></i> เพิ่มห้อง
+            <i class="bi bi-plus-lg"></i>เพิ่มห้อง
         </button>
     </div>
 
@@ -29,8 +29,8 @@
                     <th class="ps-4 fw-normal fs-6">เลขห้อง</th>
                     <th class="fw-normal fs-6">ประเภทห้อง</th>
                     <th class="fw-normal fs-6">ชั้น</th>
-                    <th class="fw-normal fs-6">รองรับ</th>
                     <th class="fw-normal fs-6">ผู้ดูแล</th>
+                    <th class="fw-normal fs-6">รองรับ</th>
                     <th class="fw-normal fs-6">สถานะ</th>
                     <th></th>
                 </tr>
@@ -40,12 +40,9 @@
                 <tr>
                     <td class="ps-4">{{ r.room_number }}</td>
                     <td>{{ r.room_types?.name }}</td>
-
-                    <td>ชั้น {{ r.room_number ? (r.room_number.toString()[0] === '0' ? '1' :
-                        r.room_number.toString()[0]) : '-' }}</td>
-
+                    <td>ชั้น {{ r.floor || '-' }}</td>
+                    <td>{{ r.staff?.name || '-' }}</td>
                     <td>{{ r.room_types?.capacity }} คน</td>
-                    <td>-</td>
                     <td>
                         <span class="badge rounded-pill px-3 py-2" [ngClass]="{
                             'badge-checkin': r.status === 'occupied',
@@ -103,12 +100,21 @@
                             placeholder="เช่น 001">
                     </div>
                     <div class="col-6">
+                        <label class="form-label fw-semibold small">ชั้น</label>
+                        <input type="number" class="form-control rounded-3" [(ngModel)]="f_floor" placeholder="เช่น 4">
+                    </div>
+                    <div class="col-6">
                         <label class="form-label fw-semibold small">ประเภทห้อง</label>
                         <select class="form-select rounded-3" [(ngModel)]="f_room_type_id">
                             @for (type of roomTypes; track type.id) {
                             <option [value]="type.id">{{ type.name }} ({{ type.price_per_night }} บ.)</option>
                             }
                         </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-semibold small">ID ผู้ดูแล</label>
+                        <input type="number" class="form-control rounded-3" [(ngModel)]="f_staff_id"
+                            placeholder="รหัสพนักงานดูแล">
                     </div>
                     <div class="col-6">
                         <label class="form-label fw-semibold small">สถานะ</label>
