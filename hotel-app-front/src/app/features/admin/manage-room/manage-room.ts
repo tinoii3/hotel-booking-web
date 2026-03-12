@@ -1,118 +1,154 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-declare var bootstrap: any;
-
-interface Room {
-  no: string;
-  type: string;
-  floor: string;
-  capacity: string;
-  user: string;
-  status: string;
-}
+import { PaginationLayoutComponent } from '../../../layouts/pagination/pagination-layout-conponent/pagination-layout-component';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../enviroments/enviroment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-manage-room',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PaginationLayoutComponent],
   templateUrl: './manage-room.html',
   styleUrl: './manage-room.scss',
 })
 export class ManageRoom implements OnInit {
-  @ViewChild('roomModal') roomModalRef!: ElementRef;
-  @ViewChild('deleteModal') deleteModalRef!: ElementRef;
+  private http = inject(HttpClient);
+  private cdr = inject(ChangeDetectorRef);
 
-  roomModalInstance: any;
-  deleteModalInstance: any;
+  rooms: any[] = [];
+  roomTypes: any[] = [];
 
-  // mockup
-  rooms: Room[] = [
-    {
-      no: '001',
-      type: 'สวีทชูพรีม',
-      floor: 'ชั้น 4',
-      capacity: '3 คน',
-      user: 'สมบูรณ์ กขค',
-      status: 'เช็คอิน',
-    },
-    {
-      no: '002',
-      type: 'สวีทชูพรีม',
-      floor: 'ชั้น 4',
-      capacity: '3 คน',
-      user: 'สมบูรณ์ กขค',
-      status: 'เช็คอิน',
-    },
-    {
-      no: '003',
-      type: 'ดีลักซ์',
-      floor: 'ชั้น 3',
-      capacity: '2 คน',
-      user: 'วิไล มงคล',
-      status: 'ว่าง',
-    },
-    {
-      no: '004',
-      type: 'สวีทชูพรีม',
-      floor: 'ชั้น 4',
-      capacity: '3 คน',
-      user: 'สมบูรณ์ กขค',
-      status: 'เช็คอิน',
-    },
-    {
-      no: '005',
-      type: 'สแตนดาร์ด',
-      floor: 'ชั้น 2',
-      capacity: '1 คน',
-      user: 'ประทีป ศรี',
-      status: 'ไม่พร้อมใช้งาน',
-    },
-    {
-      no: '006',
-      type: 'สวีทชูพรีม',
-      floor: 'ชั้น 4',
-      capacity: '3 คน',
-      user: 'สมบูรณ์ กขค',
-      status: 'เช็คอิน',
-    },
-    {
-      no: '007',
-      type: 'ดีลักซ์',
-      floor: 'ชั้น 3',
-      capacity: '2 คน',
-      user: 'วิไล มงคล',
-      status: 'ว่าง',
-    },
-    {
-      no: '008',
-      type: 'สวีทชูพรีม',
-      floor: 'ชั้น 4',
-      capacity: '3 คน',
-      user: 'สมบูรณ์ กขค',
-      status: 'เช็คอิน',
-    },
-  ];
+  currentPage: number = 1;
+  totalPages: number = 1;
+  limit: number = 10;
 
-  filteredRooms: Room[] = [];
-  currentFilter: string = 'all';
-  pendingDeleteIndex: number | null = null;
-  editIndex: number | null = null;
-
-  isDropdownOpen: boolean = false;
   isRoomModalOpen: boolean = false;
   isDeleteModalOpen: boolean = false;
+  pendingDeleteId: number | null = null;
+  editId: number | null = null;
+  isDropdownOpen: boolean = false;
+  currentFilter: string = 'all';
 
-  f_room_no = '';
-  f_floor = '';
-  f_type = 'สวีทชูพรีม';
-  f_capacity = '';
-  f_user = '';
-  f_status = 'ว่าง';
+  f_room_number = '';
+  f_room_type_id = '';
+  f_status = 'available';
 
   ngOnInit() {
-    this.filterType('all');
+    this.loadRoomTypes();
+    this.loadRooms(this.currentPage);
+  }
+
+  loadRooms(page: number) {
+    const url = `/api/manage-room/rooms?page=${page}&limit=${this.limit}`;
+
+    this.http.get(url).subscribe({
+      next: (response: any) => {
+        console.log('ได้รับข้อมูลสำเร็จ:', response);
+        this.rooms = response.data || [];
+        this.currentPage = response.meta.currentPage || 1;
+        this.totalPages = response.meta.totalPages || 1;
+        // Swal.fire({
+        //   icon: 'success',
+        //   title: 'สำเร็จ!',
+        //   text: `ดึงข้อมูลสำเร็จ พบข้อมูลห้องพักจำนวน ${response.data.length} รายการ (หน้า ${page})`,
+        //   timer: 1500,
+        //   showConfirmButton: false
+        // });
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('เกิดข้อผิดพลาด:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด!',
+          text: 'ไม่สามารถดึงข้อมูลห้องพักได้: ' + (error.statusText || 'เซิร์ฟเวอร์ไม่ตอบสนอง'),
+          confirmButtonText: 'ปิดหน้าต่าง',
+          confirmButtonColor: '#dc3545'
+        });
+      },
+      complete: () => {
+        console.log('การทำงานเสร็จสิ้น (Load Rooms)');
+      }
+    });
+  }
+
+  loadRoomTypes() {
+    this.http.get(`/api/manage-room/room-types`).subscribe({
+      next: (response: any) => {
+        this.roomTypes = response;
+      },
+      error: (error) => console.error('ไม่สามารถดึงข้อมูลประเภทห้องได้', error)
+    });
+  }
+
+  saveRoom() {
+    if (!this.f_room_number.trim() || !this.f_room_type_id) {
+      Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'กรุณากรอกข้อมูลให้ครบถ้วน', confirmButtonColor: '#d4af37' });
+      return;
+    }
+
+    const payload = {
+      room_number: this.f_room_number,
+      room_type_id: Number(this.f_room_type_id),
+      status: this.f_status
+    };
+
+    if (this.editId) {
+      this.http.patch(`/api/manage-room/rooms/${this.editId}`, payload).subscribe({
+        next: (response: any) => {
+          console.log('แก้ไขข้อมูลสำเร็จ:', response);
+          Swal.fire({ icon: 'success', title: 'สำเร็จ!', text: 'แก้ไขข้อมูลห้องพักเรียบร้อยแล้ว', confirmButtonText: 'ตกลง', confirmButtonColor: '#d4af37' });
+          this.closeRoomModal();
+          this.loadRooms(this.currentPage);
+        },
+        error: (error) => this.handleError(error, 'แก้ไขข้อมูลไม่สำเร็จ'),
+        complete: () => console.log('การทำงานเสร็จสิ้น (Update Room)')
+      });
+    } else {
+      this.http.post(`/api/manage-room/rooms`, payload).subscribe({
+        next: (response: any) => {
+          console.log('สร้างข้อมูลสำเร็จ:', response);
+          Swal.fire({ icon: 'success', title: 'สำเร็จ!', text: 'เพิ่มห้องพักใหม่เรียบร้อยแล้ว', confirmButtonText: 'ตกลง', confirmButtonColor: '#d4af37' });
+          this.closeRoomModal();
+          this.loadRooms(this.currentPage);
+        },
+        error: (error) => this.handleError(error, 'เพิ่มข้อมูลไม่สำเร็จ'),
+        complete: () => console.log('การทำงานเสร็จสิ้น (Create Room)')
+      });
+    }
+  }
+
+  confirmDelete() {
+    if (!this.pendingDeleteId) return;
+
+    this.http.delete(`/api/manage-room/rooms/${this.pendingDeleteId}`).subscribe({
+      next: (response: any) => {
+        console.log('ลบข้อมูลสำเร็จ:', response);
+        Swal.fire({ 
+          icon: 'success', 
+          title: 'สำเร็จ!', 
+          text: 'ลบข้อมูลห้องพักเรียบร้อยแล้ว', 
+          confirmButtonText: 'ตกลง', 
+          confirmButtonColor: '#d4af37' });
+        this.closeDeleteModal();
+        this.loadRooms(this.currentPage);
+      },
+      error: (error) => this.handleError(error, 'ลบข้อมูลไม่สำเร็จ'),
+      complete: () => console.log('การทำงานเสร็จสิ้น (Delete Room)')
+    });
+  }
+
+  handleError(error: any, defaultMsg: string) {
+    console.error('เกิดข้อผิดพลาด:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'เกิดข้อผิดพลาด!',
+      text: `${defaultMsg}: ${error.statusText || 'เซิร์ฟเวอร์ไม่ตอบสนอง'}`,
+      confirmButtonText: 'ปิดหน้าต่าง',
+      confirmButtonColor: '#dc3545'
+    });
   }
 
   toggleDropdown() {
@@ -122,81 +158,45 @@ export class ManageRoom implements OnInit {
   filterType(type: string) {
     this.currentFilter = type;
     this.isDropdownOpen = false;
+    console.log('เลือกดูประเภท:', type);
+    Swal.fire({
+      icon: 'info',
+      title: 'ระบบคัดกรอง',
+      text: `คุณเลือก: ${type} (ฟังก์ชันนี้ต้องไปเพิ่มเงื่อนไขที่ Backend ต่อครับ)`,
+      timer: 1500,
+      showConfirmButton: false
+    });
+  }
 
-    if (type === 'all') {
-      this.filteredRooms = [...this.rooms];
-    } else {
-      this.filteredRooms = this.rooms.filter((r) => r.type === type);
-    }
+  onPageChange(newPage: number) {
+    this.loadRooms(newPage);
   }
 
   openAddModal() {
-    this.editIndex = null;
-    this.f_room_no = '';
-    this.f_floor = '';
-    this.f_type = 'สวีทชูพรีม';
-    this.f_capacity = '';
-    this.f_user = '';
-    this.f_status = 'ว่าง';
+    this.editId = null;
+    this.f_room_number = '';
+    this.f_room_type_id = this.roomTypes.length > 0 ? this.roomTypes[0].id : '';
+    this.f_status = 'available';
     this.isRoomModalOpen = true;
   }
 
-  openEditModal(room: Room, index: number) {
-    this.editIndex = index;
-    this.f_room_no = room.no;
-    this.f_floor = room.floor;
-    this.f_type = room.type;
-    this.f_capacity = room.capacity;
-    this.f_user = room.user;
+  openEditModal(room: any) {
+    this.editId = room.id;
+    this.f_room_number = room.room_number;
+    this.f_room_type_id = room.room_type_id;
     this.f_status = room.status;
     this.isRoomModalOpen = true;
   }
 
-  closeRoomModal() {
-    this.isRoomModalOpen = false;
-  }
+  closeRoomModal() { this.isRoomModalOpen = false; }
 
-  saveRoom() {
-    if (!this.f_room_no.trim()) {
-      alert('กรุณาระบุเลขห้อง');
-      return;
-    }
-
-    const entry: Room = {
-      no: this.f_room_no.trim(),
-      type: this.f_type,
-      floor: this.f_floor.trim(),
-      capacity: this.f_capacity.trim(),
-      user: this.f_user.trim(),
-      status: this.f_status,
-    };
-
-    if (this.editIndex === null) {
-      this.rooms.push(entry);
-    } else {
-      this.rooms[this.editIndex] = entry;
-    }
-
-    this.filterType(this.currentFilter);
-    this.closeRoomModal();
-  }
-
-  openDeleteModal(index: number) {
-    this.pendingDeleteIndex = index;
+  openDeleteModal(id: number) {
+    this.pendingDeleteId = id;
     this.isDeleteModalOpen = true;
   }
 
   closeDeleteModal() {
-    this.pendingDeleteIndex = null;
+    this.pendingDeleteId = null;
     this.isDeleteModalOpen = false;
-  }
-
-  confirmDelete() {
-    if (this.pendingDeleteIndex !== null) {
-      this.rooms.splice(this.pendingDeleteIndex, 1);
-      this.pendingDeleteIndex = null;
-    }
-    this.filterType(this.currentFilter);
-    this.closeDeleteModal();
   }
 }

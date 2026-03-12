@@ -6,7 +6,8 @@
                 (click)="toggleDropdown()">
                 <i class="bi bi-funnel"></i> ประเภท <i class="bi bi-chevron-down small"></i>
             </button>
-            <ul class="dropdown-menu dropdown-menu-end" [class.show]="isDropdownOpen" [style.display]="isDropdownOpen ? 'block' : 'none'">
+            <ul class="dropdown-menu dropdown-menu-end" [class.show]="isDropdownOpen"
+                [style.display]="isDropdownOpen ? 'block' : 'none'">
                 <li><a class="dropdown-item" href="javascript:void(0)" (click)="filterType('all')">ทั้งหมด</a></li>
                 <li><a class="dropdown-item" href="javascript:void(0)" (click)="filterType('สวีทชูพรีม')">สวีทชูพรีม</a>
                 </li>
@@ -35,84 +36,86 @@
                 </tr>
             </thead>
             <tbody>
-                @for (r of filteredRooms; track r.no; let i = $index) {
+                @for (r of rooms; track r.id) {
                 <tr>
-                    <td class="ps-4">{{ r.no }}</td>
-                    <td>{{ r.type }}</td>
-                    <td>{{ r.floor }}</td>
-                    <td>{{ r.capacity }}</td>
-                    <td>{{ r.user }}</td>
+                    <td class="ps-4">{{ r.room_number }}</td>
+                    <td>{{ r.room_types?.name }}</td>
+
+                    <td>ชั้น {{ r.room_number ? (r.room_number.toString()[0] === '0' ? '1' :
+                        r.room_number.toString()[0]) : '-' }}</td>
+
+                    <td>{{ r.room_types?.capacity }} คน</td>
+                    <td>-</td>
                     <td>
                         <span class="badge rounded-pill px-3 py-2" [ngClass]="{
-                      'badge-checkin': r.status === 'เช็คอิน',
-                      'badge-available': r.status === 'ว่าง',
-                      'badge-unavailable': r.status === 'ไม่พร้อมใช้งาน'
-                    }">
-                            {{ r.status }}
+                            'badge-checkin': r.status === 'occupied',
+                            'badge-available': r.status === 'available',
+                            'badge-unavailable': r.status === 'maintenance'
+                        }">
+                            {{ r.status === 'available' ? 'ว่าง' : (r.status === 'occupied' ? 'เช็คอิน' :
+                            'ไม่พร้อมใช้งาน') }}
                         </span>
                     </td>
                     <td class="pe-3">
                         <div class="d-flex gap-2 justify-content-end">
                             <button class="btn btn-edit btn-sm rounded-3 d-flex align-items-center gap-1"
-                                (click)="openEditModal(r, i)">
+                                (click)="openEditModal(r)">
                                 <i class="bi bi-pencil"></i> แก้ไข
                             </button>
                             <button class="btn btn-admin-delete btn-sm rounded-3 d-flex align-items-center gap-1"
-                                (click)="openDeleteModal(i)">
+                                (click)="openDeleteModal(r.id)">
                                 <i class="bi bi-trash2"></i> ลบ
                             </button>
                         </div>
                     </td>
                 </tr>
+                } @empty {
+                <tr>
+                    <td colspan="7" class="text-center py-4 text-muted">กำลังโหลดข้อมูล หรือไม่มีข้อมูลห้องพัก...</td>
+                </tr>
                 }
             </tbody>
         </table>
     </div>
+
+    <div class="d-flex justify-content-between align-items-center px-4 py-3 border-top">
+        <span class="text-muted small">แสดงหน้า {{ currentPage }} จาก {{ totalPages }} หน้า</span>
+
+        <app-pagination-layout-component [currentPage]="currentPage" [totalPages]="totalPages"
+            (pageChange)="onPageChange($event)">
+        </app-pagination-layout-component>
+    </div>
 </div>
 
-<div class="modal fade" [class.show]="isRoomModalOpen" [style.display]="isRoomModalOpen ? 'block' : 'none'" tabindex="-1">
+<div class="modal fade" [class.show]="isRoomModalOpen" [style.display]="isRoomModalOpen ? 'block' : 'none'"
+    tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-4">
             <div class="modal-header border-bottom">
-                <h5 class="modal-title">{{ editIndex === null ? 'เพิ่มห้องพัก' : 'แก้ไขห้องพัก' }}</h5>
+                <h5 class="modal-title">{{ editId === null ? 'เพิ่มห้องพัก' : 'แก้ไขห้องพัก' }}</h5>
                 <button type="button" class="btn-close" (click)="closeRoomModal()"></button>
             </div>
             <div class="modal-body">
                 <div class="row g-3">
                     <div class="col-6">
                         <label class="form-label fw-semibold small">เลขห้อง</label>
-                        <input type="text" class="form-control rounded-3" [(ngModel)]="f_room_no"
+                        <input type="text" class="form-control rounded-3" [(ngModel)]="f_room_number"
                             placeholder="เช่น 001">
                     </div>
                     <div class="col-6">
-                        <label class="form-label fw-semibold small">ชั้น</label>
-                        <input type="text" class="form-control rounded-3" [(ngModel)]="f_floor"
-                            placeholder="เช่น ชั้น 4">
-                    </div>
-                    <div class="col-6">
                         <label class="form-label fw-semibold small">ประเภทห้อง</label>
-                        <select class="form-select rounded-3" [(ngModel)]="f_type">
-                            <option>สวีทชูพรีม</option>
-                            <option>ดีลักซ์</option>
-                            <option>สแตนดาร์ด</option>
+                        <select class="form-select rounded-3" [(ngModel)]="f_room_type_id">
+                            @for (type of roomTypes; track type.id) {
+                            <option [value]="type.id">{{ type.name }} ({{ type.price_per_night }} บ.)</option>
+                            }
                         </select>
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label fw-semibold small">รองรับ</label>
-                        <input type="text" class="form-control rounded-3" [(ngModel)]="f_capacity"
-                            placeholder="เช่น 3 คน">
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label fw-semibold small">ผู้ดูแล</label>
-                        <input type="text" class="form-control rounded-3" [(ngModel)]="f_user"
-                            placeholder="เช่น สมบูรณ์ กขค">
                     </div>
                     <div class="col-6">
                         <label class="form-label fw-semibold small">สถานะ</label>
                         <select class="form-select rounded-3" [(ngModel)]="f_status">
-                            <option>เช็คอิน</option>
-                            <option>ว่าง</option>
-                            <option>ไม่พร้อมใช้งาน</option>
+                            <option value="available">ว่าง</option>
+                            <option value="occupied">เช็คอิน</option>
+                            <option value="maintenance">ไม่พร้อมใช้งาน</option>
                         </select>
                     </div>
                 </div>
@@ -125,16 +128,17 @@
     </div>
 </div>
 
-<div class="modal fade" [class.show]="isDeleteModalOpen" [style.display]="isDeleteModalOpen ? 'block' : 'none'" tabindex="-1">
+<div class="modal fade" [class.show]="isDeleteModalOpen" [style.display]="isDeleteModalOpen ? 'block' : 'none'"
+    tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content rounded-4 text-center p-2">
             <div class="modal-body">
                 <i class="bi bi-exclamation-triangle-fill text-danger fs-2"></i>
                 <p class="mt-3 mb-1 fw-semibold">ลบห้องนี้?</p>
 
-                @if (pendingDeleteIndex !== null && rooms[pendingDeleteIndex]) {
+                @if (pendingDeleteId !== null) {
                 <p class="text-muted small">
-                    ห้อง {{ rooms[pendingDeleteIndex].no }} — {{ rooms[pendingDeleteIndex].type }}
+                    คุณต้องการลบห้องพักที่เลือกใช่หรือไม่?
                 </p>
                 }
 
@@ -146,3 +150,7 @@
         </div>
     </div>
 </div>
+
+@if (isRoomModalOpen || isDeleteModalOpen) {
+<div class="modal-backdrop fade show"></div>
+}
