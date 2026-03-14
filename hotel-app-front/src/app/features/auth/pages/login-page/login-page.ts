@@ -47,7 +47,7 @@ export class LoginPage {
           if (res.role === 'admin') {
             this.router.navigate(['/admin/']);
           } else {
-            this.router.navigate(['/hotel/roombooking']);
+            this.router.navigate(['/hotel/']);
           }
         });
 

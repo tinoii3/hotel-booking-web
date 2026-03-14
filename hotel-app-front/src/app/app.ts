@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LoadingOverlayComponent } from './shared/loading-overlay/loading-overlay';
+import { LoadingOverlayComponent } from './shared/directives/loading-overlay/loading-overlay';
 
 
 @Component({
