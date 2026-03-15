@@ -25,19 +25,23 @@
             </li>
         </ul>
         <hr>
-        <div class="dropdown">
+        <div class="dropdown" style="position: relative;">
             <a href="javascript:void(0)"
                 class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                data-bs-toggle="dropdown">
+                [class.show]="isUserMenuOpen" (click)="toggleUserMenu()">
                 <i class="bi bi-person-circle fs-5 me-2"></i>
                 <strong>ผู้ดูแลระบบ</strong>
             </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                <li><a class="dropdown-item" href="javascript:void(0)">ตั้งค่า</a></li>
+
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" [class.show]="isUserMenuOpen"
+                [style.display]="isUserMenuOpen ? 'block' : 'none'"
+                style="position: absolute; bottom: 100%; top: auto; right: 0; z-index: 1050;">
+
+                <li><a class="dropdown-item" href="javascript:void(0)" (click)="isUserMenuOpen = false">ตั้งค่า</a></li>
                 <li>
                     <hr class="dropdown-divider">
                 </li>
-                <li><a class="dropdown-item" href="javascript:void(0)">ออกจากระบบ</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" (click)="logout()">ออกจากระบบ</a></li>
             </ul>
         </div>
     </div>
