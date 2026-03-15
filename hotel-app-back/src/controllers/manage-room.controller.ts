@@ -5,7 +5,16 @@ export const getRooms = async (req: Request, res: Response) => {
     try {
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
-        const result = await manageRoomService.getAllRooms(page, limit);
+        const type = req.query.type as string || 'all';
+        const sortBy = req.query.sortBy as string || 'room_number';
+        const sortOrder = req.query.sortOrder as string || 'asc';
+        const result = await manageRoomService.getAllRooms(
+            page,
+            limit,
+            type,
+            sortBy,
+            sortOrder
+        );
         res.json(result);
     } catch (error) {
         console.log(error);
@@ -66,9 +75,9 @@ export const deleteRoom = async (req: Request, res: Response) => {
     try {
         const id = parseInt(req.params.id as string, 10);
         await manageRoomService.deleteRoom(id);
-        res.json({ message: "Room delete successfully"});
+        res.json({ message: "Room delete successfully" });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Failed to delete room"});
+        res.status(500).json({ message: "Failed to delete room" });
     }
 }

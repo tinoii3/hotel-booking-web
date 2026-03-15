@@ -1,9 +1,21 @@
 import * as manageRoomRepo from "../repository/manage-room.repository.js"
 
-export const getAllRooms = async (page: number, limit: number) => {
+export const getAllRooms = async (
+    page: number,
+    limit: number,
+    filterType?: string,
+    sortBy?: string,
+    sortOrder?: string
+) => {
     const skip = (page - 1) * limit;
     const take = limit;
-    const { rooms, totalRooms } = await manageRoomRepo.roomFindAll(skip, take);
+    const { rooms, totalRooms } = await manageRoomRepo.roomFindAll(
+        skip,
+        take,
+        filterType,
+        sortBy, 
+        sortOrder
+    );
     const totalPages = Math.ceil(totalRooms / limit);
     return {
         data: rooms,
