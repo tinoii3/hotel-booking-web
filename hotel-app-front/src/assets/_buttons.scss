@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .btn-primary {
   background-color: $color-primary;
@@ -6,6 +6,16 @@
 
   &:hover {
     background-color: $color-primary-hover;
+  }
+}
+
+.btn-outline-light {
+  border-color: $color-primary;
+  color: $color-primary;
+
+  &:hover {
+    background: $color-primary;
+    color: #fff;
   }
 }
 
@@ -29,5 +39,52 @@
   &:hover {
     background-color: $bg-color-admin-del-hover;
     color: $color-admin-del-hover;
+  }
+}
+
+.navbar {
+  background: #ffffff;
+  border-bottom: 1px solid $color-border;
+
+  .navbar-brand {
+    font-weight: 700;
+    color: $color-primary !important;
+  }
+
+  .btn-outline-light {
+    border-color: $color-primary;
+    color: $color-primary;
+
+    &:hover {
+      background: $color-primary;
+      color: #fff;
+    }
+  }
+}
+
+.btn-dialog {
+  width: 100px;
+  height: 40px;
+  font-weight: 600;
+}
+
+.btn-dialog-primary {
+  background-color: $color-primary;
+  border: none;
+  color: #fff;
+
+  &:hover {
+    background-color: $color-primary-hover;
+  }
+}
+
+.btn-dialog-secondary {
+  background-color: transparent;
+  border: 1px solid $color-primary;
+  color: $color-primary;
+
+  &:hover {
+    background-color: $color-primary;
+    color: #fff;
   }
 }

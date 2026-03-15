@@ -8,7 +8,11 @@ http:
   url: "{{localhost}}/api/auth/login"
   body:
     type: json
-    data: ""
+    data: |-
+      {
+        "username": "users",
+        "password": "888888"
+      }
   auth: inherit
 
 settings:

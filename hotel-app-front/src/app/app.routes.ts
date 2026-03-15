@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { AdminLayout } from './layouts/admin/admin-layout-component/admin-layout-component';
 import { ComponentPage } from './core/component-page/component-page';
 import { MainLayoutComponent } from './layouts/main/main-layout-component/main-layout-component';
+import { authGuard } from './guards/auth-guard';
+import { roleGuard } from './guards/role-guard';
 
 export const routes: Routes = [
   {
@@ -52,6 +54,8 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayout,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'admin' },
     children: [
       {
         path: 'manage-room',

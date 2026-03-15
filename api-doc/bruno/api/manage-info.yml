@@ -1,0 +1,17 @@
+info:
+  name: manage-info
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: "{{localhost}}/api/manage-room/rooms"
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzU2NjU3NCwiZXhwIjoxNzczNTY2NjM0fQ.QsB4f1ekHaqGNMn0OnEAWaXcO2T-1SG3wEeZLRmdhV4
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
