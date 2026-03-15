@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PaginationLayoutComponent } from '../../../layouts/pagination/pagination-layout-conponent/pagination-layout-component';
-import { HttpClient } from '@angular/common/http';
+import { ManageRoomService } from './manage-room.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
   styleUrl: './manage-room.scss',
 })
 export class ManageRoom implements OnInit {
-  private http = inject(HttpClient);
+  private roomService = inject(ManageRoomService);
   private cdr = inject(ChangeDetectorRef);
 
   rooms: any[] = [];
@@ -42,9 +42,7 @@ export class ManageRoom implements OnInit {
   }
 
   loadRooms(page: number) {
-    const url = `/api/manage-room/rooms?page=${page}&limit=${this.limit}`;
-
-    this.http.get(url).subscribe({
+    this.roomService.getRooms(page, this.limit).subscribe({
       next: (response: any) => {
         console.log('ได้รับข้อมูลสำเร็จ:', response);
         this.rooms = response.data || [];
@@ -69,7 +67,7 @@ export class ManageRoom implements OnInit {
   }
 
   loadRoomTypes() {
-    this.http.get(`/api/manage-room/room-types`).subscribe({
+    this.roomService.getRoomTypes().subscribe({
       next: (response: any) => {
         this.roomTypes = response;
       },
@@ -92,7 +90,7 @@ export class ManageRoom implements OnInit {
     };
 
     if (this.editId) {
-      this.http.patch(`/api/manage-room/rooms/${this.editId}`, payload).subscribe({
+      this.roomService.updateRoom(this.editId, payload).subscribe({
         next: (response: any) => {
           console.log('แก้ไขข้อมูลสำเร็จ:', response);
           Swal.fire({ icon: 'success', title: 'สำเร็จ!', text: 'แก้ไขข้อมูลห้องพักเรียบร้อยแล้ว', confirmButtonText: 'ตกลง', confirmButtonColor: '#d4af37' });
@@ -103,7 +101,7 @@ export class ManageRoom implements OnInit {
         complete: () => console.log('การทำงานเสร็จสิ้น (Update Room)')
       });
     } else {
-      this.http.post(`/api/manage-room/rooms`, payload).subscribe({
+      this.roomService.createRoom(payload).subscribe({
         next: (response: any) => {
           console.log('สร้างข้อมูลสำเร็จ:', response);
           Swal.fire({ icon: 'success', title: 'สำเร็จ!', text: 'เพิ่มห้องพักใหม่เรียบร้อยแล้ว', confirmButtonText: 'ตกลง', confirmButtonColor: '#d4af37' });
@@ -119,7 +117,7 @@ export class ManageRoom implements OnInit {
   confirmDelete() {
     if (!this.pendingDeleteId) return;
 
-    this.http.delete(`/api/manage-room/rooms/${this.pendingDeleteId}`).subscribe({
+    this.roomService.deleteRoom(this.pendingDeleteId).subscribe({
       next: (response: any) => {
         console.log('ลบข้อมูลสำเร็จ:', response);
         Swal.fire({ 
