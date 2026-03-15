@@ -1,0 +1,18 @@
+info:
+  name: users-login
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{localhost}}/api/auth/login"
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

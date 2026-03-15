@@ -1,0 +1,22 @@
+info:
+  name: admin-login
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{localhost}}/api/auth/login"
+  body:
+    type: json
+    data: |-
+      {
+        "username": "admin111",
+        "password": "111111"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
