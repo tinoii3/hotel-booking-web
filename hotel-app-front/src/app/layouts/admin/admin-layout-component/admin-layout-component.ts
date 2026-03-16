@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth-service';
-import { TokenService } from '../../../core/services/token-service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -14,14 +13,7 @@ import Swal from 'sweetalert2';
 })
 export class AdminLayout {
   private authService = inject(AuthService);
-  private tokenService = inject(TokenService);
   private router = inject(Router);
-
-  isUserMenuOpen: boolean = false;
-
-  toggleUserMenu() {
-    this.isUserMenuOpen = !this.isUserMenuOpen;
-  }
 
   logout() {
     Swal.fire({
