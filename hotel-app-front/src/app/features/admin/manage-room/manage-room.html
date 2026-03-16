@@ -27,22 +27,45 @@
             <thead class="table-light border-bottom user-select-none">
                 <tr>
                     <th class="ps-4 fw-normal fs-6" style="cursor: pointer;" (click)="sortData('room_number')">
-                        เลขห้อง <i class="bi ms-1 small" [ngClass]="getSortIcon('room_number')"></i>
+                        เลขห้อง
+                        <fa-icon [icon]="getFaSortIcon('room_number', 'number')" class="ms-1 small"
+                            [class.text-black-70]="currentSortBy !== 'room_number'"
+                            [class.opacity-25]="currentSortBy !== 'room_number'"></fa-icon>
                     </th>
+
                     <th class="fw-normal fs-6" style="cursor: pointer;" (click)="sortData('room_type')">
-                        ประเภทห้อง <i class="bi ms-1 small" [ngClass]="getSortIcon('room_type')"></i>
+                        ประเภทห้อง
+                        <fa-icon [icon]="getFaSortIcon('room_type', 'text')" class="ms-1 small"
+                            [class.text-black-70]="currentSortBy !== 'room_type'"
+                            [class.opacity-25]="currentSortBy !== 'room_type'"></fa-icon>
                     </th>
+
                     <th class="fw-normal fs-6" style="cursor: pointer;" (click)="sortData('floor')">
-                        ชั้น <i class="bi ms-1 small" [ngClass]="getSortIcon('floor')"></i>
+                        ชั้น
+                        <fa-icon [icon]="getFaSortIcon('floor', 'number')" class="ms-1 small"
+                            [class.text-black-70]="currentSortBy !== 'floor'"
+                            [class.opacity-25]="currentSortBy !== 'floor'"></fa-icon>
                     </th>
+
                     <th class="fw-normal fs-6" style="cursor: pointer;" (click)="sortData('staff')">
-                        ผู้ดูแล <i class="bi ms-1 small" [ngClass]="getSortIcon('staff')"></i>
+                        ผู้ดูแล
+                        <fa-icon [icon]="getFaSortIcon('staff', 'text')" class="ms-1 small"
+                            [class.text-black-70]="currentSortBy !== 'staff'"
+                            [class.opacity-25]="currentSortBy !== 'staff'"></fa-icon>
                     </th>
+
                     <th class="fw-normal fs-6" style="cursor: pointer;" (click)="sortData('capacity')">
-                        รองรับ <i class="bi ms-1 small" [ngClass]="getSortIcon('capacity')"></i>
+                        รองรับ
+                        <fa-icon [icon]="getFaSortIcon('capacity', 'number')" class="ms-1 small"
+                            [class.text-black-70]="currentSortBy !== 'capacity'"
+                            [class.opacity-25]="currentSortBy !== 'capacity'"></fa-icon>
                     </th>
+
                     <th class="fw-normal fs-6" style="cursor: pointer;" (click)="sortData('status')">
-                        สถานะ <i class="bi ms-1 small" [ngClass]="getSortIcon('status')"></i>
+                        สถานะ
+                        <fa-icon [icon]="getFaSortIcon('status', 'text')" class="ms-1 small"
+                            [class.text-black-70]="currentSortBy !== 'status'"
+                            [class.opacity-25]="currentSortBy !== 'status'"></fa-icon>
                     </th>
                     <th></th>
                 </tr>

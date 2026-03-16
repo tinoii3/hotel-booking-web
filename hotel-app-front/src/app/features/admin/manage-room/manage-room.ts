@@ -4,17 +4,24 @@ import { FormsModule } from '@angular/forms';
 import { PaginationLayoutComponent } from '../../../layouts/pagination/pagination-layout-conponent/pagination-layout-component';
 import { ManageRoomService } from './manage-room.service';
 import Swal from 'sweetalert2';
+import { faArrowDown19, faArrowDown91, faArrowDownAZ, faArrowDownZA } from '@fortawesome/free-solid-svg-icons';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 
 @Component({
   selector: 'app-manage-room',
   standalone: true,
-  imports: [CommonModule, FormsModule, PaginationLayoutComponent],
+  imports: [CommonModule, FormsModule, PaginationLayoutComponent, FaIconComponent],
   templateUrl: './manage-room.html',
   styleUrl: './manage-room.scss',
 })
 export class ManageRoom implements OnInit {
   private roomService = inject(ManageRoomService);
   private cdr = inject(ChangeDetectorRef);
+
+  faArrowDown19 = faArrowDown19;
+  faArrowDown91 = faArrowDown91;
+  faArrowDownAZ = faArrowDownAZ;
+  faArrowDownZA = faArrowDownZA;
 
   rooms: any[] = [];
   roomTypes: any[] = [];
@@ -94,11 +101,16 @@ export class ManageRoom implements OnInit {
     this.loadRooms(this.currentPage);
   }
 
-  getSortIcon(columnName: string) {
+  getFaSortIcon(columnName: string, type: 'number' | 'text') {
     if (this.currentSortBy !== columnName) {
-      return 'bi-arrow-down-up text-black-50 opacity-25';
+      return type === 'number' ? this.faArrowDown19 : this.faArrowDownAZ;
     }
-    return this.currentSortOrder === 'asc' ? 'bi-arrow-up text-dark' : 'bi-arrow-down text-dark'
+
+    if (this.currentSortOrder === 'asc') {
+      return type === 'number' ? this.faArrowDown19 : this.faArrowDownAZ;
+    } else {
+      return type === 'number' ? this.faArrowDown91 : this.faArrowDownZA;
+    }
   }
 
   saveRoom() {
