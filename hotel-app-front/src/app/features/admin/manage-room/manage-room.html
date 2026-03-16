@@ -24,14 +24,26 @@
 
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
-            <thead class="table-light border-bottom">
+            <thead class="table-light border-bottom user-select-none">
                 <tr>
-                    <th class="ps-4 fw-normal fs-6">เลขห้อง</th>
-                    <th class="fw-normal fs-6">ประเภทห้อง</th>
-                    <th class="fw-normal fs-6">ชั้น</th>
-                    <th class="fw-normal fs-6">ผู้ดูแล</th>
-                    <th class="fw-normal fs-6">รองรับ</th>
-                    <th class="fw-normal fs-6">สถานะ</th>
+                    <th class="ps-4 fw-normal fs-6" style="cursor: pointer;" (click)="sortData('room_number')">
+                        เลขห้อง <i class="bi ms-1 small" [ngClass]="getSortIcon('room_number')"></i>
+                    </th>
+                    <th class="fw-normal fs-6" style="cursor: pointer;" (click)="sortData('room_type')">
+                        ประเภทห้อง <i class="bi ms-1 small" [ngClass]="getSortIcon('room_type')"></i>
+                    </th>
+                    <th class="fw-normal fs-6" style="cursor: pointer;" (click)="sortData('floor')">
+                        ชั้น <i class="bi ms-1 small" [ngClass]="getSortIcon('floor')"></i>
+                    </th>
+                    <th class="fw-normal fs-6" style="cursor: pointer;" (click)="sortData('staff')">
+                        ผู้ดูแล <i class="bi ms-1 small" [ngClass]="getSortIcon('staff')"></i>
+                    </th>
+                    <th class="fw-normal fs-6" style="cursor: pointer;" (click)="sortData('capacity')">
+                        รองรับ <i class="bi ms-1 small" [ngClass]="getSortIcon('capacity')"></i>
+                    </th>
+                    <th class="fw-normal fs-6" style="cursor: pointer;" (click)="sortData('status')">
+                        สถานะ <i class="bi ms-1 small" [ngClass]="getSortIcon('status')"></i>
+                    </th>
                     <th></th>
                 </tr>
             </thead>

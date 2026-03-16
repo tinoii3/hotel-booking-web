@@ -1,0 +1,6 @@
+name: hotel-api-env
+variables:
+  - secret: true
+    name: localhost
+  - secret: true
+    name: prod

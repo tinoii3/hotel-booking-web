@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PaginationLayoutComponent } from '../../../layouts/pagination/pagination-layout-conponent/pagination-layout-component';
-import { HttpClient } from '@angular/common/http';
+import { ManageRoomService } from './manage-room.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
   styleUrl: './manage-room.scss',
 })
 export class ManageRoom implements OnInit {
-  private http = inject(HttpClient);
+  private roomService = inject(ManageRoomService);
   private cdr = inject(ChangeDetectorRef);
 
   rooms: any[] = [];
@@ -29,6 +29,8 @@ export class ManageRoom implements OnInit {
   editId: number | null = null;
   isDropdownOpen: boolean = false;
   currentFilter: string = 'all';
+  currentSortBy: string = 'room_number';
+  currentSortOrder: 'asc' | 'desc' = 'asc';
 
   f_room_number = '';
   f_room_type_id = '';
@@ -42,9 +44,13 @@ export class ManageRoom implements OnInit {
   }
 
   loadRooms(page: number) {
-    const url = `/api/manage-room/rooms?page=${page}&limit=${this.limit}`;
-
-    this.http.get(url).subscribe({
+    this.roomService.getRooms(
+      page,
+      this.limit,
+      this.currentFilter,
+      this.currentSortBy,
+      this.currentSortOrder
+    ).subscribe({
       next: (response: any) => {
         console.log('ได้รับข้อมูลสำเร็จ:', response);
         this.rooms = response.data || [];
@@ -69,12 +75,30 @@ export class ManageRoom implements OnInit {
   }
 
   loadRoomTypes() {
-    this.http.get(`/api/manage-room/room-types`).subscribe({
+    this.roomService.getRoomTypes().subscribe({
       next: (response: any) => {
         this.roomTypes = response;
       },
       error: (error) => console.error('ไม่สามารถดึงข้อมูลประเภทห้องได้', error)
     });
+  }
+
+  sortData(columnName: string) {
+    if (this.currentSortBy === columnName) {
+      this.currentSortOrder = this.currentSortOrder === 'asc' ? 'desc' : 'asc'
+    } else {
+      this.currentSortBy = columnName;
+      this.currentSortOrder = 'desc'
+    }
+    this.currentPage = 1;
+    this.loadRooms(this.currentPage);
+  }
+
+  getSortIcon(columnName: string) {
+    if (this.currentSortBy !== columnName) {
+      return 'bi-arrow-down-up text-black-50 opacity-25';
+    }
+    return this.currentSortOrder === 'asc' ? 'bi-arrow-up text-dark' : 'bi-arrow-down text-dark'
   }
 
   saveRoom() {
@@ -92,7 +116,7 @@ export class ManageRoom implements OnInit {
     };
 
     if (this.editId) {
-      this.http.patch(`/api/manage-room/rooms/${this.editId}`, payload).subscribe({
+      this.roomService.updateRoom(this.editId, payload).subscribe({
         next: (response: any) => {
           console.log('แก้ไขข้อมูลสำเร็จ:', response);
           Swal.fire({ icon: 'success', title: 'สำเร็จ!', text: 'แก้ไขข้อมูลห้องพักเรียบร้อยแล้ว', confirmButtonText: 'ตกลง', confirmButtonColor: '#d4af37' });
@@ -103,7 +127,7 @@ export class ManageRoom implements OnInit {
         complete: () => console.log('การทำงานเสร็จสิ้น (Update Room)')
       });
     } else {
-      this.http.post(`/api/manage-room/rooms`, payload).subscribe({
+      this.roomService.createRoom(payload).subscribe({
         next: (response: any) => {
           console.log('สร้างข้อมูลสำเร็จ:', response);
           Swal.fire({ icon: 'success', title: 'สำเร็จ!', text: 'เพิ่มห้องพักใหม่เรียบร้อยแล้ว', confirmButtonText: 'ตกลง', confirmButtonColor: '#d4af37' });
@@ -119,15 +143,16 @@ export class ManageRoom implements OnInit {
   confirmDelete() {
     if (!this.pendingDeleteId) return;
 
-    this.http.delete(`/api/manage-room/rooms/${this.pendingDeleteId}`).subscribe({
+    this.roomService.deleteRoom(this.pendingDeleteId).subscribe({
       next: (response: any) => {
         console.log('ลบข้อมูลสำเร็จ:', response);
-        Swal.fire({ 
-          icon: 'success', 
-          title: 'สำเร็จ!', 
-          text: 'ลบข้อมูลห้องพักเรียบร้อยแล้ว', 
-          confirmButtonText: 'ตกลง', 
-          confirmButtonColor: '#d4af37' });
+        Swal.fire({
+          icon: 'success',
+          title: 'สำเร็จ!',
+          text: 'ลบข้อมูลห้องพักเรียบร้อยแล้ว',
+          confirmButtonText: 'ตกลง',
+          confirmButtonColor: '#d4af37'
+        });
         this.closeDeleteModal();
         this.loadRooms(this.currentPage);
       },
@@ -154,11 +179,13 @@ export class ManageRoom implements OnInit {
   filterType(type: string) {
     this.currentFilter = type;
     this.isDropdownOpen = false;
+    this.currentPage = 1;
+    this.loadRooms(this.currentPage)
     console.log('เลือกดูประเภท:', type);
     Swal.fire({
       icon: 'info',
       title: 'ระบบคัดกรอง',
-      text: `คุณเลือก: ${type} (ฟังก์ชันนี้ต้องไปเพิ่มเงื่อนไขที่ Backend ต่อครับ)`,
+      text: `คุณเลือก: ${type}`,
       timer: 1500,
       showConfirmButton: false
     });

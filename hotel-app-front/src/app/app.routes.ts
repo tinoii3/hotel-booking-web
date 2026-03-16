@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { AdminLayout } from './layouts/admin/admin-layout-component/admin-layout-component';
 import { ComponentPage } from './core/component-page/component-page';
 import { MainLayoutComponent } from './layouts/main/main-layout-component/main-layout-component';
+import { authGuard } from './guards/auth-guard';
+import { roleGuard } from './guards/role-guard';
 
 export const routes: Routes = [
   {
@@ -31,6 +33,11 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       {
+        path: 'home',
+        loadComponent: () =>
+          import('./features/home-page/home-page').then((m) => m.HomePage),
+      },
+      {
         path: 'payment',
         loadComponent: () =>
           import('./features/payment-page/payment-page').then((m) => m.PaymentPage),
@@ -40,12 +47,15 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/roombooking/roombooking-page').then((m) => m.RoombookingPage),
       },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
   },
 
   {
     path: 'admin',
     component: AdminLayout,
+    canActivate: [authGuard, roleGuard],
+    data: { role: 'admin' },
     children: [
       {
         path: 'manage-room',

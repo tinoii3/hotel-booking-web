@@ -40,10 +40,10 @@ export const refreshToken = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   try {
-    const { token } = req.body;
+    const { refresh_token } = req.body;
 
-    if (token) {
-      await logoutService(token);
+    if (refresh_token) {
+      await logoutService(refresh_token);
     }
 
     res.status(200).json({ message: "Logged out successfully"});
