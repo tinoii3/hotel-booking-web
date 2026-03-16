@@ -13,6 +13,7 @@ export const routes: Routes = [
 
   {
     path: 'auth',
+    component: MainLayoutComponent,
     children: [
       {
         path: 'login',

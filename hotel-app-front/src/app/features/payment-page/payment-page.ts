@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './payment-page.html',
 })
 export class PaymentPage {
-
+  constructor() {
+    console.log('PaymentPage initialized');
+  }
 }
