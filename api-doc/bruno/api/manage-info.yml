@@ -8,7 +8,7 @@ http:
   url: "{{localhost}}/api/manage-room/rooms"
   auth:
     type: bearer
-    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MzU2NjU3NCwiZXhwIjoxNzczNTY2NjM0fQ.QsB4f1ekHaqGNMn0OnEAWaXcO2T-1SG3wEeZLRmdhV4
+    token: admin_456
 
 settings:
   encodeUrl: true
