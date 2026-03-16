@@ -181,14 +181,6 @@ export class ManageRoom implements OnInit {
     this.isDropdownOpen = false;
     this.currentPage = 1;
     this.loadRooms(this.currentPage)
-    console.log('เลือกดูประเภท:', type);
-    Swal.fire({
-      icon: 'info',
-      title: 'ระบบคัดกรอง',
-      text: `คุณเลือก: ${type}`,
-      timer: 1500,
-      showConfirmButton: false
-    });
   }
 
   onPageChange(newPage: number) {
