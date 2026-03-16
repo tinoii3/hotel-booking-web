@@ -33,6 +33,7 @@ export class NavbarComponent {
       cancelButtonText: 'Cancel',
       confirmButtonText: 'Yes',
       buttonsStyling: false,
+      reverseButtons: true,
       customClass: {
         cancelButton: 'btn-dialog btn-dialog-secondary',
         confirmButton: 'btn-dialog btn-dialog-primary',

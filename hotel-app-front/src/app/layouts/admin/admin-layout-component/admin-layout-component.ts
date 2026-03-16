@@ -22,34 +22,35 @@ export class AdminLayout {
   toggleUserMenu() {
     this.isUserMenuOpen = !this.isUserMenuOpen;
   }
-  
+
   logout() {
-      Swal.fire({
-        title: 'Logout?',
-        text: 'You will need to login again.',
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonText: 'Cancel',
-        confirmButtonText: 'Yes',
-        buttonsStyling: false,
-        customClass: {
-          cancelButton: 'btn-dialog btn-dialog-secondary',
-          confirmButton: 'btn-dialog btn-dialog-primary',
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.authService.logout();
-  
-          Swal.fire({
-            icon: 'success',
-            title: 'Logged out',
-            text: 'See you again!',
-            timer: 1500,
-            showConfirmButton: false,
-          }).then(() => {
-            this.router.navigate(['/auth/login']);
-          });
-        }
-      });
-    }
+    Swal.fire({
+      title: 'Logout?',
+      text: 'You will need to login again.',
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Yes',
+      reverseButtons: true,
+      buttonsStyling: false,
+      customClass: {
+        cancelButton: 'btn-dialog btn-dialog-secondary',
+        confirmButton: 'btn-dialog btn-dialog-primary',
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authService.logout();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Logged out',
+          text: 'See you again!',
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          this.router.navigate(['/auth/login']);
+        });
+      }
+    });
+  }
 }
