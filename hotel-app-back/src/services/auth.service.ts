@@ -17,15 +17,12 @@ export const loginService = async (username: string, password: string) => {
   const isValid = await comparePassword(password, user.user_password);
   if (!isValid) throw new Error("Invalid credentials");
 
-  console.log("User authenticated:", user);
-
   const accessToken = signToken({
     sub: user.id,
     role: user.role,
   });
 
   const rawRefreshToken = crypto.randomBytes(64).toString("hex");
-
 
   const hashedRefreshToken = hashToken(rawRefreshToken);
 
@@ -40,7 +37,7 @@ export const loginService = async (username: string, password: string) => {
   return {
     access_token: accessToken,
     refresh_token: rawRefreshToken,
-    role: user.role
+    role: user.role,
   };
 };
 
@@ -110,23 +107,33 @@ export const refreshTokenLogic = async (rawToken: string) => {
     throw new Error("Refresh token expired");
   }
 
+  const user = await prisma.users.findUnique({ where: { id: stored.user_id } });
+
   const newRawToken = crypto.randomBytes(64).toString("hex");
   const newHashedToken = hashToken(newRawToken);
 
   await rotateRefreshToken(newHashedToken, hashedToken, stored);
 
   const newAccessToken = signToken({
-    sub: stored.user_id,
+    sub: user.id,
+    role: user.role,
   });
+
+  // console.log(
+  //   "decode new access token",
+  //   newAccessToken
+  //     .split(".")
+  //     .map((part) => Buffer.from(part, "base64").toString()),
+  // );
 
   return {
     access_token: newAccessToken,
-    refresh_token: newRawToken
+    refresh_token: newRawToken,
   };
 };
 
 export const logoutService = async (rawToken: string) => {
-    const hashedToken = hashToken(rawToken);
+  const hashedToken = hashToken(rawToken);
 
-    await logoutUser(hashedToken);
-}
+  await logoutUser(hashedToken);
+};

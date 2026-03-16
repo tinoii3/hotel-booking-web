@@ -2,47 +2,24 @@
   <a class="navbar-brand fw-bold" routerLink="/">Hotel</a>
 
   <div class="ms-auto">
-
     @if (isLoggedIn()) {
-
       <div class="d-flex align-items-center gap-3">
-
-        <span class="text-white small">
-          {{ getRole() }}
-        </span>
-
-        <button
-          class="btn btn-outline-light fw-semibold"
-          (click)="logout()"
-        >
-          Logout
-        </button>
-
+        <button class="btn btn-outline-light fw-semibold" (click)="logout()">Logout</button>
       </div>
-
     } @else {
-
       <div class="d-flex gap-3">
-
-        <a
-          routerLink="/auth/login"
-          class="btn btn-primary fw-semibold"
-          style="width:100px"
-        >
+        <a routerLink="/auth/login" class="btn btn-primary fw-semibold" style="width: 100px">
           Login
         </a>
 
         <a
           routerLink="/auth/register"
           class="btn btn-outline-light fw-semibold"
-          style="width:100px"
+          style="width: 100px"
         >
           Register
         </a>
-
       </div>
-
     }
-
   </div>
 </nav>

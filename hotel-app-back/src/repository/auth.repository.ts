@@ -20,7 +20,7 @@ export const findRefreshTokenByHash = (token: string) => {
 
 export const rotateRefreshToken = (newHashedToken: string, hashedToken: string, stored: any) => {
     return prisma.$transaction([
-    prisma.refresh_tokens.delete({
+    prisma.refresh_tokens.deleteMany({
       where: { token: hashedToken }
     }),
     prisma.refresh_tokens.create({

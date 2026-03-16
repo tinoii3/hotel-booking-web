@@ -20,10 +20,6 @@ export class NavbarComponent {
     return this.tokenService.isLoggedIn();
   }
 
-  getRole(): string | null {
-    return this.tokenService.getUserRole();
-  }
-
   logout() {
     Swal.fire({
       title: 'Logout?',
