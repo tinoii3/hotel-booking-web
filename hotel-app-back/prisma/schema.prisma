@@ -145,9 +145,9 @@ model booking {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model booking_items {
-  id              BigInt   @id @default(autoincrement())
+  id              Int   @id @default(autoincrement())
   created_at      DateTime @default(now()) @db.Timestamptz(6)
-  booking_id      BigInt
+  booking_id      Int
   room_id         Int      @db.SmallInt
   room_name       String?
   price_per_night Float?   @db.Real

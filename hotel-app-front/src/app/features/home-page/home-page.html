@@ -59,18 +59,33 @@
 
 <section class="rooms-section container">
   <h2>Rooms & Suites</h2>
-  <div class="rooms-grid">
-    @for (room of filteredRooms; track room.name) {
-      <div class="room-card">
-        <img [src]="room.image" [alt]="room.name">
-        <div class="room-info">
-          <h3>{{ room.name }}</h3>
-          <p class="price"><strong>${{ room.price }}</strong> /night</p>
-          <p class="desc">{{ room.description }}</p>
-          <button class="btn-solid block">Book Now</button>
+  
+  <div class="carousel-wrapper">
+    <button class="carousel-btn prev" (click)="scroll(roomSlider, -1)">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
+      </svg>
+    </button>
+
+    <div class="rooms-slider" #roomSlider>
+      @for (room of filteredRooms; track room.name) {
+        <div class="room-card">
+          <img [src]="room.image" [alt]="room.name">
+          <div class="room-info">
+            <h3>{{ room.name }}</h3>
+            <p class="price"><strong>${{ room.price }}</strong> /night</p>
+            <p class="desc">{{ room.description }}</p>
+            <button class="btn-solid block">Book Now</button>
+          </div>
         </div>
-      </div>
-    }
+      }
+    </div>
+
+    <button class="carousel-btn next" (click)="scroll(roomSlider, 1)">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+      </svg>
+    </button>
   </div>
 </section>
 

@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "refresh_token": "eea5b3f614906de6a4a3e91ae1755c3c162ae39b2428be768163fe1c8eb3d5b9a5f78cccbb2a6cf2189fe3fd5b0727a6f793a29ead01db161ed8f36248bd93c2"
+        "refresh_token": "b286f2af56499bec2033c7484a502543d384b96a45f64bce2556ecd4793c73b4913a2405e987d869a370d9c77eb6b280fc5a565be169bfbdd6eea476bd944cc7"
       }
   auth: inherit
 

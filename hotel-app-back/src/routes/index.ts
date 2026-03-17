@@ -1,8 +1,8 @@
 import { Router } from "express";
-import serviceRoutes from "./service.routes.js";
 import manageRoomRoutes from "./manage-room.routes.js";
 import authRoutes from "./auth.routes.js";
 import { authenticate, authorize } from "../middlewares/auth.middleware.js";
+import bookingRoute from "./booking.route.js";
 
 const router = Router();
 
@@ -12,7 +12,7 @@ router.get("/", (_req, res) => {
 
 router.use("/auth", authRoutes);
 
-router.use("/services", serviceRoutes);
+router.use("/bookings", bookingRoute);
 
 router.use(
   "/manage-room",
@@ -20,6 +20,7 @@ router.use(
   authorize(["admin"]),
   manageRoomRoutes,
 );
+
 
 // Customer only route
 // router.get(
