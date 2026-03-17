@@ -7,7 +7,7 @@ import { roleGuard } from './guards/role-guard';
 
 export const routes: Routes = [
   {
-    path: '/test',
+    path: 'test',
     component: ComponentPage,
   },
 
