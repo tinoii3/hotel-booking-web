@@ -15,3 +15,7 @@ export const uploadToCloudinary = (fileBuffer: Buffer) => {
       .end(fileBuffer);
   });
 };
+
+export const deleteFromCloudinary = async (publicId: string) => {
+    return await cloudinary.uploader.destroy(publicId);
+}
