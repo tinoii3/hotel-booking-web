@@ -70,7 +70,7 @@ export const saveRoomImages = async (roomId: number, files: Express.Multer.File[
 export const deleteRoomImage = async (imageId: number) => {
     const image = await manageRoomRepo.roomImageFindOne(imageId);
     if (!image) throw new Error("ไม่พบรูปภาพนี้ในระบบ");
-    const filePath = path.join(process.cwd(), 'src', 'assets', image.image_path);
+    const filePath = path.join(process.cwd(), 'assets', image.image_path);
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
     }
@@ -86,7 +86,7 @@ export const deleteRoomWithImages = async (roomId: number) => {
     const images = await manageRoomRepo.getRoomImagesByRoomId(roomId);
     for (const img of images) {
         if (img.image_path) {
-            const filePath = path.join(process.cwd(), 'src', 'assets', img.image_path);
+            const filePath = path.join(process.cwd(), 'assets', img.image_path);
 
             try {
                 if (fs.existsSync(filePath)) {
