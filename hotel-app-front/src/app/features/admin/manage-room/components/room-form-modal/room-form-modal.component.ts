@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { faXmark, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { ImageViewerComponent } from '../image-viewer/image-viewer.component';
+import { environment } from '../../../../../../environments/environment';
 
 @Component({
     selector: 'app-room-form-modal',
@@ -22,7 +23,7 @@ export class RoomFormModalComponent implements OnInit {
 
     faXmark = faXmark;
     faStar = faStar;
-    backendUrl: string = 'http://localhost:3000';
+    backendUrl: string = `${environment.apiUrl}`;
 
     editId: number | null = null;
     f_room_number = '';

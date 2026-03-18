@@ -8,7 +8,7 @@ const port = 3000;
 app.use(express.json());
 
 app.use("/api/", apiRoutes);
-app.use('/uploads', express.static(path.join(process.cwd(), 'assets', 'uploads')));
+app.use('/api/uploads', express.static(path.join(process.cwd(), 'assets', 'uploads')));
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}/api`);
