@@ -3,77 +3,43 @@
     <p class="subtitle">WELCOME TO HOTEL BOOKING</p>
     <h1>Escape, Explore & Find Your Perfect Stay</h1>
   </div>
-
-  <div class="search-widget">
-    <div class="input-group">
-      <label>Check-in</label>
-      <input type="date" placeholder="Select date">
-    </div>
-    <div class="input-group">
-      <label>Check-out</label>
-      <input type="date" placeholder="Select date">
-    </div>
-    <div class="input-group">
-      <label>Room Type</label>
-      <select [(ngModel)]="selectedRoomTypeInput">
-        <option value="All Rooms">All Rooms</option>
-        <option value="Deluxe Room">Deluxe Room</option>
-        <option value="Suite Room">Suite Room</option>
-        <option value="Presidential Suite">Presidential Suite</option>
-      </select>
-    </div>
-    <div class="input-group">
-      <label>Guests</label>
-      <select>
-        <option>1 Guest</option>
-        <option>2 Guests</option>
-        <option>3 Guests</option>
-        <option>4 Guests</option>
-        <option>5 Guests</option>
-        <option>6 Guests</option>
-      </select>
-    </div>
-    <button class="btn-search" (click)="onSearch()">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="currentColor">
-    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.5 21.5 20l-6-6zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-  </svg>
-  Search
-</button>
-  </div>
+  <app-search-bar (search)="handleSearch($event)"></app-search-bar>
 </section>
 
 <section class="about-section container">
   <div class="about-image">
-    <img src="assets/hotel-exterior.jpg" alt="Paradise Hotel">
+    <img src="assets/hotel-pic.png" alt="Paradise Hotel" />
   </div>
   <div class="about-text">
     <h2>Welcome to Paradise Hotel</h2>
-    <p>Welcome to Paradise Hotel, a luxury fictional hotel offering comfort and premium experience. Our world-class amenities, breathtaking views, and impeccable service ensure every stay is unforgettable. Whether you're here for business or leisure, we promise an experience that exceeds your expectations.</p>
+    <p>
+      Welcome to Paradise Hotel, a luxury fictional hotel offering comfort and premium experience.
+      Our world-class amenities, breathtaking views, and impeccable service ensure every stay is
+      unforgettable. Whether you're here for business or leisure, we promise an experience that
+      exceeds your expectations.
+    </p>
   </div>
 </section>
 
 <section class="rooms-section container">
   <h2>Rooms & Suites</h2>
-  
+
   <div class="carousel-wrapper">
     <button class="carousel-btn prev" (click)="scroll(roomSlider, -1)">
       <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/>
+        <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" />
       </svg>
     </button>
 
     <div class="rooms-slider" #roomSlider>
       @for (room of filteredRooms; track room.name) {
         <div class="room-card">
-          <img [src]="room.image" [alt]="room.name">
+          <img [src]="room.image" [alt]="room.name" />
           <div class="room-info">
             <h3>{{ room.name }}</h3>
-            <p class="price"><strong>${{ room.price }}</strong> /night</p>
+            <p class="price">
+              <strong>${{ room.price }}</strong> /night
+            </p>
             <p class="desc">{{ room.description }}</p>
             <button class="btn-solid block">Book Now</button>
           </div>
@@ -83,7 +49,7 @@
 
     <button class="carousel-btn next" (click)="scroll(roomSlider, 1)">
       <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
       </svg>
     </button>
   </div>
@@ -98,22 +64,46 @@
           <div class="custom-icon">
             @switch (item.icon) {
               @case ('bed') {
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 10V7A2 2 0 0018 5H6a2 2 0 00-2 2v3c-1.1 0-2 .9-2 2v5h1.33L4 19h1l.67-2h12.67l.66 2h1l.67-2H22v-5c0-1.1-.9-2-2-2zm-9 0H6V7h5v3zm7 0h-5V7h5v3z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M20 10V7A2 2 0 0018 5H6a2 2 0 00-2 2v3c-1.1 0-2 .9-2 2v5h1.33L4 19h1l.67-2h12.67l.66 2h1l.67-2H22v-5c0-1.1-.9-2-2-2zm-9 0H6V7h5v3zm7 0h-5V7h5v3z"
+                  />
+                </svg>
               }
               @case ('waves') {
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 12c2.21 0 2.21-2 4.42-2s2.21 2 4.42 2 2.21-2 4.42-2 2.21 2 4.42 2v2c-2.21 0-2.21-2-4.42-2s-2.21 2-4.42 2-2.21-2-4.42-2-2.21 2-4.42 2v-2zm0 6c2.21 0 2.21-2 4.42-2s2.21 2 4.42 2 2.21-2 4.42-2 2.21 2 4.42 2v2c-2.21 0-2.21-2-4.42-2s-2.21 2-4.42 2-2.21-2-4.42-2-2.21 2-4.42 2v-2zm0-12c2.21 0 2.21-2 4.42-2s2.21 2 4.42 2 2.21-2 4.42-2 2.21 2 4.42 2v2c-2.21 0-2.21-2-4.42-2s-2.21 2-4.42 2-2.21-2-4.42-2-2.21 2-4.42 2V6z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M2 12c2.21 0 2.21-2 4.42-2s2.21 2 4.42 2 2.21-2 4.42-2 2.21 2 4.42 2v2c-2.21 0-2.21-2-4.42-2s-2.21 2-4.42 2-2.21-2-4.42-2-2.21 2-4.42 2v-2zm0 6c2.21 0 2.21-2 4.42-2s2.21 2 4.42 2 2.21-2 4.42-2 2.21 2 4.42 2v2c-2.21 0-2.21-2-4.42-2s-2.21 2-4.42 2-2.21-2-4.42-2-2.21 2-4.42 2v-2zm0-12c2.21 0 2.21-2 4.42-2s2.21 2 4.42 2 2.21-2 4.42-2 2.21 2 4.42 2v2c-2.21 0-2.21-2-4.42-2s-2.21 2-4.42 2-2.21-2-4.42-2-2.21 2-4.42 2V6z"
+                  />
+                </svg>
               }
               @case ('restaurant') {
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"
+                  />
+                </svg>
               }
               @case ('location_on') {
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"
+                  />
+                </svg>
               }
               @case ('spa') {
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM9 14.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM9 14.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"
+                  />
+                </svg>
               }
               @case ('hot_tub') {
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.15 12c-.31-.22-.59-.46-.82-.72l-1.4-1.55c-.19-.21-.43-.38-.69-.5-.29-.14-.62-.23-.96-.23h-.03C6.01 9 5 10.01 5 11.25V12H1.99v8c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-8H11.15zM7 20H5v-6h2v6zm4 0H9v-6h2v6zm4 0h-2v-6h2v6zm4 0h-2v-6h2v6zm-.35-14.14l-.07-.07c-.57-.62-.82-1.41-.67-2.2L18 3h-1.89l-.06.43c-.2 1.36.27 2.71 1.3 3.72l.07.06c.57.62.82 1.41.67 2.2l-.11.79h1.9l.06-.43c.2-1.36-.27-2.71-1.3-3.71zm-4 0l-.07-.07c-.57-.62-.82-1.41-.67-2.2L14 3h-1.89l-.06.43c-.2 1.36.27 2.71 1.3 3.72l.07.06c.57.62.82 1.41.67 2.2l-.11.79h1.9l.06-.43c.2-1.36-.27-2.71-1.3-3.71zm-4 0l-.07-.07c-.57-.62-.82-1.41-.67-2.2L10 3H8.11l-.06.43c-.2 1.36.27 2.71 1.3 3.72l.07.06c.57.62.82 1.41.67 2.2l-.11.79h1.9l.06-.43c.2-1.36-.27-2.71-1.3-3.71z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M11.15 12c-.31-.22-.59-.46-.82-.72l-1.4-1.55c-.19-.21-.43-.38-.69-.5-.29-.14-.62-.23-.96-.23h-.03C6.01 9 5 10.01 5 11.25V12H1.99v8c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-8H11.15zM7 20H5v-6h2v6zm4 0H9v-6h2v6zm4 0h-2v-6h2v6zm4 0h-2v-6h2v6zm-.35-14.14l-.07-.07c-.57-.62-.82-1.41-.67-2.2L18 3h-1.89l-.06.43c-.2 1.36.27 2.71 1.3 3.72l.07.06c.57.62.82 1.41.67 2.2l-.11.79h1.9l.06-.43c.2-1.36-.27-2.71-1.3-3.71zm-4 0l-.07-.07c-.57-.62-.82-1.41-.67-2.2L14 3h-1.89l-.06.43c-.2 1.36.27 2.71 1.3 3.72l.07.06c.57.62.82 1.41.67 2.2l-.11.79h1.9l.06-.43c.2-1.36-.27-2.71-1.3-3.71zm-4 0l-.07-.07c-.57-.62-.82-1.41-.67-2.2L10 3H8.11l-.06.43c-.2 1.36.27 2.71 1.3 3.72l.07.06c.57.62.82 1.41.67 2.2l-.11.79h1.9l.06-.43c.2-1.36-.27-2.71-1.3-3.71z"
+                  />
+                </svg>
               }
             }
           </div>
@@ -128,19 +118,19 @@
 <section class="contact-section container">
   <div class="contact-info">
     <p><strong>โรงแรม Hotel Booking</strong></p>
-    <p>99/7-8 ซอยโลกกว้าง 25,<br>คลองเตย, กรุงเทพฯ 10110</p>
+    <p>99/7-8 ซอยโลกกว้าง 25,<br />คลองเตย, กรุงเทพฯ 10110</p>
     <p>(01) 011 1111</p>
     <p>contact&#64;hotelbooking.com</p>
   </div>
-  
+
   <div class="contact-form">
     <h3>ติดต่อ</h3>
     <form>
       <div class="form-row">
-        <input type="text" placeholder="ชื่อจริง">
-        <input type="text" placeholder="นามสกุล">
+        <input type="text" placeholder="ชื่อจริง" />
+        <input type="text" placeholder="นามสกุล" />
       </div>
-      <input type="email" placeholder="อีเมล">
+      <input type="email" placeholder="อีเมล" />
       <textarea rows="5" placeholder="ข้อความ"></textarea>
       <button type="submit" class="btn-solid block">ส่งข้อมูล</button>
     </form>
@@ -149,8 +139,6 @@
 
 <footer class="footer">
   <div class="footer-content">
-    <div class="logo">
-      <span class="icon"></span> Hotel Booking
-    </div>
+    <div class="logo"><span class="icon"></span> Hotel Booking</div>
   </div>
 </footer>

@@ -7,6 +7,12 @@ import { roleGuard } from './guards/role-guard';
 
 export const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'hotel/home',
+    pathMatch: 'full',
+  },
+  
+  {
     path: 'test',
     component: ComponentPage,
   },
