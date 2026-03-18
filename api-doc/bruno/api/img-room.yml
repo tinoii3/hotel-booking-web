@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: http://localhost:3000/uploads/rooms/1773814119480-94632939.avif
+  url: https://res.cloudinary.com/dxozoa0kr/image/upload/v1773818640/hotel/rooms/nr0bojvm7kwze3gekpoa.avif
   auth: inherit
 
 settings:
