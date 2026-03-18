@@ -3,6 +3,7 @@ import manageRoomRoutes from "./manage-room.routes.js";
 import authRoutes from "./auth.routes.js";
 import { authenticate, authorize } from "../middlewares/auth.middleware.js";
 import bookingRoute from "./booking.route.js";
+import uploadRoutes from "./upload.routes.js";
 
 const router = Router();
 
@@ -19,6 +20,13 @@ router.use(
   authenticate,
   authorize(["admin"]),
   manageRoomRoutes,
+);
+
+router.use(
+  "/upload",
+  authenticate,
+  authorize(["admin"]),
+  uploadRoutes
 );
 
 
