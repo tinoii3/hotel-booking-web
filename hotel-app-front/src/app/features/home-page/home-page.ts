@@ -11,8 +11,9 @@ import { SearchBar } from '../../shared/components/search-bar/search-bar';
   styleUrls: ['./home-page.scss'],
 })
 export class HomePage {
-  handleSearch(data: any) {
-    console.log('FROM CHILD →', data);
+  onSearch(data: any) {
+    // TODO: call API หรือ navigate ไปหน้าอื่น
+    console.log('Search data:', data);
   }
   // ตัวแปรสำหรับระบบค้นหา
   selectedRoomTypeInput: string = 'All Rooms';
@@ -25,11 +26,6 @@ export class HomePage {
     }
     // ถ้าเลือกห้องเฉพาะเจาะจง ให้กรองชื่อห้องให้ตรงกับที่เลือก
     return this.rooms.filter((room) => room.name === this.activeRoomTypeFilter);
-  }
-
-  // ฟังก์ชันทำงานเมื่อกดปุ่ม Search
-  onSearch() {
-    this.activeRoomTypeFilter = this.selectedRoomTypeInput;
   }
 
   // ฟังก์ชันสำหรับเลื่อนสไลด์ซ้าย-ขวา
