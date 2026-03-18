@@ -1,14 +1,142 @@
+// --- Badges สถานะห้อง ---
 .badge-checkin {
-    background-color: #E8F3FF;
-    color: #1473FF;
+  background-color: #E8F3FF;
+  color: #1473FF;
 }
 
 .badge-available {
-    background-color: #e6f9ee;
-    color: #1a8c45;
+  background-color: #e6f9ee;
+  color: #1a8c45;
 }
 
 .badge-unavailable {
-    background-color: #fff0f0;
-    color: #e00;
+  background-color: #fff0f0;
+  color: #e00;
+}
+
+// --- ตารางและโครงสร้างหลัก ---
+.room-table-card {
+  background: #fff;
+  border: 1px solid var(--bs-border-color-subtle);
+  border-radius: 0.5rem;
+  overflow: hidden;
+
+  &__toolbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid var(--bs-border-color-subtle);
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    border-top: 1px solid var(--bs-border-color-subtle);
+  }
+}
+
+.room-table {
+  &__th {
+    font-weight: 400;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &--first {
+      padding-left: 1.5rem;
+    }
+  }
+}
+
+// --- ปุ่มตัวกรองและ Dropdown ---
+.room-filter-btn {
+  font-size: 16px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  background: #fff;
+  color: var(--bs-body-color);
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: var(--bs-light-bg-subtle, #f8f9fa);
+    border-color: var(--bs-border-color);
+  }
+
+  &--active {
+    background: var(--bs-dark, #212529);
+    color: #fff;
+    border-color: var(--bs-dark, #212529);
+
+    &:hover {
+      background: #343a40;
+    }
+  }
+
+  &__chevron {
+    font-size: 11px;
+    opacity: 0.6;
+  }
+}
+
+.room-dropdown {
+  min-width: 200px;
+  padding: 6px;
+  border-radius: 10px;
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+
+  &__header {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #adb5bd;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 10px 6px;
+  }
+
+  &__divider {
+    margin: 4px 0;
+    border-color: var(--bs-light-bg-subtle, #f1f3f5);
+  }
+
+  &__item {
+    border-radius: 6px;
+    font-size: 13px;
+    padding: 7px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--bs-body-color);
+
+    &:hover {
+      background: var(--bs-light-bg-subtle, #f1f3f5);
+    }
+
+    &--active {
+      background: #e9f0ff;
+      color: var(--bs-primary, #0d6efd);
+      font-weight: 500;
+
+      &:hover {
+        background: #dce6ff;
+      }
+    }
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--bs-primary, #0d6efd);
+
+    &--all {
+      background: var(--bs-secondary, #6c757d);
+    }
+  }
 }

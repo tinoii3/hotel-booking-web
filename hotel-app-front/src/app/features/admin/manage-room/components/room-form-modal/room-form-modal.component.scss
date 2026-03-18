@@ -1,0 +1,190 @@
+// --- Variables ---
+$thumb-size: 90px;
+$btn-cover-size: 26px;
+$btn-remove-size: 22px;
+$thumb-radius: 8px;
+$overlay-bg: rgba(0, 0, 0, 0.45);
+
+// --- Image Manager (Block) ---
+.image-manager {
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  &__section-label {
+    font-size: 12px;
+    color: var(--bs-secondary-color, #6c757d);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__count-badge {
+    font-size: 10px;
+  }
+
+  &__grid-wrapper {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--bs-border-color, #dee2e6);
+
+    &--existing {
+      background-color: #fff;
+    }
+
+    &--preview {
+      background-color: var(--bs-light-bg-subtle, #f8f9fa);
+      border-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.25);
+    }
+  }
+
+  &__grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  &__upload-zone {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 1.25rem 1rem;
+    border-radius: 0.5rem;
+    border: 2px dashed var(--bs-border-color, #dee2e6);
+    background-color: var(--bs-light-bg-subtle, #f8f9fa);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+
+    &:hover {
+      border-color: var(--bs-primary, #0d6efd);
+      background-color: #f0f5ff;
+    }
+  }
+
+  &__upload-zone-icon {
+    font-size: 1.75rem;
+    color: var(--bs-primary, #0d6efd);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  &__upload-zone-title {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--bs-primary, #0d6efd);
+  }
+
+  &__upload-zone-sub {
+    display: block;
+    font-size: 12px;
+    color: var(--bs-secondary-color, #6c757d);
+  }
+
+  &__upload-zone-hint {
+    display: block;
+    font-size: 11px;
+    color: #adb5bd;
+    margin-top: 4px;
+  }
+}
+
+// --- Image Thumbnails ---
+.image-thumb {
+  position: relative;
+  width: $thumb-size;
+  flex-shrink: 0;
+
+  &__img {
+    display: block;
+    width: $thumb-size;
+    height: $thumb-size;
+    object-fit: cover;
+    border-radius: $thumb-radius;
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    cursor: zoom-in;
+
+    &--new {
+      border-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.5);
+    }
+  }
+
+  &__btn-cover {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    z-index: 10;
+    width: $btn-cover-size;
+    height: $btn-cover-size;
+    border-radius: 50%;
+    border: none;
+    background: $overlay-bg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.65);
+    }
+
+    &--active {
+      background: rgba(0, 0, 0, 0.55);
+    }
+  }
+
+  &__btn-remove {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    width: $btn-remove-size;
+    height: $btn-remove-size;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--bs-danger, #dc3545);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 10px;
+    line-height: 1;
+    cursor: pointer;
+    transform: translate(35%, -35%);
+    transition: background-color 0.15s ease, transform 0.15s ease;
+
+    &:hover {
+      background-color: var(--bs-danger-text-emphasis, #b02a37);
+      transform: translate(35%, -35%) scale(1.1);
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.4;
+    padding: 1px 5px;
+    border-radius: 4px;
+
+    &--cover {
+      background-color: var(--bs-warning, #ffc107);
+      color: #000;
+    }
+
+    &--new {
+      background-color: var(--bs-primary, #0d6efd);
+      color: #fff;
+    }
+  }
+}

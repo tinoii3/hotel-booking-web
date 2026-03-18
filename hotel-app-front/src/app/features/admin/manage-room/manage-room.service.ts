@@ -33,11 +33,32 @@ export class ManageRoomService {
         return this.http.post(`${this.baseUrl}/rooms`, payload);
     }
 
+    createRoomType(payload: any): Observable<any> {
+        return this.http.post(`${this.baseUrl}/room-types`, payload);
+    }
+
     updateRoom(id: number, payload: any): Observable<any> {
         return this.http.patch(`${this.baseUrl}/rooms/${id}`, payload);
     }
 
     deleteRoom(id: number): Observable<any> {
         return this.http.delete(`${this.baseUrl}/rooms/${id}`);
+    }
+
+    uploadRoomImages(roomId: number, files: File[], coverIndex: number = -1): Observable<any> {
+        const formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+            formData.append('images', files[i]);
+        }
+        formData.append('coverIndex', coverIndex.toString());
+        return this.http.post(`${this.baseUrl}/rooms/${roomId}/images`, formData);
+    }
+
+    deleteRoomImage(imageId: number): Observable<any> {
+        return this.http.delete(`${this.baseUrl}/rooms/images/${imageId}`);
+    }
+
+    setCoverImage(roomId: number, imageId: number): Observable<any> {
+        return this.http.put(`${this.baseUrl}/rooms/${roomId}/images/${imageId}/set-cover`, {});
     }
 }
