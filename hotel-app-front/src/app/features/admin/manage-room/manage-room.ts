@@ -1,42 +1,39 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { PaginationLayoutComponent } from '../../../layouts/pagination/pagination-layout-conponent/pagination-layout-component';
 import { ManageRoomService } from './manage-room.service';
 import Swal from 'sweetalert2';
+import { faArrowDown19, faArrowDownAZ, faPenToSquare, faArrowDown91, faArrowDownZA, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { RoomFormModalComponent } from './components/room-form-modal/room-form-modal.component';
+import { RoomTypeModalComponent } from './components/room-type-modal/room-type-modal.component';
 
 @Component({
   selector: 'app-manage-room',
   standalone: true,
-  imports: [CommonModule, FormsModule, PaginationLayoutComponent],
+  imports: [CommonModule, PaginationLayoutComponent, FaIconComponent, RoomFormModalComponent, RoomTypeModalComponent],
   templateUrl: './manage-room.html',
   styleUrl: './manage-room.scss',
 })
 export class ManageRoom implements OnInit {
-  private roomService = inject(ManageRoomService);
-  private cdr = inject(ChangeDetectorRef);
+  faArrowDown19 = faArrowDown19; faArrowDown91 = faArrowDown91;
+  faArrowDownAZ = faArrowDownAZ; faArrowDownZA = faArrowDownZA;
+  faPenToSquare = faPenToSquare; faTrashCan = faTrashCan;
 
   rooms: any[] = [];
   roomTypes: any[] = [];
-
   currentPage: number = 1;
   totalPages: number = 1;
   limit: number = 10;
-
-  isRoomModalOpen: boolean = false;
-  isDeleteModalOpen: boolean = false;
-  pendingDeleteId: number | null = null;
-  editId: number | null = null;
-  isDropdownOpen: boolean = false;
   currentFilter: string = 'all';
   currentSortBy: string = 'room_number';
   currentSortOrder: 'asc' | 'desc' = 'asc';
+  isDropdownOpen: boolean = false;
+  isAddTypeModalOpen: boolean = false;
+  isRoomModalOpen: boolean = false;
+  selectedRoomData: any = null;
 
-  f_room_number = '';
-  f_room_type_id = '';
-  f_floor: number | '' = '';
-  f_staff_id: number | '' = '';
-  f_status = 'available';
+  constructor(private roomService: ManageRoomService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.loadRoomTypes();
@@ -44,42 +41,27 @@ export class ManageRoom implements OnInit {
   }
 
   loadRooms(page: number) {
-    this.roomService.getRooms(
-      page,
-      this.limit,
-      this.currentFilter,
-      this.currentSortBy,
-      this.currentSortOrder
-    ).subscribe({
-      next: (response: any) => {
-        console.log('ได้รับข้อมูลสำเร็จ:', response);
-        this.rooms = response.data || [];
-        this.currentPage = response.meta.currentPage || 1;
-        this.totalPages = response.meta.totalPages || 1;
+    this.roomService.getRooms(page, this.limit, this.currentFilter, this.currentSortBy, this.currentSortOrder).subscribe({
+      next: (res: any) => {
+        this.rooms = res.data || [];
+        this.currentPage = res.meta.currentPage || 1;
+        this.totalPages = res.meta.totalPages || 1;
         this.cdr.detectChanges();
       },
-      error: (error) => {
-        console.error('เกิดข้อผิดพลาด:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'เกิดข้อผิดพลาด!',
-          text: 'ไม่สามารถดึงข้อมูลห้องพักได้: ' + (error.statusText || 'เซิร์ฟเวอร์ไม่ตอบสนอง'),
-          confirmButtonText: 'ปิดหน้าต่าง',
-          confirmButtonColor: '#dc3545'
-        });
-      },
-      complete: () => {
-        console.log('การทำงานเสร็จสิ้น (Load Rooms)');
-      }
+      error: (err) => Swal.fire({
+        icon: 'error',
+        title: 'เกิดข้อผิดพลาด!',
+        text: 'ไม่สามารถดึงข้อมูลห้องพักได้: ' + (err.statusText || 'เซิร์ฟเวอร์ไม่ตอบสนอง'),
+        confirmButtonText: 'ปิดหน้าต่าง',
+        confirmButtonColor: '#dc3545'
+      }),
     });
   }
 
   loadRoomTypes() {
     this.roomService.getRoomTypes().subscribe({
-      next: (response: any) => {
-        this.roomTypes = response;
-      },
-      error: (error) => console.error('ไม่สามารถดึงข้อมูลประเภทห้องได้', error)
+      next: (res: any) => this.roomTypes = res,
+      error: (err) => console.error(err)
     });
   }
 
@@ -87,77 +69,74 @@ export class ManageRoom implements OnInit {
     if (this.currentSortBy === columnName) {
       this.currentSortOrder = this.currentSortOrder === 'asc' ? 'desc' : 'asc'
     } else {
-      this.currentSortBy = columnName;
-      this.currentSortOrder = 'desc'
+      this.currentSortBy = columnName; this.currentSortOrder = 'desc'
     }
     this.currentPage = 1;
     this.loadRooms(this.currentPage);
   }
 
-  getSortIcon(columnName: string) {
-    if (this.currentSortBy !== columnName) {
-      return 'bi-arrow-down-up text-black-50 opacity-25';
-    }
-    return this.currentSortOrder === 'asc' ? 'bi-arrow-up text-dark' : 'bi-arrow-down text-dark'
-  }
-
-  saveRoom() {
-    if (!this.f_room_number.trim() || !this.f_room_type_id) {
-      Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'กรุณากรอกข้อมูลให้ครบถ้วน', confirmButtonColor: '#d4af37' });
-      return;
-    }
-
-    const payload = {
-      room_number: this.f_room_number,
-      room_type_id: Number(this.f_room_type_id),
-      floor: this.f_floor ? Number(this.f_floor) : null,
-      staff_id: this.f_staff_id ? Number(this.f_staff_id) : null,
-      status: this.f_status
-    };
-
-    if (this.editId) {
-      this.roomService.updateRoom(this.editId, payload).subscribe({
-        next: (response: any) => {
-          console.log('แก้ไขข้อมูลสำเร็จ:', response);
-          Swal.fire({ icon: 'success', title: 'สำเร็จ!', text: 'แก้ไขข้อมูลห้องพักเรียบร้อยแล้ว', confirmButtonText: 'ตกลง', confirmButtonColor: '#d4af37' });
-          this.closeRoomModal();
-          this.loadRooms(this.currentPage);
-        },
-        error: (error) => this.handleError(error, 'แก้ไขข้อมูลไม่สำเร็จ'),
-        complete: () => console.log('การทำงานเสร็จสิ้น (Update Room)')
-      });
+  getFaSortIcon(columnName: string, type: 'number' | 'text') {
+    if (this.currentSortBy !== columnName || this.currentSortOrder === 'asc') {
+      return type === 'number' ? this.faArrowDown19 : this.faArrowDownAZ;
     } else {
-      this.roomService.createRoom(payload).subscribe({
-        next: (response: any) => {
-          console.log('สร้างข้อมูลสำเร็จ:', response);
-          Swal.fire({ icon: 'success', title: 'สำเร็จ!', text: 'เพิ่มห้องพักใหม่เรียบร้อยแล้ว', confirmButtonText: 'ตกลง', confirmButtonColor: '#d4af37' });
-          this.closeRoomModal();
-          this.loadRooms(this.currentPage);
-        },
-        error: (error) => this.handleError(error, 'เพิ่มข้อมูลไม่สำเร็จ'),
-        complete: () => console.log('การทำงานเสร็จสิ้น (Create Room)')
-      });
+      return type === 'number' ? this.faArrowDown91 : this.faArrowDownZA;
     }
   }
 
-  confirmDelete() {
-    if (!this.pendingDeleteId) return;
+  toggleDropdown() { this.isDropdownOpen = !this.isDropdownOpen; }
 
-    this.roomService.deleteRoom(this.pendingDeleteId).subscribe({
-      next: (response: any) => {
-        console.log('ลบข้อมูลสำเร็จ:', response);
-        Swal.fire({
-          icon: 'success',
-          title: 'สำเร็จ!',
-          text: 'ลบข้อมูลห้องพักเรียบร้อยแล้ว',
-          confirmButtonText: 'ตกลง',
-          confirmButtonColor: '#d4af37'
+  filterType(type: string) {
+    this.currentFilter = type;
+    this.isDropdownOpen = false;
+    this.currentPage = 1;
+    this.loadRooms(this.currentPage);
+  }
+
+  onPageChange(newPage: number) { this.loadRooms(newPage); }
+
+  openAddTypeModal(event: Event) {
+    event.stopPropagation();
+    this.isDropdownOpen = false;
+    this.isAddTypeModalOpen = true;
+  }
+
+  openAddModal() {
+    this.selectedRoomData = null;
+    this.isRoomModalOpen = true;
+  }
+
+  openEditModal(room: any) {
+    this.selectedRoomData = room;
+    this.isRoomModalOpen = true;
+  }
+
+  deleteRoom(id: number) {
+    Swal.fire({
+      title: 'ยืนยันการลบห้องพัก?',
+      text: 'ข้อมูลห้องพักและ "ไฟล์รูปภาพทั้งหมด" ของห้องนี้จะถูกลบทิ้งอย่างถาวร!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'ใช่, ลบทิ้งเลย',
+      cancelButtonText: 'ยกเลิก',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.roomService.deleteRoom(id).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'ลบสำเร็จ!',
+              text: 'ลบรูปภาพเรียบร้อยแล้ว',
+              timer: 1500,
+              showConfirmButton: false
+            });
+            this.loadRooms(this.currentPage);
+          },
+          error: (error) => this.handleError(error, 'ลบห้องพักไม่สำเร็จ')
         });
-        this.closeDeleteModal();
-        this.loadRooms(this.currentPage);
-      },
-      error: (error) => this.handleError(error, 'ลบข้อมูลไม่สำเร็จ'),
-      complete: () => console.log('การทำงานเสร็จสิ้น (Delete Room)')
+      }
     });
   }
 
@@ -170,60 +149,5 @@ export class ManageRoom implements OnInit {
       confirmButtonText: 'ปิดหน้าต่าง',
       confirmButtonColor: '#dc3545'
     });
-  }
-
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
-  }
-
-  filterType(type: string) {
-    this.currentFilter = type;
-    this.isDropdownOpen = false;
-    this.currentPage = 1;
-    this.loadRooms(this.currentPage)
-    console.log('เลือกดูประเภท:', type);
-    Swal.fire({
-      icon: 'info',
-      title: 'ระบบคัดกรอง',
-      text: `คุณเลือก: ${type}`,
-      timer: 1500,
-      showConfirmButton: false
-    });
-  }
-
-  onPageChange(newPage: number) {
-    this.loadRooms(newPage);
-  }
-
-  openAddModal() {
-    this.editId = null;
-    this.f_room_number = '';
-    this.f_room_type_id = this.roomTypes.length > 0 ? this.roomTypes[0].id : '';
-    this.f_floor = '';
-    this.f_staff_id = '';
-    this.f_status = 'available';
-    this.isRoomModalOpen = true;
-  }
-
-  openEditModal(room: any) {
-    this.editId = room.id;
-    this.f_room_number = room.room_number;
-    this.f_room_type_id = room.room_type_id;
-    this.f_floor = room.floor;
-    this.f_staff_id = room.staff_id;
-    this.f_status = room.status;
-    this.isRoomModalOpen = true;
-  }
-
-  closeRoomModal() { this.isRoomModalOpen = false; }
-
-  openDeleteModal(id: number) {
-    this.pendingDeleteId = id;
-    this.isDeleteModalOpen = true;
-  }
-
-  closeDeleteModal() {
-    this.pendingDeleteId = null;
-    this.isDeleteModalOpen = false;
   }
 }

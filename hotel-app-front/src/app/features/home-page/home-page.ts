@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // นำเข้า FormsModule สำหรับระบบค้นหา
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule], // อย่าลืมใส่ FormsModule ตรงนี้
+  imports: [CommonModule, FormsModule],
   templateUrl: './home-page.html',
   styleUrls: ['./home-page.scss']
 })
 export class HomePage {
-  // --- ตัวแปรสำหรับระบบค้นหา (Filter) ---
+  // ตัวแปรสำหรับระบบค้นหา
   selectedRoomTypeInput: string = 'All Rooms'; 
   activeRoomTypeFilter: string = 'All Rooms'; 
 
@@ -27,7 +27,13 @@ export class HomePage {
   onSearch() {
     this.activeRoomTypeFilter = this.selectedRoomTypeInput;
   }
-  // ------------------------------------
+
+  // ฟังก์ชันสำหรับเลื่อนสไลด์ซ้าย-ขวา
+  scroll(element: HTMLElement, direction: number) {
+    // กำหนดระยะความกว้างที่ต้องการเลื่อนต่อ 1 คลิก (ประมาณความกว้าง 1 การ์ด)
+    const scrollAmount = 380; 
+    element.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
+  }
 
   // ข้อมูลห้องพัก
   rooms = [

@@ -1,48 +1,78 @@
-<div class="bg-white border border-dark-subtle rounded-3 overflow-hidden">
+<div class="room-table-card">
 
-    <div class="d-flex justify-content-end align-items-center gap-2 px-4 py-3 border-bottom">
+    <div class="room-table-card__toolbar">
         <div class="dropdown">
-            <button class="btn btn-outline-dark d-flex align-items-center gap-2 rounded-3" type="button"
-                (click)="toggleDropdown()">
-                <i class="bi bi-funnel"></i> ประเภท <i class="bi bi-chevron-down small"></i>
+            <button class="btn room-filter-btn d-flex align-items-center gap-2" type="button"
+                [class.room-filter-btn--active]="currentFilter !== 'all'" (click)="toggleDropdown()">
+                <i class="bi" [ngClass]="currentFilter !== 'all' ? 'bi-funnel-fill' : 'bi-funnel'"></i>
+                <span>{{ currentFilter === 'all' ? 'ประเภท' : currentFilter }}</span>
+                <i class="bi bi-chevron-down room-filter-btn__chevron"></i>
             </button>
-            <ul class="dropdown-menu dropdown-menu-end" [class.show]="isDropdownOpen"
+            <ul class="dropdown-menu dropdown-menu-end room-dropdown" [class.show]="isDropdownOpen"
                 [style.display]="isDropdownOpen ? 'block' : 'none'">
-                <li><a class="dropdown-item" href="javascript:void(0)" (click)="filterType('all')">ทั้งหมด</a></li>
-                <li><a class="dropdown-item" href="javascript:void(0)" (click)="filterType('สวีทชูพรีม')">สวีทชูพรีม</a>
+                <li><span class="room-dropdown__header">ประเภทห้อง</span></li>
+                <li>
+                    <a class="dropdown-item room-dropdown__item"
+                        [class.room-dropdown__item--active]="currentFilter === 'all'" href="javascript:void(0)"
+                        (click)="filterType('all')">
+                        <span class="room-dropdown__dot room-dropdown__dot--all"></span> ทั้งหมด
+                    </a>
                 </li>
-                <li><a class="dropdown-item" href="javascript:void(0)" (click)="filterType('ดีลักซ์')">ดีลักซ์</a></li>
-                <li><a class="dropdown-item" href="javascript:void(0)" (click)="filterType('สแตนดาร์ด')">สแตนดาร์ด</a>
+                <li>
+                    <hr class="room-dropdown__divider">
+                </li>
+                @for (type of roomTypes; track type.id) {
+                <li>
+                    <a class="dropdown-item room-dropdown__item"
+                        [class.room-dropdown__item--active]="currentFilter === type.name" href="javascript:void(0)"
+                        (click)="filterType(type.name)">
+                        <span class="room-dropdown__dot"></span> {{ type.name }}
+                    </a>
+                </li>
+                }
+                <li>
+                    <hr class="room-dropdown__divider">
+                </li>
+                <li>
+                    <a class="dropdown-item room-dropdown__item text-primary fw-semibold" href="javascript:void(0)"
+                        (click)="openAddTypeModal($event)">
+                        <i class="bi bi-plus-circle-fill me-2"></i> เพิ่มประเภทห้อง...
+                    </a>
                 </li>
             </ul>
         </div>
-
         <button class="btn btn-primary d-flex align-items-center gap-2 fw-semibold rounded-3" (click)="openAddModal()">
-            <i class="bi bi-plus-lg"></i>เพิ่มห้อง
+            เพิ่มห้อง
         </button>
     </div>
 
     <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
+        <table class="table table-striped table-hover align-middle mb-0">
             <thead class="table-light border-bottom user-select-none">
                 <tr>
-                    <th class="ps-4 fw-normal fs-6" style="cursor: pointer;" (click)="sortData('room_number')">
-                        เลขห้อง <i class="bi ms-1 small" [ngClass]="getSortIcon('room_number')"></i>
+                    <th class="room-table__th room-table__th--first" (click)="sortData('room_number')">
+                        เลขห้อง <fa-icon [icon]="getFaSortIcon('room_number', 'number')" class="ms-1 small"
+                            [class.opacity-25]="currentSortBy !== 'room_number'"></fa-icon>
                     </th>
-                    <th class="fw-normal fs-6" style="cursor: pointer;" (click)="sortData('room_type')">
-                        ประเภทห้อง <i class="bi ms-1 small" [ngClass]="getSortIcon('room_type')"></i>
+                    <th class="room-table__th" (click)="sortData('room_type')">
+                        ประเภทห้อง <fa-icon [icon]="getFaSortIcon('room_type', 'text')" class="ms-1 small"
+                            [class.opacity-25]="currentSortBy !== 'room_type'"></fa-icon>
                     </th>
-                    <th class="fw-normal fs-6" style="cursor: pointer;" (click)="sortData('floor')">
-                        ชั้น <i class="bi ms-1 small" [ngClass]="getSortIcon('floor')"></i>
+                    <th class="room-table__th" (click)="sortData('floor')">
+                        ชั้น <fa-icon [icon]="getFaSortIcon('floor', 'number')" class="ms-1 small"
+                            [class.opacity-25]="currentSortBy !== 'floor'"></fa-icon>
                     </th>
-                    <th class="fw-normal fs-6" style="cursor: pointer;" (click)="sortData('staff')">
-                        ผู้ดูแล <i class="bi ms-1 small" [ngClass]="getSortIcon('staff')"></i>
+                    <th class="room-table__th" (click)="sortData('staff')">
+                        ผู้ดูแล <fa-icon [icon]="getFaSortIcon('staff', 'text')" class="ms-1 small"
+                            [class.opacity-25]="currentSortBy !== 'staff'"></fa-icon>
                     </th>
-                    <th class="fw-normal fs-6" style="cursor: pointer;" (click)="sortData('capacity')">
-                        รองรับ <i class="bi ms-1 small" [ngClass]="getSortIcon('capacity')"></i>
+                    <th class="room-table__th" (click)="sortData('capacity')">
+                        รองรับ <fa-icon [icon]="getFaSortIcon('capacity', 'number')" class="ms-1 small"
+                            [class.opacity-25]="currentSortBy !== 'capacity'"></fa-icon>
                     </th>
-                    <th class="fw-normal fs-6" style="cursor: pointer;" (click)="sortData('status')">
-                        สถานะ <i class="bi ms-1 small" [ngClass]="getSortIcon('status')"></i>
+                    <th class="room-table__th" (click)="sortData('status')">
+                        สถานะ <fa-icon [icon]="getFaSortIcon('status', 'text')" class="ms-1 small"
+                            [class.opacity-25]="currentSortBy !== 'status'"></fa-icon>
                     </th>
                     <th></th>
                 </tr>
@@ -56,11 +86,9 @@
                     <td>{{ r.staff?.name || '-' }}</td>
                     <td>{{ r.room_types?.capacity }} คน</td>
                     <td>
-                        <span class="badge rounded-pill px-3 py-2" [ngClass]="{
-                            'badge-checkin': r.status === 'occupied',
-                            'badge-available': r.status === 'available',
-                            'badge-unavailable': r.status === 'maintenance'
-                        }">
+                        <span class="badge rounded-pill px-3 py-2"
+                            [ngClass]="{
+                            'badge-checkin': r.status === 'occupied', 'badge-available': r.status === 'available', 'badge-unavailable': r.status === 'maintenance' }">
                             {{ r.status === 'available' ? 'ว่าง' : (r.status === 'occupied' ? 'เช็คอิน' :
                             'ไม่พร้อมใช้งาน') }}
                         </span>
@@ -69,11 +97,11 @@
                         <div class="d-flex gap-2 justify-content-end">
                             <button class="btn btn-edit btn-sm rounded-3 d-flex align-items-center gap-1"
                                 (click)="openEditModal(r)">
-                                <i class="bi bi-pencil"></i> แก้ไข
+                                <fa-icon [icon]="faPenToSquare" />
                             </button>
                             <button class="btn btn-admin-delete btn-sm rounded-3 d-flex align-items-center gap-1"
-                                (click)="openDeleteModal(r.id)">
-                                <i class="bi bi-trash2"></i> ลบ
+                                (click)="deleteRoom(r.id)">
+                                <fa-icon [icon]="faTrashCan" />
                             </button>
                         </div>
                     </td>
@@ -87,88 +115,21 @@
         </table>
     </div>
 
-    <div class="d-flex justify-content-between align-items-center px-4 py-3 border-top">
+    <div class="room-table-card__footer">
         <span class="text-muted small">แสดงหน้า {{ currentPage }} จาก {{ totalPages }} หน้า</span>
-
         <app-pagination-layout-component [currentPage]="currentPage" [totalPages]="totalPages"
             (pageChange)="onPageChange($event)">
         </app-pagination-layout-component>
     </div>
 </div>
 
-<div class="modal fade" [class.show]="isRoomModalOpen" [style.display]="isRoomModalOpen ? 'block' : 'none'"
-    tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content rounded-4">
-            <div class="modal-header border-bottom">
-                <h5 class="modal-title">{{ editId === null ? 'เพิ่มห้องพัก' : 'แก้ไขห้องพัก' }}</h5>
-                <button type="button" class="btn-close" (click)="closeRoomModal()"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row g-3">
-                    <div class="col-6">
-                        <label class="form-label fw-semibold small">เลขห้อง</label>
-                        <input type="text" class="form-control rounded-3" [(ngModel)]="f_room_number"
-                            placeholder="เช่น 001">
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label fw-semibold small">ชั้น</label>
-                        <input type="number" class="form-control rounded-3" [(ngModel)]="f_floor" placeholder="เช่น 4">
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label fw-semibold small">ประเภทห้อง</label>
-                        <select class="form-select rounded-3" [(ngModel)]="f_room_type_id">
-                            @for (type of roomTypes; track type.id) {
-                            <option [value]="type.id">{{ type.name }} ({{ type.price_per_night }} บ.)</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label fw-semibold small">ID ผู้ดูแล</label>
-                        <input type="number" class="form-control rounded-3" [(ngModel)]="f_staff_id"
-                            placeholder="รหัสพนักงานดูแล">
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label fw-semibold small">สถานะ</label>
-                        <select class="form-select rounded-3" [(ngModel)]="f_status">
-                            <option value="available">ว่าง</option>
-                            <option value="occupied">เช็คอิน</option>
-                            <option value="maintenance">ไม่พร้อมใช้งาน</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer border-top">
-                <button class="btn btn-dark btn-sm rounded-3" (click)="closeRoomModal()">ยกเลิก</button>
-                <button class="btn btn-primary btn-sm rounded-3" (click)="saveRoom()">บันทึก</button>
-            </div>
-        </div>
-    </div>
-</div>
+@if (isAddTypeModalOpen) {
+<app-room-type-modal (closed)="isAddTypeModalOpen = false" (saved)="loadRoomTypes()">
+</app-room-type-modal>
+}
 
-<div class="modal fade" [class.show]="isDeleteModalOpen" [style.display]="isDeleteModalOpen ? 'block' : 'none'"
-    tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content rounded-4 text-center p-2">
-            <div class="modal-body">
-                <i class="bi bi-exclamation-triangle-fill text-danger fs-2"></i>
-                <p class="mt-3 mb-1 fw-semibold">ลบห้องนี้?</p>
-
-                @if (pendingDeleteId !== null) {
-                <p class="text-muted small">
-                    คุณต้องการลบห้องพักที่เลือกใช่หรือไม่?
-                </p>
-                }
-
-            </div>
-            <div class="modal-footer border-0 justify-content-center pt-0">
-                <button class="btn btn-sm btn-dark rounded-3" (click)="closeDeleteModal()">ยกเลิก</button>
-                <button class="btn btn-sm btn-danger rounded-3" (click)="confirmDelete()">ลบ</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-@if (isRoomModalOpen || isDeleteModalOpen) {
-<div class="modal-backdrop fade show"></div>
+@if (isRoomModalOpen) {
+<app-room-form-modal [roomData]="selectedRoomData" [roomTypes]="roomTypes" (closed)="isRoomModalOpen = false"
+    (saved)="loadRooms(currentPage)">
+</app-room-form-modal>
 }

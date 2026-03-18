@@ -73,11 +73,53 @@ export const updateRoom = async (req: Request, res: Response) => {
 
 export const deleteRoom = async (req: Request, res: Response) => {
     try {
-        const id = parseInt(req.params.id as string, 10);
-        await manageRoomService.deleteRoom(id);
+        const roomId = parseInt(req.params.id as string, 10);
+        if (isNaN(roomId)) {
+            return res.status(400).json({ message: "ID ห้องพักไม่ถูกต้อง" });
+        }
+        await manageRoomService.deleteRoomWithImages(roomId);
         res.json({ message: "Room delete successfully" });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Failed to delete room" });
+    }
+}
+
+export const uploadRoomImages = async (req: Request, res: Response) => {
+    try {
+        const roomId = parseInt(req.params.id as string, 10);
+        const files = req.files as Express.Multer.File[];
+        const coverIndex = parseInt(req.body.coverIndex || '-1', 10);
+        if (!files || files.length === 0) {
+            return res.status(400).json({ message: "ไม่มีไฟล์รูปภาพถูกอัปโหลดมา" });
+        }
+        await manageRoomService.saveRoomImages(roomId, files, coverIndex);
+        res.json({ message: "อัปโหลดรูปภาพสำเร็จ!" });
+    } catch (error) {
+        console.error("เกิดข้อผิดพลาดในการอัปโหลดรูปภาพ:", error);
+        res.status(500).json({ message: "บันทึกรูปภาพไม่สำเร็จ" });
+    }
+}
+
+export const deleteRoomImage = async (req: Request, res: Response) => {
+    try {
+        const imageId = parseInt(req.params.imageId as string, 10);
+        await manageRoomService.deleteRoomImage(imageId);
+        res.json({ message: "ลบรูปภาพสำเร็จ" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "ลบรูปภาพไม่สำเร็จ" });
+    }
+}
+
+export const setCoverImage = async (req: Request, res: Response) => {
+    try {
+        const roomId = parseInt(req.params.roomId as string, 10);
+        const imageId = parseInt(req.params.imageId as string, 10);
+        await manageRoomService.updateCoverImage(roomId, imageId);
+        res.json({ message: "อัปเดตหน้าปกสำเร็จ" })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "อัปเดตหน้าปกไม่สำเร็จ" })
     }
 }

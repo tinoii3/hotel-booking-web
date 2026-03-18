@@ -1,0 +1,48 @@
+<div class="modal-backdrop fade show"></div>
+<div class="modal fade show" style="display: block;" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title fw-bold">เพิ่มประเภทห้องพัก</h5>
+                <button type="button" class="btn-close" (click)="closed.emit()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <label class="form-label small fw-semibold">ชื่อประเภทห้อง <span
+                                class="text-danger">*</span></label>
+                        <input type="text" class="form-control rounded-3" [(ngModel)]="roomTypeForm.name">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small fw-semibold">เข้าพักได้ (คน)</label>
+                        <input type="number" class="form-control rounded-3" [(ngModel)]="roomTypeForm.capacity">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">ราคาต่อคืน (บาท) <span
+                                class="text-danger">*</span></label>
+                        <input type="number" class="form-control rounded-3" [(ngModel)]="roomTypeForm.price_per_night">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-semibold">ขนาดห้อง (ตร.ม.)</label>
+                        <input type="number" class="form-control rounded-3" [(ngModel)]="roomTypeForm.size_sqm">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small fw-semibold">สิ่งอำนวยความสะดวก</label>
+                        <input type="text" class="form-control rounded-3" placeholder="เช่น ทีวี, แอร์"
+                            [(ngModel)]="roomTypeForm.amenities">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small fw-semibold">รายละเอียด</label>
+                        <textarea class="form-control rounded-3" rows="2"
+                            [(ngModel)]="roomTypeForm.description"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-top-0 pt-0">
+                <button type="button" class="btn btn-light rounded-3 px-4" (click)="closed.emit()">ยกเลิก</button>
+                <button type="button" class="btn btn-primary rounded-3 px-4"
+                    (click)="saveRoomType()">บันทึกข้อมูล</button>
+            </div>
+        </div>
+    </div>
+</div>

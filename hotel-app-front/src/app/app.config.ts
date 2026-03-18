@@ -6,11 +6,12 @@ import { routes } from './app.routes';
 import { loadingInterceptor } from './interceptors/loading/loading-interceptor';
 import { errorInterceptor } from './interceptors/error/error-interceptor';
 import { authInterceptor } from './interceptors/auth/auth-interceptor';
+import { refreshInterceptor } from './interceptors/auth/refresh-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideHttpClient(withInterceptors([loadingInterceptor, errorInterceptor, authInterceptor])),
+    provideHttpClient(withInterceptors([loadingInterceptor, errorInterceptor, authInterceptor, refreshInterceptor])),
     provideRouter(routes),
   ],
 };

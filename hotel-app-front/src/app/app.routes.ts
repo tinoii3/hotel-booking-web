@@ -7,12 +7,13 @@ import { roleGuard } from './guards/role-guard';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'test',
     component: ComponentPage,
   },
 
   {
     path: 'auth',
+    component: MainLayoutComponent,
     children: [
       {
         path: 'login',
@@ -34,8 +35,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'home',
-        loadComponent: () =>
-          import('./features/home-page/home-page').then((m) => m.HomePage),
+        loadComponent: () => import('./features/home-page/home-page').then((m) => m.HomePage),
       },
       {
         path: 'payment',

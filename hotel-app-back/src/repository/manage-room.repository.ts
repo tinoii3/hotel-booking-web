@@ -35,7 +35,8 @@ export const roomFindAll = async (
             where: whereCondition,
             orderBy: orderByCondition,
             include: {
-                room_types: true
+                room_types: true,
+                room_images: true
             }
         }),
         prisma.rooms.count({ where: whereCondition })
@@ -77,5 +78,54 @@ export const roomUpdate = async (id: number, data: any) => {
 export const roomDelete = async (id: number) => {
     return prisma.rooms.delete({
         where: { id: id }
+    });
+}
+
+export const getRoomImagesByRoomId = async (roomId: number) => {
+    return prisma.room_images.findMany({
+        where: { room_id: roomId }
+    });
+};
+
+export const deleteRoomAndImagesTransaction = async (roomId: number) => {
+    return prisma.$transaction([
+        prisma.room_images.deleteMany({
+            where: { room_id: roomId }
+        }),
+        prisma.rooms.delete({
+            where: { id: roomId }
+        })
+    ]);
+};
+
+export const roomImageCreateMany = async (imagesDate: any[]) => {
+    return prisma.room_images.createMany({
+        data: imagesDate
+    });
+}
+
+export const roomImageFindOne = async (imageId: number) => {
+    return prisma.room_images.findUnique({
+        where: { id: imageId }
+    });
+}
+
+export const roomImageDelete = async (imageId: number) => {
+    return prisma.room_images.delete({
+        where: { id: imageId }
+    });
+}
+
+export const clearRoomCover = async (roomId: number) => {
+    return prisma.room_images.updateMany({
+        where: { room_id: roomId },
+        data: { is_cover: false }
+    });
+}
+
+export const setRoomCover = async (imageId: number) => {
+    return prisma.room_images.update({
+        where: { id: imageId },
+        data: { is_cover: true }
     });
 }
