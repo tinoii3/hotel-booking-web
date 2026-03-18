@@ -30,6 +30,10 @@ export const getAllRooms = async (
     }
 }
 
+export const getAllRoomTypesWithCover = async () => {
+    return manageRoomRepo.roomTypeFindWithCover();
+}
+
 export const getAllRoomTypes = async () => {
     return manageRoomRepo.roomTypeFindAll();
 }
