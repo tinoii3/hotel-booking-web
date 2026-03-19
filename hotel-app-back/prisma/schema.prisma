@@ -141,6 +141,11 @@ model booking {
   status        String?         @db.VarChar
   created_at    DateTime        @default(now()) @db.Timestamptz(6)
   expires_at    DateTime?       @db.Timestamptz(6)
+  first_name    String?         @db.VarChar
+  last_name     String?         @db.VarChar
+  email         String?         @db.VarChar
+  phone         String?         @db.VarChar
+  note          String?         @db.VarChar
   users         users           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   booking_items booking_items[]
 }
