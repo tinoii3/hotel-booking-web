@@ -12,12 +12,33 @@ export const getAllRooms = async (
 ) => {
     const skip = (page - 1) * limit;
     const take = limit;
+    const whereCondition: any =
+        filterType && filterType !== "all"
+            ? { room_types: { name: filterType } }
+            : {};
+
+    const validSortOrder = sortOrder?.toLocaleLowerCase() === "desc" ? "desc" : "asc";
+    let orderByCondition: any = {};
+    switch (sortBy) {
+        case "room_type":
+            orderByCondition = { room_types: { name: sortOrder } };
+            break;
+        case "capacity":
+            orderByCondition = { room_types: { capacity: sortOrder } };
+            break;
+        case "staff":
+            orderByCondition = { staff: { id: sortOrder } };
+            break;
+        default:
+            orderByCondition = { [String(sortBy)]: validSortOrder };
+            break;
+    }
+
     const { rooms, totalRooms } = await manageRoomRepo.roomFindAll(
         skip,
         take,
-        filterType,
-        sortBy,
-        sortOrder
+        whereCondition,
+        orderByCondition
     );
     const totalPages = Math.ceil(totalRooms / limit);
     return {
@@ -90,7 +111,7 @@ export const deleteRoomImage = async (imageId: number) => {
     if (image.image_path) {
         try {
             const matches = image.image_path.match(/\/upload\/(?:v\d+\/)?([^\.]+)/);
-            
+
             if (matches && matches[1]) {
                 const publicId = matches[1];
                 console.log('กำลังลบรูปจาก Cloudinary, Public ID:', publicId);
