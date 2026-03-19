@@ -47,8 +47,8 @@ export class ManageRoom implements OnInit {
     this.roomService.getRooms(page, this.limit, this.currentFilter, this.currentSortBy, this.currentSortOrder).subscribe({
       next: (res: any) => {
         this.rooms = res.data || [];
-        this.currentPage = res.meta.currentPage || 1;
-        this.totalPages = res.meta.totalPages || 1;
+        this.currentPage = Number(res.meta.currentPage) || 1;
+        this.totalPages = Number(res.meta.totalPages) || 1;
         this.cdr.detectChanges();
       },
       error: (err) => Swal.fire({
@@ -106,7 +106,10 @@ export class ManageRoom implements OnInit {
     this.loadRooms(this.currentPage);
   }
 
-  onPageChange(newPage: number) { this.loadRooms(newPage); }
+  onPageChange(newPage: number) {
+    this.currentPage = newPage;
+    this.loadRooms(this.currentPage);
+  }
 
   openAddTypeModal(event: Event) {
     event.stopPropagation();

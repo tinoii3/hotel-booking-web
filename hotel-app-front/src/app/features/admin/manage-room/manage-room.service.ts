@@ -11,14 +11,14 @@ export class ManageRoomService {
     getRooms(
         page: number,
         limit: number,
-        type: string = 'all',
-        sortBy: string = 'room_number',
-        sortOrder: string = 'asc'
+        filter: string,
+        sortBy: string,
+        sortOrder: string
     ): Observable<any> {
         const url = `${this.baseUrl}/rooms` +
-            `?page${page}` +
+            `?page=${page}` +
             `&limit=${limit}` +
-            `&type=${type}` +
+            `&filter=${filter}` +
             `&sortBy=${sortBy}` +
             `&sortOrder=${sortOrder}`
 

@@ -5,13 +5,13 @@ export const getRooms = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
-    const type = (req.query.type as string) || "all";
+    const filter = (req.query.type as string) || "all";
     const sortBy = (req.query.sortBy as string) || "room_number";
     const sortOrder = (req.query.sortOrder as string) || "asc";
     const result = await manageRoomService.getAllRooms(
       page,
       limit,
-      type,
+      filter,
       sortBy,
       sortOrder,
     );
