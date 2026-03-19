@@ -29,7 +29,9 @@
                         (click)="filterType(type.name)">
                         <span class="room-dropdown__dot"></span> {{ type.name }}
                     </a>
-                    <button type="button" class="btn btn-sm btn-outline-danger border-0 ms-1 px-2 py-1"
+
+                    <button type="button"
+                        class="btn btn-sm btn-outline-danger border-0 position-absolute top-50 end-0 translate-middle-y me-2"
                         title="ลบประเภทห้องนี้" (click)="deleteRoomType(type.id, type.name, $event)">
                         <fa-icon [icon]="faTrashCan"></fa-icon>
                     </button>

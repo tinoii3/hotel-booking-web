@@ -178,7 +178,8 @@ export class ManageRoom implements OnInit {
             Swal.fire({
               icon: 'error',
               title: 'ลบไม่ได้',
-              text: err.error?.message || 'เกิดข้อผิดพลาดในหารลบ'
+              text: err.error?.message || 'เกิดข้อผิดพลาดในหารลบ',
+              confirmButtonColor: '#d4af37'
             });
             return EMPTY;
           })
