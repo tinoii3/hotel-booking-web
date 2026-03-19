@@ -1,0 +1,24 @@
+
+.chart-container {
+  height: 300px;
+  position: relative;
+}
+
+
+.progress-sm {
+  height: 8px;
+}
+
+
+.custom-table {
+  thead th {
+    background-color: #ffffff !important; 
+    color: #212529; 
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+  }
+  
+  tbody td {
+    border-color: #f8f9fa;
+  }
+}

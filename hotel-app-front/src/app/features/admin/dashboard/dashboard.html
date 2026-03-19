@@ -1,19 +1,16 @@
-<!-- ข้อมูลยังไม่ว่งมา กราฟยังไม่ขึ้น -->
-
 <div class="container-fluid py-3">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h4 class="mb-1 fw-bold">Dashboard</h4>
-            <p class="text-muted small mb-0">ข้อมูลประจำวันที่ {{ currentDate }}</p>
+            <h4 class="mb-1 fw-bold">แดชบอร์ด</h4>
+            
         </div>
-        
     </div>
 
     <div class="row g-3 mb-4">
         <div class="col-12 col-md-6 col-lg-3">
             <div class="bg-white border border-secondary-subtle rounded-3 p-3 d-flex align-items-center gap-3">
                 <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 d-flex align-items-center justify-content-center">
-                    <lucide-icon name="bed-double" [size]="24"></lucide-icon>
+                    
                 </div>
                 <div>
                     <p class="text-muted small mb-0 fw-semibold">ห้องพักทั้งหมด</p>
@@ -21,10 +18,11 @@
                 </div>
             </div>
         </div>
+        
         <div class="col-12 col-md-6 col-lg-3">
             <div class="bg-white border border-secondary-subtle rounded-3 p-3 d-flex align-items-center gap-3">
                 <div class="bg-success bg-opacity-10 text-success rounded-circle p-3 d-flex align-items-center justify-content-center">
-                    <lucide-icon name="door-open" [size]="24"></lucide-icon>
+                    
                 </div>
                 <div>
                     <p class="text-muted small mb-0 fw-semibold">ห้องว่าง</p>
@@ -32,10 +30,11 @@
                 </div>
             </div>
         </div>
+
         <div class="col-12 col-md-6 col-lg-3">
             <div class="bg-white border border-secondary-subtle rounded-3 p-3 d-flex align-items-center gap-3">
                 <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-3 d-flex align-items-center justify-content-center">
-                    <lucide-icon name="log-in" [size]="24"></lucide-icon>
+                    
                 </div>
                 <div>
                     <p class="text-muted small mb-0 fw-semibold">เช็คอินวันนี้</p>
@@ -43,14 +42,15 @@
                 </div>
             </div>
         </div>
+
         <div class="col-12 col-md-6 col-lg-3">
             <div class="bg-white border border-secondary-subtle rounded-3 p-3 d-flex align-items-center gap-3">
                 <div class="bg-info bg-opacity-10 text-info rounded-circle p-3 d-flex align-items-center justify-content-center">
-                    <lucide-icon name="wallet" [size]="24"></lucide-icon>
+                    
                 </div>
                 <div>
-                    <p class="text-muted small mb-0 fw-semibold">รายได้เดือนนี้</p>
-                    <h4 class="mb-0 fw-bold">{{ stats.monthlyRevenue | number }}</h4>
+                    <p class="text-muted small mb-0 fw-semibold">เช็คเอาท์วันนี้</p>
+                    <h4 class="mb-0 fw-bold">0</h4>
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h6 class="mb-0 fw-bold">แนวโน้มรายได้ </h6>
                 </div>
-                <div style="height: 300px; position: relative;">
+                <div class="chart-container">
                     <canvas #revenueChartCanvas></canvas>
                 </div>
             </div>
@@ -70,7 +70,7 @@
 
         <div class="col-12 col-lg-4">
             <div class="bg-white border border-secondary-subtle rounded-3 p-4 h-100">
-                <h6 class="mb-4 fw-bold"> ห้องยอดฮิต</h6>
+                <h6 class="mb-4 fw-bold">ห้องยอดฮิต</h6>
                 
                 @for (room of popularRooms; track room.name) {
                 <div class="mb-3">
@@ -78,7 +78,7 @@
                         <span class="fw-semibold">{{ room.name }}</span>
                         <span class="text-muted">{{ room.count }} จอง ({{ room.percentage }}%)</span>
                     </div>
-                    <div class="progress" style="height: 8px;">
+                    <div class="progress progress-sm">
                         <div class="progress-bar bg-primary rounded-pill" 
                              role="progressbar" 
                              [style.width.%]="room.percentage">
@@ -95,80 +95,42 @@
     </div>
 
     <div class="row g-3">
-        <div class="col-12 col-lg-8">
+        <div class="col-12">
             <div class="bg-white border border-secondary-subtle rounded-3 overflow-hidden h-100">
                 <div class="d-flex justify-content-between align-items-center px-4 py-3 border-bottom">
                     <h6 class="mb-0 fw-bold">รายการจองล่าสุด</h6>
-                    <a href="javascript:void(0)" class="text-decoration-none small">ดูทั้งหมด</a>
+                    <a href="/admin/reserv-room" class="text-decoration-none small">ดูทั้งหมด</a>
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light border-bottom">
+                    <table class="table table-hover align-middle mb-0 custom-table">
+                        <thead class="bg-white border-bottom">
                             <tr>
-                                <th class="ps-4 fw-normal fs-6 text-muted">รหัสจอง</th>
-                                <th class="fw-normal fs-6 text-muted">ชื่อลูกค้า</th>
-                                <th class="fw-normal fs-6 text-muted">เลขห้อง</th>
-                                <th class="fw-normal fs-6 text-muted">วันที่เช็คอิน</th>
-                                <th class="fw-normal fs-6 text-muted">สถานะ</th>
+                                <th class="ps-4 py-3 fw-bold fs-6 text-dark border-0">รหัสจอง</th>
+                                <th class="py-3 fw-bold fs-6 text-dark border-0">ชื่อลูกค้า</th>
+                                <th class="py-3 fw-bold fs-6 text-dark border-0">เลขห้อง</th>
+                                <th class="py-3 fw-bold fs-6 text-dark border-0">วันที่เช็คอิน</th>
+                                <th class="py-3 fw-bold fs-6 text-dark border-0">วันที่เช็คเอาท์</th>
                             </tr>
                         </thead>
                         <tbody>
                             @for (b of recentBookings; track b.id) {
                             <tr>
-                                <td class="ps-4 fw-semibold text-primary">{{ b.id }}</td>
-                                <td>{{ b.guest }}</td>
-                                <td>{{ b.roomNo }} <br><small class="text-muted">{{ b.type }}</small></td>
-                                <td>{{ b.checkIn }}</td>
-                                <td>
-                                    <span class="badge rounded-pill px-3 py-2 fw-normal" 
-                                          [ngClass]="{
-                                            'text-bg-success': b.status === 'กำลังพัก',
-                                            'text-bg-warning': b.status === 'รอเช็คอิน',
-                                            'text-bg-danger': b.status === 'ยกเลิก'
-                                          }">
-                                        {{ b.status }}
-                                    </span>
-                                </td>
+                                <td class="ps-4 py-3 fw-semibold text-primary">{{ b.id }}</td>
+                                <td class="py-3">{{ b.guest }}</td>
+                                <td class="py-3">{{ b.roomNo }} <br><small class="text-muted">{{ b.type }}</small></td>
+                                <td class="py-3">{{ b.checkIn }}</td>
+                                <td class="py-3">{{ b.checkOut || '-' }}</td>
                             </tr>
+                            }
+                            
+                            @if (recentBookings.length === 0) {
+                                <tr>
+                                    <td colspan="5" class="text-center py-5 text-muted small">ยังไม่มีรายการจองล่าสุด</td>
+                                </tr>
                             }
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-lg-4">
-            <div class="bg-white border border-secondary-subtle rounded-3 overflow-hidden h-100">
-                <div class="d-flex justify-content-between align-items-center px-4 py-3 border-bottom">
-                    <h6 class="mb-0 fw-bold">ยอดรีวิว</h6>
-                    <a href="javascript:void(0)" class="text-decoration-none small">จัดการรีวิว</a>
-                </div>
-                
-                <div class="p-0">
-                    <ul class="list-group list-group-flush">
-                        @for (review of topRatedRooms; track review.id) {
-                        <li class="list-group-item px-4 py-3">
-                            <div class="d-flex justify-content-between align-items-start mb-1">
-                                <div>
-                                    <span class="fw-semibold">{{ review.guestName }}</span>
-                                    <span class="ms-2 badge bg-light text-dark border">ห้อง {{ review.roomNo }}</span>
-                                </div>
-                                <span class="small text-muted">{{ review.date }}</span>
-                            </div>
-                            <div class="d-flex gap-1 mb-2 text-warning">
-                                @for (star of getStars(review.rating); track $index) {
-                                    <lucide-icon name="star" [size]="14"></lucide-icon>
-                                }
-                            </div>
-                            <p class="small text-muted mb-0 fst-italic">"{{ review.comment }}"</p>
-                        </li>
-                        }
-
-                        @if (topRatedRooms.length === 0) {
-                            <li class="list-group-item px-4 py-5 text-center text-muted small">ยังไม่มีรีวิว</li>
-                        }
-                    </ul>
                 </div>
             </div>
         </div>
