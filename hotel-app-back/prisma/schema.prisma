@@ -9,43 +9,14 @@ datasource db {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model payments {
-  id              Int           @id @default(autoincrement()) @db.SmallInt
-  reservation_id  Int?          @db.SmallInt
-  amount          Decimal       @db.Decimal(10, 2)
-  payment_method  String?
-  status          String?       @default("pending")
-  transaction_ref String?
-  created_at      DateTime?     @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
-  reservations    reservations? @relation(fields: [reservation_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model reservations {
-  id             Int        @id @default(autoincrement()) @db.SmallInt
-  user_id        Int?       @db.SmallInt
-  room_id        Int?       @db.SmallInt
-  check_in_date  DateTime   @db.Date
-  check_out_date DateTime   @db.Date
-  total_price    Decimal    @db.Decimal(10, 2)
-  status         String?    @default("pending")
-  created_at     DateTime?  @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
-  payments       payments[]
-  rooms          rooms?     @relation(fields: [room_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users          users?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  reviews        reviews[]
-}
-
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model reviews {
-  id             Int           @id @default(autoincrement()) @db.SmallInt
-  user_id        Int?          @db.SmallInt
-  reservation_id Int?          @db.SmallInt
-  rating         Int?
-  comment        String?
-  created_at     DateTime?     @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
-  reservations   reservations? @relation(fields: [reservation_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users          users?        @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id             Int       @id @default(autoincrement()) @db.SmallInt
+  booking_id     Int       @db.SmallInt
+  amount         Float?    @db.Real
+  payment_method String?   @db.VarChar
+  status         String?   @db.VarChar
+  pay_at         DateTime? @db.Timestamptz(6)
+  created_at     DateTime  @default(now()) @db.Timestamptz(6)
+  booking        booking   @relation(fields: [booking_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -73,7 +44,6 @@ model rooms {
   adults        Int?            @db.SmallInt
   children      Int?            @db.SmallInt
   booking_items booking_items[]
-  reservations  reservations[]
   room_images   room_images[]
   room_types    room_types?     @relation(fields: [room_type_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   staff         staff?          @relation(fields: [staff_id], references: [id], onUpdate: NoAction)
@@ -103,8 +73,6 @@ model users {
   user_password  String           @default("") @db.VarChar
   booking        booking[]
   refresh_tokens refresh_tokens[]
-  reservations   reservations[]
-  reviews        reviews[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -148,6 +116,7 @@ model booking {
   note          String?         @db.VarChar
   users         users           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   booking_items booking_items[]
+  payments      payments[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
