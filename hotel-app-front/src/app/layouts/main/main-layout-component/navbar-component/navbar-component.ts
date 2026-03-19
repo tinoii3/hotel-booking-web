@@ -41,7 +41,7 @@ export class NavbarComponent {
         Swal.fire({
           icon: 'success',
           title: 'ออกจากระบบแล้ว',
-          text: 'พบกันใหม่นะ!',
+          text: 'คุณได้ออกจากระบบแล้ว',
           timer: 1500,
           showConfirmButton: false,
         }).then(() => {

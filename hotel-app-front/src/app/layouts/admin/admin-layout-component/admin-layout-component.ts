@@ -35,8 +35,8 @@ export class AdminLayout {
 
         Swal.fire({
           icon: 'success',
-          title: 'Logged out',
-          text: 'See you again!',
+          title: 'ออกจากระบบสำเร็จ',
+          text: 'คุณได้ออกจากระบบแล้ว',
           timer: 1500,
           showConfirmButton: false,
         }).then(() => {
