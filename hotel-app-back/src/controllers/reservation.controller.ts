@@ -8,12 +8,12 @@ getReservations = async (req: Request, res: Response) => {
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
         const roomType = req.query.roomType as string;
-        const paymentStatus = req.query.paymentStatus as string;
+        const status = req.query.status as string;
         const result = await reservationService.getAllReservations(
             page,
             limit,
             roomType,
-            paymentStatus
+            status
         );
         res.json(result);
     } catch (error) {

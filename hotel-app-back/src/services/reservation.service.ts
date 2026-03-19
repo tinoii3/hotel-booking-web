@@ -4,12 +4,12 @@ export const getAllReservations = async (
     page: number,
     limit: number,
     roomType?: string,
-    paymentStatus?: string
+    status?: string
 ) => {
     const skip = (page - 1) * limit;
     const take = limit;
     const { reservations, totalReservations } =
-        await reservationRepo.reservationsFindAll(skip, take, roomType, paymentStatus);
+        await reservationRepo.reservationsFindAll(skip, take, roomType, status);
     const totalPages = Math.ceil(totalReservations / limit);
     return {
         data: reservations,
