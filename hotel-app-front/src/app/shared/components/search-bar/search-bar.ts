@@ -30,7 +30,7 @@ export class SearchBar implements OnInit {
     this.form = this.fb.group({
       check_in: ['', Validators.required],
       check_out: ['', Validators.required],
-      room_type: ['ALL', Validators.required],
+      room_type: ['all', Validators.required],
       guests: [this.guestOptions[0], Validators.required],
     });
   }
