@@ -1,1 +1,52 @@
-<p>detail-reservation-component works!</p>
+@if (booking; as b) {
+
+  <div class="reservation-box">
+
+    <h5 class="section-title">รายละเอียดการจอง</h5>
+
+    @for (item of b.booking_items; track $index) {
+
+      <div class="room-item">
+
+        <h6 class="room-name">{{ item.room_name }}</h6>
+
+        <div class="row-line">
+          <span>เช็คอิน:</span>
+          <span>{{ formatDate(b.check_in) }}</span>
+        </div>
+
+        <div class="row-line">
+          <span>เช็คเอาต์:</span>
+          <span>{{ formatDate(b.check_out) }}</span>
+        </div>
+
+        <div class="row-line">
+          <span>จำนวน:</span>
+          <span>ผู้ใหญ่ {{ item.adults }} : เด็ก {{ item.children }}</span>
+        </div>
+
+        <div class="subtotal">
+          THB {{ item.subtotal }}
+        </div>
+
+        <hr />
+      </div>
+
+    }
+
+    <div class="total-box">
+      <span>ราคารวมทั้งหมด</span>
+      <span class="total-price">
+        THB {{ b.total_price }}
+      </span>
+    </div>
+
+  </div>
+
+} @else {
+
+  <div class="reservation-box text-center text-muted py-4">
+    <p>ไม่มีรายการจอง</p>
+  </div>
+
+}

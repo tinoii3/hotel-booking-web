@@ -6,7 +6,12 @@ info:
 http:
   method: GET
   url: "{{localhost}}/api/auth/user-profile"
-  auth: inherit
+  body:
+    type: json
+    data: ""
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTc3MzkwNTI1MCwiZXhwIjoxNzczOTA2MTUwfQ.UkZGI4TVEsAmlcEwYoiwsd0bo8XYbM8ma-EtpuWz9t0
 
 settings:
   encodeUrl: true
