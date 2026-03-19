@@ -1,4 +1,4 @@
-import * as reservRoomRepo from "../repository/reserv-room.repository.js"
+import * as reservRoomRepo from "../repository/reservation.repository.js"
 
 export const getAllReservations = async (
     page: number,

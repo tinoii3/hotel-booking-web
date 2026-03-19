@@ -1,6 +1,6 @@
 import { type Request, type Response } from "express"
 import * as manageRoomService from "../services/manage-room.service.js"
-import * as reservRoomService from "../services/reserv-room.service.js"
+import * as reservRoomService from "../services/reservation.service.js"
 
 export const 
 

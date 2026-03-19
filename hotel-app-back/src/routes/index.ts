@@ -5,6 +5,7 @@ import { authenticate, authorize } from "../middlewares/auth.middleware.js";
 import bookingRoute from "./booking.route.js";
 import uploadRoutes from "./upload.routes.js";
 import manageStaffRoutes from "./manage-staff.routes.js";
+import reservationsRoutes from "./reservation.routes.js";
 
 const router = Router();
 
@@ -35,6 +36,13 @@ router.use(
   authenticate,
   authorize(["admin"]),
   manageStaffRoutes
+);
+
+router.use(
+  "/reservations",
+  authenticate,
+  authorize(["admin"]),
+  reservationsRoutes
 );
 
 // Customer only route
