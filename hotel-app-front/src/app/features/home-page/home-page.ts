@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SearchBar } from '../../shared/components/search-bar/search-bar';
+import { HomePageService } from './service/home-page-service';
 
 @Component({
   selector: 'app-root',
@@ -11,21 +12,19 @@ import { SearchBar } from '../../shared/components/search-bar/search-bar';
   styleUrls: ['./home-page.scss'],
 })
 export class HomePage {
+  private homePageService = inject(HomePageService);
+
   onSearch(data: any) {
     // TODO: call API หรือ navigate ไปหน้าอื่น
     console.log('Search data:', data);
   }
-  // ตัวแปรสำหรับระบบค้นหา
-  selectedRoomTypeInput: string = 'All Rooms';
-  activeRoomTypeFilter: string = 'All Rooms';
 
-  // ฟังก์ชัน Getter สำหรับดึงรายการห้องที่ถูกฟิลเตอร์แล้วไปแสดงผล
   get filteredRooms() {
-    if (this.activeRoomTypeFilter === 'All Rooms') {
-      return this.rooms; // ถ้าเลือก All ให้แสดงทั้งหมด
-    }
-    // ถ้าเลือกห้องเฉพาะเจาะจง ให้กรองชื่อห้องให้ตรงกับที่เลือก
-    return this.rooms.filter((room) => room.name === this.activeRoomTypeFilter);
+    return this.homePageService.rooms;
+  }
+
+  ngOnInit() {
+    this.homePageService.fetchRooms();
   }
 
   // ฟังก์ชันสำหรับเลื่อนสไลด์ซ้าย-ขวา

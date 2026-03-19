@@ -2,10 +2,11 @@ import { Router } from "express";
 import manageRoomRoutes from "./manage-room.routes.js";
 import authRoutes from "./auth.routes.js";
 import { authenticate, authorize } from "../middlewares/auth.middleware.js";
-import bookingRoute from "./booking.route.js";
+import bookingRoute from "./booking.routes.js";
 import uploadRoutes from "./upload.routes.js";
 import manageStaffRoutes from "./manage-staff.routes.js";
 import reservationsRoutes from "./reservation.routes.js";
+import homePageRoutes from "./home-page.routes.js";
 
 const router = Router();
 
@@ -14,6 +15,8 @@ router.get("/", (_req, res) => {
 });
 
 router.use("/auth", authRoutes);
+
+router.use("/home", homePageRoutes);
 
 router.use("/bookings", bookingRoute);
 

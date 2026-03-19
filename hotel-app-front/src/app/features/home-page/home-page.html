@@ -1,28 +1,27 @@
 <section class="hero">
   <div class="hero-text">
-    <p class="subtitle">WELCOME TO HOTEL BOOKING</p>
-    <h1>Escape, Explore & Find Your Perfect Stay</h1>
+    <p class="subtitle">ยินดีต้อนรับสู่โรงแรมพาไรส์</p>
+    <h1>หลุดพ้น สำรวจ และค้นหาที่พักที่สมบูรณ์แบบของคุณ</h1>
   </div>
   <app-search-bar (search)="onSearch($event)"></app-search-bar>
 </section>
 
 <section class="about-section container">
   <div class="about-image">
-    <img src="assets/hotel-pic.png" alt="Paradise Hotel" />
+    <img src="https://res.cloudinary.com/dxozoa0kr/image/upload/v1773930618/hotel-pic_pbprnw.jpg" alt="Paradise Hotel" />
   </div>
   <div class="about-text">
-    <h2>Welcome to Paradise Hotel</h2>
+    <h2>ยินดีต้อนรับสู่โรงแรมพาไรส์</h2>
     <p>
-      Welcome to Paradise Hotel, a luxury fictional hotel offering comfort and premium experience.
-      Our world-class amenities, breathtaking views, and impeccable service ensure every stay is
-      unforgettable. Whether you're here for business or leisure, we promise an experience that
-      exceeds your expectations.
+      ยินดีต้อนรับสู่โรงแรมพาไรส์ โรงแรมระดับพรีเมียมที่ให้ความสะดวกสบายและความหรูหรา
+      พร้อมสิ่งอำนวยความสะดวกระดับโลก วิวที่น่าทึ่ง และบริการที่ยอดเยี่ยม เพื่อให้ทุกการเข้าพักของคุณเป็นประสบการณ์ที่ไม่อาจลืมได้
+      ไม่ว่าคุณจะมาเพื่อธุรกิจหรือการพักผ่อน พวกเราขอรับประกันว่าจะมอบประสบการณ์ที่เหนือกว่าความคาดหวังของคุณ
     </p>
   </div>
 </section>
 
 <section class="rooms-section container">
-  <h2>Rooms & Suites</h2>
+  <h2>ห้องพักของเรา</h2>
 
   <div class="carousel-wrapper">
     <button class="carousel-btn prev" (click)="scroll(roomSlider, -1)">
@@ -38,10 +37,10 @@
           <div class="room-info">
             <h3>{{ room.name }}</h3>
             <p class="price">
-              <strong>${{ room.price }}</strong> /night
+              <strong>${{ room.price }}</strong> /คืน
             </p>
             <p class="desc">{{ room.description }}</p>
-            <button class="btn-solid block">Book Now</button>
+            <button class="btn-solid block">จองตอนนี้</button>
           </div>
         </div>
       }
@@ -139,6 +138,6 @@
 
 <footer class="footer">
   <div class="footer-content">
-    <div class="logo"><span class="icon"></span> Hotel Booking</div>
+    <div class="logo"><span class="icon"></span>โรงแรมพาไรส์</div>
   </div>
 </footer>
