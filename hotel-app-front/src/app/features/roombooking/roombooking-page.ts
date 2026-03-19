@@ -54,12 +54,14 @@ export class RoombookingPage implements OnInit {
   private router = inject(Router);
   constructor(private userService: UserService) {}
   
-  userId! : number;
+  userId!: number;
+  email!: string;
 
   ngOnInit() {
     this.userService.user$.subscribe((user) => {
         if (!user) return;
-        this.userId=user.id;
+        this.userId = user.id;
+        this.email = user.email ?? '';
         console.log('User ready:', user);
       });
     this.loadAllRooms();
@@ -180,17 +182,7 @@ export class RoombookingPage implements OnInit {
  confirmBooking() {
     if (this.cartItems.length === 0) return;
 
-    const userStorage = localStorage.getItem('user'); 
-    let currentUserId = null;
-    let currentUserEmail = null;
-
-    if (userStorage) {
-      const userProfile = JSON.parse(userStorage);
-      currentUserId = userProfile.id;       
-      currentUserEmail = userProfile.email; 
-    }
-
-    if (!currentUserId) {
+    if (!this.userId) {
       alert('กรุณาเข้าสู่ระบบก่อนทำการจองห้องพักครับ');
       return;
     }
@@ -204,12 +196,12 @@ export class RoombookingPage implements OnInit {
     }));
 
     const payload = {
-      user_id: currentUserId,
+      user_id: this.userId,
       check_in: this.f_checkin,
       check_out: this.f_checkout,
       first_name: "test-first-name", 
       last_name: "test-last-name",
-      email: currentUserEmail,       
+      email: this.email,       
       phone: null,
       note: null,
       items: itemsPayload
