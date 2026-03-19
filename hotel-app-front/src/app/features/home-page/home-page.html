@@ -1,6 +1,6 @@
 <section class="hero">
   <div class="hero-text">
-    <p class="subtitle">ยินดีต้อนรับสู่โรงแรมพาไรส์</p>
+    <p class="subtitle">ยินดีต้อนรับสู่โรงแรมพาราไดส์</p>
     <h1>หลุดพ้น สำรวจ และค้นหาที่พักที่สมบูรณ์แบบของคุณ</h1>
   </div>
   <app-search-bar (search)="onSearch($event)"></app-search-bar>
@@ -8,14 +8,19 @@
 
 <section class="about-section container">
   <div class="about-image">
-    <img src="https://res.cloudinary.com/dxozoa0kr/image/upload/v1773930618/hotel-pic_pbprnw.jpg" alt="Paradise Hotel" />
+    <img
+      src="https://res.cloudinary.com/dxozoa0kr/image/upload/v1773930618/hotel-pic_pbprnw.jpg"
+      alt="Paradise Hotel"
+    />
   </div>
   <div class="about-text">
-    <h2>ยินดีต้อนรับสู่โรงแรมพาไรส์</h2>
+    <h2>ยินดีต้อนรับสู่โรงแรมพาราไดส์</h2>
     <p>
-      ยินดีต้อนรับสู่โรงแรมพาไรส์ โรงแรมระดับพรีเมียมที่ให้ความสะดวกสบายและความหรูหรา
-      พร้อมสิ่งอำนวยความสะดวกระดับโลก วิวที่น่าทึ่ง และบริการที่ยอดเยี่ยม เพื่อให้ทุกการเข้าพักของคุณเป็นประสบการณ์ที่ไม่อาจลืมได้
-      ไม่ว่าคุณจะมาเพื่อธุรกิจหรือการพักผ่อน พวกเราขอรับประกันว่าจะมอบประสบการณ์ที่เหนือกว่าความคาดหวังของคุณ
+      ยินดีต้อนรับสู่โรงแรมพาราไดส์ โรงแรมระดับพรีเมียมที่ให้ความสะดวกสบายและความหรูหรา
+      พร้อมสิ่งอำนวยความสะดวกระดับโลก วิวที่น่าทึ่ง และบริการที่ยอดเยี่ยม
+      เพื่อให้ทุกการเข้าพักของคุณเป็นประสบการณ์ที่ไม่อาจลืมได้
+      ไม่ว่าคุณจะมาเพื่อธุรกิจหรือการพักผ่อน
+      พวกเราขอรับประกันว่าจะมอบประสบการณ์ที่เหนือกว่าความคาดหวังของคุณ
     </p>
   </div>
 </section>
@@ -116,7 +121,7 @@
 
 <section class="contact-section container">
   <div class="contact-info">
-    <p><strong>โรงแรม Hotel Booking</strong></p>
+    <p><strong>โรงแรมพาราไดส์</strong></p>
     <p>99/7-8 ซอยโลกกว้าง 25,<br />คลองเตย, กรุงเทพฯ 10110</p>
     <p>(01) 011 1111</p>
     <p>contact&#64;hotelbooking.com</p>
@@ -124,13 +129,14 @@
 
   <div class="contact-form">
     <h3>ติดต่อ</h3>
-    <form>
+    <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
       <div class="form-row">
-        <input type="text" placeholder="ชื่อจริง" />
-        <input type="text" placeholder="นามสกุล" />
+        <input type="text" name="firstName" ngModel required placeholder="ชื่อจริง" />
+        <input type="text" name="lastName" ngModel required placeholder="นามสกุล" />
       </div>
-      <input type="email" placeholder="อีเมล" />
-      <textarea rows="5" placeholder="ข้อความ"></textarea>
+      <input type="email" name="email" ngModel required email placeholder="อีเมล" />
+      <textarea name="message" rows="5" ngModel required placeholder="ข้อความ"></textarea>
+
       <button type="submit" class="btn-solid block">ส่งข้อมูล</button>
     </form>
   </div>
@@ -138,6 +144,6 @@
 
 <footer class="footer">
   <div class="footer-content">
-    <div class="logo"><span class="icon"></span>โรงแรมพาไรส์</div>
+    <div class="logo"><span class="icon"></span>โรงแรมพาราไดส์</div>
   </div>
 </footer>

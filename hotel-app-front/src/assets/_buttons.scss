@@ -48,15 +48,15 @@
 
   .navbar-brand {
     font-weight: 700;
-    color: $color-primary !important;
+    color: black !important;
   }
 
   .btn-outline-light {
-    border-color: $color-primary;
-    color: $color-primary;
+    border-color: black;
+    color: black;
 
     &:hover {
-      background: $color-primary;
+      background: black;
       color: #fff;
     }
   }
@@ -70,22 +70,22 @@
 }
 
 .btn-dialog-primary {
-  background-color: $color-primary;
+  background-color: black;
   border: none;
   color: #fff;
 
   &:hover {
-    background-color: $color-primary-hover;
+    background-color: rgb(43, 43, 43);
   }
 }
 
 .btn-dialog-secondary {
   background-color: transparent;
-  border: 1px solid $color-primary;
-  color: $color-primary;
+  border: 1px solid black;
+  color: black;
 
   &:hover {
-    background-color: $color-primary;
+    background-color: black;
     color: #fff;
   }
 }

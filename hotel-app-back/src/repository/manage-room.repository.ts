@@ -3,33 +3,9 @@ import { prisma } from "../lib/prisma.js";
 export const roomFindAll = async (
   skip: number,
   take: number,
-  filterType?: string,
-  sortBy: string = "room_number",
-  sortOrder: string = "asc",
+  whereCondition: any,
+  orderByCondition: any
 ) => {
-  const whereCondition: any =
-    filterType && filterType !== "all"
-      ? { room_types: { name: filterType } }
-      : {};
-
-  const validSortOrder =
-    sortOrder.toLocaleLowerCase() === "desc" ? "desc" : "asc";
-  let orderByCondition: any = {};
-  switch (sortBy) {
-    case "room_type":
-      orderByCondition = { room_types: { name: sortOrder } };
-      break;
-    case "capacity":
-      orderByCondition = { room_types: { capacity: sortOrder } };
-      break;
-    case "staff":
-      orderByCondition = { staff: { id: sortOrder } };
-      break;
-    default:
-      orderByCondition = { [sortBy]: validSortOrder };
-      break;
-  }
-
   const [rooms, totalRooms] = await Promise.all([
     prisma.rooms.findMany({
       skip: skip,

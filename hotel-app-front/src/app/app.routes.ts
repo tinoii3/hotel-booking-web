@@ -11,7 +11,7 @@ export const routes: Routes = [
     redirectTo: 'hotel/home',
     pathMatch: 'full',
   },
-  
+
   {
     path: 'test',
     component: ComponentPage,
@@ -63,6 +63,11 @@ export const routes: Routes = [
     canActivate: [authGuard, roleGuard],
     data: { role: 'admin' },
     children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/admin/dashboard/dashboard').then((m) => m.Dashboard),
+      },
       {
         path: 'manage-room',
         loadComponent: () =>

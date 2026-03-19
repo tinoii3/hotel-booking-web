@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { getAllBookingsAndItems, getBookingFindByUserId, getBookingItems, getBookings } from "../controllers/booking.controller.js";
+import { authenticate, authorize } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 router.get("/booking", getBookings);
