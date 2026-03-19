@@ -1,6 +1,7 @@
 import path from "path";
 import fs from 'fs';
-import * as manageRoomRepo from "../repository/manage-room.repository.js"
+import * as manageRoomRepo from "../repository/manage-room.repository.js";
+import * as uploadService from "../services/upload.service.js";
 
 export const getAllRooms = async (
     page: number,
@@ -62,12 +63,15 @@ export const saveRoomImages = async (roomId: number, files: Express.Multer.File[
     if (coverIndex >= 0) {
         await manageRoomRepo.clearRoomCover(roomId);
     }
-    const imagesData = files.map((file, index) => ({
+    const uploadResults = await Promise.all(files.map((file) => uploadService.uploadToCloudinary(file.buffer)));
+    const imagesData = uploadResults.map((result, index) => ({
         room_id: roomId,
-        image_path: `/uploads/rooms/${file.filename}`,
+        image_path: result.secure_url,
         is_cover: index === coverIndex,
-        display_order: index
+        display_order: index,
+        publicId: result.public_id,
     }));
+
     return manageRoomRepo.roomImageCreateMany(imagesData);
 }
 
@@ -75,8 +79,19 @@ export const deleteRoomImage = async (imageId: number) => {
     const image = await manageRoomRepo.roomImageFindOne(imageId);
     if (!image) throw new Error("ไม่พบรูปภาพนี้ในระบบ");
     const filePath = path.join(process.cwd(), 'assets', image.image_path);
-    if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
+    if (image.image_path) {
+        try {
+            const matches = image.image_path.match(/\/upload\/(?:v\d+\/)?([^\.]+)/);
+            
+            if (matches && matches[1]) {
+                const publicId = matches[1];
+                console.log('กำลังลบรูปจาก Cloudinary, Public ID:', publicId);
+                await uploadService.deleteFromCloudinary(publicId);
+                console.log('ลบรูปจาก Cloudinary สำเร็จ!');
+            }
+        } catch (error) {
+            console.error("เกิดข้อผิดพลาดในการลบรูปจาก Cloudinary:", error);
+        }
     }
     return manageRoomRepo.roomImageDelete(imageId);
 }

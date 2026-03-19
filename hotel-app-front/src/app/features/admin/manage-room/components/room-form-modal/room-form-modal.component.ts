@@ -202,8 +202,8 @@ export class RoomFormModalComponent implements OnInit {
         }
     }
 
-    openImageViewer(url: string, isExisting: boolean) {
-        this.fullSizeImageUrl = isExisting ? `${this.backendUrl}${url}` : url;
+    openImageViewer(url: string, isExistingImage: boolean = false) {
+        this.fullSizeImageUrl =  url;
         this.isImageViewerOpen = true;
     }
 

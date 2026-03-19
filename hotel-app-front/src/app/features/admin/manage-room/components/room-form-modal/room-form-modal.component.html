@@ -61,7 +61,7 @@
                                         (click)="removeExistingImage(img.id, $event)">
                                         <fa-icon [icon]="faXmark" />
                                     </button>
-                                    <img [src]="backendUrl + img.image_path"
+                                    <img [src]="img.image_path"
                                         class="img-thumbnail object-fit-cover shadow-sm"
                                         style="width: 80px; height: 80px; cursor: zoom-in;"
                                         (click)="openImageViewer(img.image_path, true)">
