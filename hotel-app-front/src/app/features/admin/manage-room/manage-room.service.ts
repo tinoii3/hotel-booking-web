@@ -49,6 +49,10 @@ export class ManageRoomService {
         return this.http.delete(`${this.baseUrl}/rooms/${id}`);
     }
 
+    deleteRoomType(id: number): Observable<any> {
+        return this.http.delete(`${this.baseUrl}/room-types/${id}`);
+    }
+
     uploadRoomImages(roomId: number, files: File[], coverIndex: number = -1): Observable<any> {
         const formData = new FormData();
         for (let i = 0; i < files.length; i++) {

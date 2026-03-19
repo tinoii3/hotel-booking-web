@@ -7,6 +7,7 @@ import { faArrowDown19, faArrowDownAZ, faPenToSquare, faArrowDown91, faArrowDown
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { RoomFormModalComponent } from './components/room-form-modal/room-form-modal.component';
 import { RoomTypeModalComponent } from './components/room-type-modal/room-type-modal.component';
+import { catchError, EMPTY, filter, from, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-manage-room',
@@ -71,7 +72,7 @@ export class ManageRoom implements OnInit {
     this.roomService.getStaffName().subscribe({
       next: (res: any) => {
         this.staffs = res;
-    },
+      },
       error: (err) => {
         console.error('ไม่สามารถโหลดรายชื่อพนักงานได้', err);
       }
@@ -124,34 +125,81 @@ export class ManageRoom implements OnInit {
   }
 
   deleteRoom(id: number) {
-    Swal.fire({
-      title: 'ยืนยันการลบห้องพัก?',
-      text: 'ข้อมูลห้องพักและ "ไฟล์รูปภาพทั้งหมด" ของห้องนี้จะถูกลบทิ้งอย่างถาวร!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#dc3545',
-      cancelButtonColor: '#6c757d',
-      confirmButtonText: 'ใช่, ลบทิ้งเลย',
-      cancelButtonText: 'ยกเลิก',
-      reverseButtons: true
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.roomService.deleteRoom(id).subscribe({
-          next: () => {
-            Swal.fire({
-              icon: 'success',
-              title: 'ลบสำเร็จ!',
-              text: 'ลบรูปภาพเรียบร้อยแล้ว',
-              timer: 1500,
-              showConfirmButton: false
-            });
-            this.loadRooms(this.currentPage);
-          },
-          error: (error) => this.handleError(error, 'ลบห้องพักไม่สำเร็จ')
+    from(
+      Swal.fire({
+        title: 'ยืนยันการลบห้องพัก?',
+        text: 'ข้อมูลห้องพักและ "ไฟล์รูปภาพทั้งหมด" ของห้องนี้จะถูกลบทิ้งอย่างถาวร!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'ใช่, ลบทิ้งเลย',
+        cancelButtonText: 'ยกเลิก',
+        reverseButtons: true
+      })
+    ).pipe(
+      filter(result => result.isConfirmed),
+      switchMap(() => this.roomService.deleteRoom(id))
+    ).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'ลบสำเร็จ!',
+          text: 'ลบรูปภาพเรียบร้อยแล้ว',
+          timer: 1500,
+          showConfirmButton: false
         });
-      }
+        this.loadRooms(this.currentPage);
+      },
+      error: (error) => this.handleError(error, 'ลบห้องพักไม่สำเร็จ')
     });
   }
+
+
+  deleteRoomType(id: number, typeName: string, event: Event) {
+    event.stopPropagation();
+    from(
+      Swal.fire({
+        title: 'ยืนยันการลบ?',
+        text: `คุณต้องการลบประเภทห้อง "${typeName}" ใช่หรือไม่?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'ใช่, ลบทิ้งเลย!',
+        cancelButtonText: 'ยกเลิก',
+        reverseButtons: true
+      })
+    ).pipe(
+      filter(result => result.isConfirmed),
+      switchMap(() =>
+        this.roomService.deleteRoomType(id).pipe(
+          catchError((err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'ลบไม่ได้',
+              text: err.error?.message || 'เกิดข้อผิดพลาดในหารลบ'
+            });
+            return EMPTY;
+          })
+        )
+      )
+    ).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'ลบสำเร็จ!',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        this.loadRoomTypes();
+        if (this.currentFilter === typeName) {
+          this.filterType('all');
+        }
+      },
+    });
+  }
+
 
   handleError(error: any, defaultMsg: string) {
     console.error('เกิดข้อผิดพลาด:', error);

@@ -104,6 +104,14 @@ export const roomDelete = async (id: number) => {
   });
 };
 
+export const countRoomsByTypeId = async (typeId: number) => {
+    return prisma.rooms.count({ where: { room_type_id: typeId } });
+};
+
+export const deleteRoomType = async (id: number) => {
+    return prisma.room_types.delete({ where: { id } });
+};
+
 export const getRoomImagesByRoomId = async (roomId: number) => {
   return prisma.room_images.findMany({
     where: { room_id: roomId },

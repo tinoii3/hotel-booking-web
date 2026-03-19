@@ -23,12 +23,16 @@
                     <hr class="room-dropdown__divider">
                 </li>
                 @for (type of roomTypes; track type.id) {
-                <li>
-                    <a class="dropdown-item room-dropdown__item"
+                <li class="position-relative">
+                    <a class="dropdown-item room-dropdown__item pe-5"
                         [class.room-dropdown__item--active]="currentFilter === type.name" href="javascript:void(0)"
                         (click)="filterType(type.name)">
                         <span class="room-dropdown__dot"></span> {{ type.name }}
                     </a>
+                    <button type="button" class="btn btn-sm btn-outline-danger border-0 ms-1 px-2 py-1"
+                        title="ลบประเภทห้องนี้" (click)="deleteRoomType(type.id, type.name, $event)">
+                        <fa-icon [icon]="faTrashCan"></fa-icon>
+                    </button>
                 </li>
                 }
                 <li>

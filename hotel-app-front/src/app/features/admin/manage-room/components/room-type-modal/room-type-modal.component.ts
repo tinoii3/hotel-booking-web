@@ -27,10 +27,10 @@ export class RoomTypeModalComponent {
 
     saveRoomType() {
         if (!this.roomTypeForm.name || !this.roomTypeForm.price_per_night) {
-            Swal.fire({ 
-                icon: 'warning', 
-                title: 'ข้อมูลไม่ครบถ้วน', 
-                text: 'กรุณากรอกชื่อประเภทห้องและราคาต่อคืน' 
+            Swal.fire({
+                icon: 'warning',
+                title: 'ข้อมูลไม่ครบถ้วน',
+                text: 'กรุณากรอกชื่อประเภทห้องและราคาต่อคืน'
             });
             return;
         }
@@ -51,11 +51,11 @@ export class RoomTypeModalComponent {
 
         this.roomService.createRoomType(payload).subscribe({
             next: () => {
-                Swal.fire({ 
-                    icon: 'success', 
-                    title: 'สำเร็จ!', 
-                    text: 'เพิ่มประเภทห้องพักเรียบร้อยแล้ว', 
-                    confirmButtonColor: '#d4af37' 
+                Swal.fire({
+                    icon: 'success',
+                    title: 'สำเร็จ!',
+                    text: 'เพิ่มประเภทห้องพักเรียบร้อยแล้ว',
+                    confirmButtonColor: '#d4af37'
                 });
                 this.saved.emit();
             },

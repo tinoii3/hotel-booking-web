@@ -59,6 +59,14 @@ export const deleteRoom = async (id: number) => {
     return manageRoomRepo.roomDelete(id);
 }
 
+export const removeRoomType = async (id: number) => {
+    const roomCount = await manageRoomRepo.countRoomsByTypeId(id);
+    if (roomCount > 0) {
+        throw new Error(`ไม่สามารถลบได้ เนื่องจากมีห้องพักจำนวน ${roomCount} ห้องกำลังใช้ประเภทนี้อยู่`);
+    }
+    return manageRoomRepo.deleteRoomType(id);
+};
+
 export const saveRoomImages = async (roomId: number, files: Express.Multer.File[], coverIndex: number) => {
     if (coverIndex >= 0) {
         await manageRoomRepo.clearRoomCover(roomId);

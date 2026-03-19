@@ -97,6 +97,16 @@ export const deleteRoom = async (req: Request, res: Response) => {
   }
 };
 
+export const deleteRoomType = async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params.id as string, 10);
+    await manageRoomService.removeRoomType(id);
+    res.json({ message: "ลบประเภทห้องสำเร็จ" });
+  } catch (error: any) {
+    res.status(400).json({ message: error.message || "ไม่สามารถลบประเภทห้องได้" });
+  }
+};
+
 export const uploadRoomImages = async (req: Request, res: Response) => {
   try {
     const roomId = parseInt(req.params.id as string, 10);
