@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { SearchBar } from '../../shared/components/search-bar/search-bar';
 import { HomePageService } from './service/home-page-service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-root',
@@ -92,4 +93,27 @@ export class HomePage {
       desc: 'ผ่อนคลายอย่างเต็มที่ด้วยอ่างจากุซซี่อันทันสมัยในห้องพัก พร้อมบรรยากาศสุดพิเศษ',
     },
   ];
+
+  onSubmit(form: NgForm) {
+    if (form.valid) {
+      Swal.fire({
+        title: 'ส่งข้อความสำเร็จ',
+        text: 'เราได้รับข้อมูลของคุณแล้ว และจะติดต่อกลับโดยเร็วที่สุด',
+        icon: 'success',
+        confirmButtonText: 'ตกลง',
+        confirmButtonColor: '#1a1a1a',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          form.resetForm();
+        }
+      });
+    } else {
+      Swal.fire({
+        title: 'ข้อมูลไม่ครบถ้วน',
+        text: 'กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้อง',
+        icon: 'warning',
+        confirmButtonText: 'ตกลง',
+      });
+    }
+  }
 }
