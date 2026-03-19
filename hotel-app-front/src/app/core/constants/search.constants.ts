@@ -1,8 +1,10 @@
 export const ROOM_TYPES = [
-  { label: 'ทุกประเภทห้องพัก', value: 'ALL' },
-  { label: 'ห้อง Deluxe', value: 'DELUXE' },
-  { label: 'ห้อง Suite', value: 'SUITE' },
-  { label: 'ห้อง Presidential', value: 'PRESIDENTIAL' },
+  { label: 'ทุกประเภทห้องพัก', value: 'all' },
+  { label: 'ห้องมาตรฐาน', value: 'standard' },
+  { label: 'ห้องดีลักซ์', value: 'deluxe' },
+  { label: 'ห้องสูท', value: 'suite' },
+  { label: 'ห้องสุดพิเศษ', value: 'superior' },
+  { label: 'ห้องสตูดิโอ', value: 'studio' },
 ];
 
 export const GUEST_OPTIONS = [
