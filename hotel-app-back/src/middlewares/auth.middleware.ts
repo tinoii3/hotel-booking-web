@@ -58,3 +58,19 @@ export const authorize = (roles: string[]) => {
     next();
   };
 };
+
+export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  const auth = req.headers.authorization;
+
+  if (!auth) return res.status(401).json({ message: 'Unauthorized' });
+
+  const token = auth.split(' ')[1];
+
+  try {
+    const decoded = verifyToken(token);
+    (req as any).user = decoded;
+    next();
+  } catch {
+    return res.status(401).json({ message: 'Invalid token' });
+  }
+};

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { loginService, logoutService, refreshTokenLogic, registerService } from "../services/auth.service.js";
+import { loginService, logoutService, refreshTokenLogic, registerService, getUserProfile } from "../services/auth.service.js";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -51,3 +51,19 @@ export const logout = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Something went wrong"});
   }
 }
+
+export const profile = async (req: Request, res: Response) => {
+  try {
+    console.log("User info from token:", (req as any).user);
+    const userId = (req as any).user?.sub;
+
+    console.log("Extracted user ID:", userId);
+    const user = await getUserProfile(userId);
+
+    res.json(user);
+  } catch (error: any) {
+    res.status(404).json({
+      message: error.message || 'User not found',
+    });
+  }
+};

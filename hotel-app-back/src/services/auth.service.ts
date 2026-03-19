@@ -4,6 +4,7 @@ import {
   findRefreshTokenByHash,
   rotateRefreshToken,
   logoutUser,
+  userProfile,
 } from "../repository/auth.repository.js";
 import { comparePassword, hashPassword, hashToken } from "../utils/hash.js";
 import { signToken } from "../utils/jwt.js";
@@ -118,3 +119,10 @@ export const logoutService = async (rawToken: string) => {
 
   await logoutUser(hashedToken);
 };
+
+export const getUserProfile = async (userId: number) => {
+  const user = await userProfile(userId);
+  if (!user) throw new Error("User not found");
+
+  return user;
+}

@@ -38,3 +38,15 @@ export const logoutUser = (hashedToken: string) => {
     where: { token: hashedToken }
   });
 }
+
+export const userProfile = (userId: number) => {
+  return prisma.users.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      email: true,
+      user_name: true,
+      role: true,
+    }
+  })
+}
