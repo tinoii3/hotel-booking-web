@@ -29,6 +29,10 @@ export class ManageRoomService {
         return this.http.get(`${this.baseUrl}/room-types`);
     }
 
+    getStaffName(): Observable<any> {
+        return this.http.get(`${environment.apiUrl}/manage-staff/staff-name`);
+    }
+
     createRoom(payload: any): Observable<any> {
         return this.http.post(`${this.baseUrl}/rooms`, payload);
     }

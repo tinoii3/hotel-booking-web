@@ -1,0 +1,46 @@
+// --- Badges สถานะพนักงาน ---
+.badge-available {
+    background-color: #e6f9ee;
+    color: #1a8c45;
+}
+
+.badge-unavailable {
+    background-color: #fff0f0;
+    color: #e00;
+}
+
+// --- ตารางและโครงสร้างหลัก ---
+.room-table-card {
+    background: #fff;
+    border: 1px solid var(--bs-border-color-subtle);
+    border-radius: 0.5rem;
+    overflow: hidden;
+
+    &__toolbar {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-bottom: 1px solid var(--bs-border-color-subtle);
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        border-top: 1px solid var(--bs-border-color-subtle);
+    }
+}
+
+.room-table {
+    &__th {
+        font-weight: 400;
+        font-size: 1rem;
+        cursor: pointer;
+
+        &--first {
+            padding-left: 1.5rem;
+        }
+    }
+}

@@ -27,9 +27,23 @@
                         </select>
                     </div>
                     <div class="col-6">
-                        <label class="form-label fw-semibold small">ID ผู้ดูแล</label>
-                        <input type="number" class="form-control rounded-3" [(ngModel)]="f_staff_id"
-                            placeholder="รหัสพนักงาน">
+                        <label class="form-label fw-semibold small">ผู้ดูแลห้อง (Staff)</label>
+                        <select class="form-select rounded-3" [(ngModel)]="f_staff_id">
+                            <option value="">-- ไม่ระบุ --</option>
+                            @for (staff of staffs; track staff.id) {
+                            <option [value]="staff.id">{{ staff.staff_name }}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-semibold small">จำนวนผู้ใหญ่ (คน)</label>
+                        <input type="number" class="form-control rounded-3" [(ngModel)]="f_adults" placeholder="เช่น 2">
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label fw-semibold small">จำนวนเด็ก (คน)</label>
+                        <input type="number" class="form-control rounded-3" [(ngModel)]="f_children"
+                            placeholder="เช่น 1">
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-semibold small">สถานะ</label>
@@ -61,8 +75,7 @@
                                         (click)="removeExistingImage(img.id, $event)">
                                         <fa-icon [icon]="faXmark" />
                                     </button>
-                                    <img [src]="img.image_path"
-                                        class="img-thumbnail object-fit-cover shadow-sm"
+                                    <img [src]="img.image_path" class="img-thumbnail object-fit-cover shadow-sm"
                                         style="width: 80px; height: 80px; cursor: zoom-in;"
                                         (click)="openImageViewer(img.image_path, true)">
                                     @if (img.is_cover) { <span

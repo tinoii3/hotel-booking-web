@@ -22,6 +22,7 @@ export class ManageRoom implements OnInit {
 
   rooms: any[] = [];
   roomTypes: any[] = [];
+  staffs: any[] = [];
   currentPage: number = 1;
   totalPages: number = 1;
   limit: number = 10;
@@ -38,6 +39,7 @@ export class ManageRoom implements OnInit {
   ngOnInit() {
     this.loadRoomTypes();
     this.loadRooms(this.currentPage);
+    this.loadStaffNames();
   }
 
   loadRooms(page: number) {
@@ -62,6 +64,17 @@ export class ManageRoom implements OnInit {
     this.roomService.getRoomTypes().subscribe({
       next: (res: any) => this.roomTypes = res,
       error: (err) => console.error(err)
+    });
+  }
+
+  loadStaffNames() {
+    this.roomService.getStaffName().subscribe({
+      next: (res: any) => {
+        this.staffs = res;
+    },
+      error: (err) => {
+        console.error('ไม่สามารถโหลดรายชื่อพนักงานได้', err);
+      }
     });
   }
 

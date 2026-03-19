@@ -18,6 +18,7 @@ import { environment } from '../../../../../../environments/environment';
 export class RoomFormModalComponent implements OnInit {
     @Input() roomData: any = null;
     @Input() roomTypes: any[] = [];
+    @Input() staffs: any[] = [];
     @Output() closed = new EventEmitter<void>();
     @Output() saved = new EventEmitter<void>();
 
@@ -29,6 +30,8 @@ export class RoomFormModalComponent implements OnInit {
     f_room_number = '';
     f_room_type_id = '';
     f_floor: number | '' = '';
+    f_adults: number | '' = '';
+    f_children: number | '' = '';
     f_staff_id: number | '' = '';
     f_status = 'available';
 
@@ -48,6 +51,8 @@ export class RoomFormModalComponent implements OnInit {
             this.f_room_number = this.roomData.room_number;
             this.f_room_type_id = this.roomData.room_type_id;
             this.f_floor = this.roomData.floor;
+            this.f_adults = this.roomData.adults;
+            this.f_children = this.roomData.children;
             this.f_staff_id = this.roomData.staff_id;
             this.f_status = this.roomData.status;
             this.existingImages = this.roomData.room_images || [];
@@ -66,6 +71,8 @@ export class RoomFormModalComponent implements OnInit {
             room_number: this.f_room_number,
             room_type_id: Number(this.f_room_type_id),
             floor: this.f_floor ? Number(this.f_floor) : null,
+            adults: this.f_adults ? Number(this.f_adults) : 0,
+            children: this.f_children ? Number(this.f_children) : 0,
             staff_id: this.f_staff_id ? Number(this.f_staff_id) : null,
             status: this.f_status
         };
@@ -203,7 +210,7 @@ export class RoomFormModalComponent implements OnInit {
     }
 
     openImageViewer(url: string, isExistingImage: boolean = false) {
-        this.fullSizeImageUrl =  url;
+        this.fullSizeImageUrl = url;
         this.isImageViewerOpen = true;
     }
 

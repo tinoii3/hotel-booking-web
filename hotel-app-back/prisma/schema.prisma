@@ -65,11 +65,13 @@ model room_types {
 model rooms {
   id            Int             @id @default(autoincrement()) @db.SmallInt
   room_type_id  Int?            @db.SmallInt
-  room_number   String
+  room_number   String          @db.VarChar
   status        String?         @default("available")
   created_at    DateTime?       @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
   floor         Int?            @db.SmallInt
   staff_id      Int?            @db.SmallInt
+  adults        Int?            @db.SmallInt
+  children      Int?            @db.SmallInt
   booking_items booking_items[]
   reservations  reservations[]
   room_images   room_images[]
@@ -79,11 +81,13 @@ model rooms {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model staff {
-  id        Int       @id @default(autoincrement()) @db.SmallInt
-  position  String?
-  hired_at  DateTime? @default(dbgenerated("CURRENT_DATE")) @db.Date
-  is_active Boolean?  @default(true)
-  rooms     rooms[]
+  id           Int       @id @default(autoincrement()) @db.SmallInt
+  position     String?
+  hired_at     DateTime? @default(dbgenerated("CURRENT_DATE")) @db.Date
+  is_active    Boolean?  @default(true)
+  staff_name   String?   @db.VarChar(100)
+  staff_number String?   @db.VarChar(10)
+  rooms        rooms[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.

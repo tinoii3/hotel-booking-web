@@ -1,0 +1,43 @@
+<div class="modal-backdrop fade show"></div>
+<div class="modal fade show" style="display: block;" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-header border-bottom">
+                <h5 class="modal-title fw-bold">{{ editId ? 'แก้ไขข้อมูลพนักงาน' : 'เพิ่มพนักงานใหม่' }}</h5>
+                <button type="button" class="btn-close" (click)="closed.emit()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label fw-semibold small">เลขพนักงาน</label>
+                        <input type="text" class="form-control rounded-3" [(ngModel)]="staffForm.staff_number"
+                            placeholder="เช่น 001">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small fw-semibold">ชื่อ - นามสกุล <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control rounded-3" [(ngModel)]="staffForm.staff_name" placeholder="ระบุชื่อพนักงาน">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small fw-semibold">ตำแหน่ง</label>
+                        <input type="text" class="form-control rounded-3" [(ngModel)]="staffForm.position" placeholder="เช่น แม่บ้าน, ช่างซ่อมบำรุง">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small fw-semibold">วันที่เริ่มงาน</label>
+                        <input type="date" class="form-control rounded-3" [(ngModel)]="staffForm.hired_at">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small fw-semibold">สถานะการทำงาน</label>
+                        <select class="form-select rounded-3" [(ngModel)]="staffForm.is_active">
+                            <option [ngValue]="true">ทำงานอยู่ (Active)</option>
+                            <option [ngValue]="false">ลาออก/พักงาน (Inactive)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-top-0 pt-3">
+                <button type="button" class="btn btn-light rounded-3 px-4" (click)="closed.emit()">ยกเลิก</button>
+                <button type="button" class="btn btn-primary rounded-3 px-4" (click)="saveStaff()">บันทึกข้อมูล</button>
+            </div>
+        </div>
+    </div>
+</div>

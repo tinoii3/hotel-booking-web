@@ -39,6 +39,7 @@ export const roomFindAll = async (
       include: {
         room_types: true,
         room_images: true,
+        staff: true
       },
     }),
     prisma.rooms.count({ where: whereCondition }),

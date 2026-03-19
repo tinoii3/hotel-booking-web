@@ -1,6 +1,7 @@
 <div class="room-table-card">
 
     <div class="room-table-card__toolbar">
+        <h5 class="m-0 fw-bold align-self-center me-auto">จัดการห้องพัก (Manage Rooms)</h5>
         <div class="dropdown">
             <button class="btn room-filter-btn d-flex align-items-center gap-2" type="button"
                 [class.room-filter-btn--active]="currentFilter !== 'all'" (click)="toggleDropdown()">
@@ -66,6 +67,14 @@
                         ผู้ดูแล <fa-icon [icon]="getFaSortIcon('staff', 'text')" class="ms-1 small"
                             [class.opacity-25]="currentSortBy !== 'staff'"></fa-icon>
                     </th>
+                    <th class="room-table__th" (click)="sortData('adults')">
+                        ผู้ใหญ่ <fa-icon [icon]="getFaSortIcon('adults', 'number')" class="ms-1 small"
+                            [class.opacity-25]="currentSortBy !== 'adults'"></fa-icon>
+                    </th>
+                    <th class="room-table__th" (click)="sortData('children')">
+                        เด็ก <fa-icon [icon]="getFaSortIcon('children', 'number')" class="ms-1 small"
+                            [class.opacity-25]="currentSortBy !== 'children'"></fa-icon>
+                    </th>
                     <th class="room-table__th" (click)="sortData('capacity')">
                         รองรับ <fa-icon [icon]="getFaSortIcon('capacity', 'number')" class="ms-1 small"
                             [class.opacity-25]="currentSortBy !== 'capacity'"></fa-icon>
@@ -83,8 +92,10 @@
                     <td class="ps-4">{{ r.room_number }}</td>
                     <td>{{ r.room_types?.name }}</td>
                     <td>ชั้น {{ r.floor || '-' }}</td>
-                    <td>{{ r.staff?.name || '-' }}</td>
-                    <td>{{ r.room_types?.capacity }} คน</td>
+                    <td>{{ r.staff?.staff_name || '-' }}</td>
+                    <td>{{ r.adults || 0 }} คน</td>
+                    <td>{{ r.children || 0 }} คน</td>
+                    <td>{{ r.room_types?.capacity || 0 }} คน</td>
                     <td>
                         <span class="badge rounded-pill px-3 py-2"
                             [ngClass]="{
@@ -130,6 +141,6 @@
 
 @if (isRoomModalOpen) {
 <app-room-form-modal [roomData]="selectedRoomData" [roomTypes]="roomTypes" (closed)="isRoomModalOpen = false"
-    (saved)="loadRooms(currentPage)">
+    [staffs]="staffs" (closed)="isRoomModalOpen = false" (saved)="loadRooms(currentPage)">
 </app-room-form-modal>
 }
