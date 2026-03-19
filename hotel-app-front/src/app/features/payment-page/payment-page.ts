@@ -17,14 +17,15 @@ export class PaymentPage {
 
   ngOnInit() {
     this.userService.user$.subscribe((user) => {
-      // if (user) {
-      //   this.form.patchValue({
-      //     first_name: user.first_name,
-      //     last_name: user.last_name,
-      //     email: user.email,
-      //   });
-      // }
-      console.log('User data loaded in PaymentPage:', user);
+      if (!user) return;
+
+      console.log('User ready:', user);
+
+      // this.form.patchValue({
+      //   first_name: user.first_name,
+      //   last_name: user.last_name,
+      //   email: user.email,
+      // });
     });
   }
 }

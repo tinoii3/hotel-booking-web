@@ -54,10 +54,8 @@ export const logout = async (req: Request, res: Response) => {
 
 export const profile = async (req: Request, res: Response) => {
   try {
-    console.log("User info from token:", (req as any).user);
     const userId = (req as any).user?.sub;
 
-    console.log("Extracted user ID:", userId);
     const user = await getUserProfile(userId);
 
     res.json(user);

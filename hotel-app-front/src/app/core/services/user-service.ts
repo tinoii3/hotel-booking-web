@@ -7,8 +7,7 @@ export interface UserProfile {
   id: number;
   username: string;
   email?: string;
-  first_name?: string;
-  last_name?: string;
+  role?: string;
 }
 
 @Injectable({
@@ -26,11 +25,9 @@ export class UserService {
 
   loadProfile(): Observable<UserProfile | null> {
     if (this.loaded) {
-      console.log('User profile already loaded, returning cached data.');
       return this.user$;
     }
 
-    console.log('Loading user profile from API...');
     return this.http.get<UserProfile>(`${this.apiUrl}/auth/user-profile`).pipe(
       tap((user) => {
         console.log('User profile loaded:', user);
@@ -54,3 +51,4 @@ export class UserService {
     return this.userSubject.value;
   }
 }
+

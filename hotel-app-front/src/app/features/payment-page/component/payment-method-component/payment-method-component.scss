@@ -1,0 +1,49 @@
+.payment-form {
+  .form-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #6b7280;
+  }
+
+  .form-control {
+    height: 44px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    font-size: 0.9rem;
+
+    &:focus {
+      border-color: #1e3a5f;
+      box-shadow: none;
+      background: #fff;
+    }
+  }
+
+  .input-wrapper {
+    position: relative;
+
+    .icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      font-size: 14px;
+    }
+  }
+
+  button {
+    height: 44px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+
+    &:disabled {
+      background: #ccc;
+      border: none;
+    }
+
+    &:hover:not(:disabled) {
+      background: #3a3a3a;
+    }
+  }
+}

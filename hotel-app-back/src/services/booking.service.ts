@@ -4,8 +4,8 @@ export const getAllBookings = async () => {
     return bookingRepo.bookingFindAll();
 }
 
-export const getBookingById = async (id: number) => {
-    return bookingRepo.bookingFindById(id);
+export const getBookingFindByUserId = async (user_id: number) => {
+    return bookingRepo.bookingFindByUserId(user_id);
 }
 
 export const getAllBookingItems = async () => {

@@ -11,10 +11,10 @@ export const getBookings = async (_req: Request, res: Response) => {
   }
 };
 
-export const getBookingById = async (req: Request, res: Response) => {
+export const getBookingFindByUserId = async (req: Request, res: Response) => {
   try {
-    const id = parseInt(req.params.id as string, 10);
-    const booking = await bookingService.getBookingById(id);
+    const user_id = parseInt(req.params.user_id as string, 10);
+    const booking = await bookingService.getBookingFindByUserId(user_id);
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
     }
