@@ -11,7 +11,7 @@ export const routes: Routes = [
     redirectTo: 'hotel/home',
     pathMatch: 'full',
   },
-  
+
   {
     path: 'test',
     component: ComponentPage,
@@ -64,6 +64,11 @@ export const routes: Routes = [
     data: { role: 'admin' },
     children: [
       {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/admin/dashboard/dashboard').then((m) => m.Dashboard),
+      },
+      {
         path: 'manage-room',
         loadComponent: () =>
           import('./features/admin/manage-room/manage-room').then((m) => m.ManageRoom),
@@ -77,11 +82,6 @@ export const routes: Routes = [
         path: 'manage-staff',
         loadComponent: () =>
           import('./features/admin/manage-staff/manage-staff').then((m) => m.ManageStaff),
-      },
-      {
-        path: 'dashboard', 
-        loadComponent: () =>
-          import('./features/admin/dashboard/dashboard').then((m) => m.Dashboard),
       },
       { path: '', redirectTo: 'manage-room', pathMatch: 'full' },
     ],

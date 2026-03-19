@@ -11,7 +11,13 @@ import { refreshInterceptor } from './interceptors/auth/refresh-interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideHttpClient(withInterceptors([loadingInterceptor, errorInterceptor, authInterceptor, refreshInterceptor])),
+    provideHttpClient(
+      withInterceptors([
+        loadingInterceptor, 
+        authInterceptor, 
+        refreshInterceptor,
+        errorInterceptor]), 
+    ),
     provideRouter(routes),
   ],
 };

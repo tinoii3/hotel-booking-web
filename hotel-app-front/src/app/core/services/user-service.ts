@@ -25,12 +25,11 @@ export class UserService {
 
   loadProfile(): Observable<UserProfile | null> {
     if (this.loaded) {
-      return this.user$;
+      return of(this.userSubject.value);
     }
 
     return this.http.get<UserProfile>(`${this.apiUrl}/auth/user-profile`).pipe(
       tap((user) => {
-        console.log('User profile loaded:', user);
         this.userSubject.next(user);
         this.loaded = true;
       })
