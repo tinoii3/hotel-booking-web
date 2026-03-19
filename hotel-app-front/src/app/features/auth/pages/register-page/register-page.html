@@ -12,7 +12,7 @@
           type="text"
           class="form-control"
           formControlName="username"
-          placeholder="กรอกชื่อผู้ใช้"
+          placeholder="กรุณากรอกชื่อผู้ใช้"
         />
         @if (registerForm.get('username')?.touched && registerForm.get('username')?.invalid) {
           <div class="text-danger mt-1">กรุณากรอกชื่อผู้ใช้</div>
@@ -20,7 +20,7 @@
       </div>
       <div class="form-group mb-3">
         <label>อีเมล</label>
-        <input type="email" class="form-control" formControlName="email" placeholder="กรอกอีเมล" />
+        <input type="email" class="form-control" formControlName="email" placeholder="example@email.com" />
         @if (
           registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']
         ) {
@@ -38,7 +38,7 @@
           type="password"
           class="form-control"
           formControlName="password"
-          placeholder="กรอกรหัสผ่าน"
+          placeholder="กรุณากรอกรหัสผ่าน"
           minlength="6"
         />
         @if (

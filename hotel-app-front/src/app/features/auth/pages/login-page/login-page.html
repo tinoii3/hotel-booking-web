@@ -13,7 +13,7 @@
           type="text"
           class="form-control"
           formControlName="username"
-          placeholder="กรอกชื่อผู้ใช้"
+          placeholder="กรุณากรอกชื่อผู้ใช้"
         />
 
         @if (loginForm.get('username')?.touched && loginForm.get('username')?.invalid) {
@@ -28,7 +28,7 @@
           type="password"
           class="form-control"
           formControlName="password"
-          placeholder="กรอกรหัสผ่าน"
+          placeholder="กรุณากรอกรหัสผ่าน"
         />
 
         @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {

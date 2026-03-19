@@ -1,2 +1,28 @@
-<p>payment-page works!</p>
-<h1>Payment Page</h1>
+<div class="bg-light min-vh-100 py-4">
+  <div class="container" style="max-width: 1100px">
+    <div class="bg-white border border-dark-subtle rounded-3 p-4 shadow-sm">
+
+      <div class="payment-layout">
+
+        <!-- LEFT SIDE -->
+        <div class="left">
+          <div class="section">
+            <detail-component></detail-component>
+          </div>
+
+          <div class="section">
+            <payment-method-component></payment-method-component>
+          </div>
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="right">
+          <h5 class="section-title">รายละเอียดการจอง</h5>
+          <detail-reservation-component></detail-reservation-component>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

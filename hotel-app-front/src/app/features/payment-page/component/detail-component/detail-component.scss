@@ -1,0 +1,27 @@
+.detail-form {
+  .form-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #6b7280;
+  }
+
+  .form-control {
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    padding: 10px 12px;
+    transition: all 0.2s;
+
+    &:focus {
+      border-color: #111827;
+      box-shadow: none;
+    }
+  }
+
+  textarea.form-control {
+    resize: none;
+  }
+
+  small.text-danger {
+    font-size: 0.75rem;
+  }
+}
