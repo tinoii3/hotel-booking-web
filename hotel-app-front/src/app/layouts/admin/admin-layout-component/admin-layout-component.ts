@@ -21,7 +21,7 @@ export class AdminLayout {
   private routeTitles: { [key: string]: string } = {
     '/admin/dashboard': 'Dashboard',
     '/admin/manage-room': 'จัดการห้องพัก',
-    '/admin/reserv-room': 'การจอง',
+    '/admin/reservations': 'การจอง',
     '/admin/manage-staff': 'การจัดการผู้ดูแล'
   };
 

@@ -6,11 +6,11 @@ import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-reserv-room',
+  selector: 'app-reservations',
   standalone: true,
   imports: [CommonModule, FormsModule, PaginationLayoutComponent],
-  templateUrl: './reserv-room.html',
-  styleUrl: './reserv-room.scss',
+  templateUrl: './reservations.html',
+  styleUrl: './reservations.scss',
 })
 export class ReservRoom implements OnInit {
 

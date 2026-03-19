@@ -1,4 +1,4 @@
-import * as reservRoomRepo from "../repository/reservation.repository.js"
+import * as reservationRepo from "../repository/reservation.repository.js"
 
 export const getAllReservations = async (
     page: number,
@@ -9,7 +9,7 @@ export const getAllReservations = async (
     const skip = (page - 1) * limit;
     const take = limit;
     const { reservations, totalReservations } =
-        await reservRoomRepo.reservationFindAll(skip, take, roomType, paymentStatus);
+        await reservationRepo.reservationsFindAll(skip, take, roomType, paymentStatus);
     const totalPages = Math.ceil(totalReservations / limit);
     return {
         data: reservations,
@@ -20,8 +20,4 @@ export const getAllReservations = async (
             totalPages: totalPages
         }
     };
-}
-
-export const getAllRoomTypes = async () => {
-    return reservRoomRepo.roomTypeFindAll();
 }
