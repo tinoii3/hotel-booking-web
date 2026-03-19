@@ -1,16 +1,16 @@
 <form [formGroup]="form" class="search-bar">
   <div class="field">
-    <label> Check-in </label>
+    <label> เช็คอิน </label>
     <input type="date" formControlName="check_in" [min]="minCheckInDate" [max]="form.value.check_out || null"/>
   </div>
 
   <div class="field">
-    <label> Check-out </label>
+    <label> เช็คเอาต์ </label>
     <input type="date" formControlName="check_out" [min]="form.value.check_in || minCheckInDate" />
   </div>
 
   <div class="field">
-    <label> Room Type </label>
+    <label> ประเภทห้อง </label>
     <select formControlName="room_type">
       @for (room of roomTypes; track room.value) {
         <option [value]="room.value">{{ room.label }}</option>
@@ -19,7 +19,7 @@
   </div>
 
   <div class="field">
-    <label> Guests </label>
+    <label> จำนวนแขก </label>
     <select formControlName="guests">
       @for (g of guestOptions; track g.label) {
         <option [ngValue]="g">{{ g.label }}</option>
@@ -29,6 +29,6 @@
 
   <button type="button" class="btn-search" (click)="onSearch()">
     <fa-icon [icon]="faSearch"></fa-icon>
-    Search
+    ค้นหา
   </button>
 </form>

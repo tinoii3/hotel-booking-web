@@ -56,7 +56,6 @@ export class SearchBar implements OnInit {
       const checkIn = this.form.get('check_in')?.value;
 
       if (checkIn && checkOut && checkOut < checkIn) {
-        // ❗ reset check_in
         this.form.patchValue({ check_in: null });
       }
     });

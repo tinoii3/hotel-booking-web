@@ -22,12 +22,12 @@ export class NavbarComponent {
 
   logout() {
     Swal.fire({
-      title: 'Logout?',
-      text: 'You will need to login again.',
+      title: 'ออกจากระบบ?',
+      text: 'คุณจะต้องเข้าสู่ระบบอีกครั้ง',
       icon: 'warning',
       showCancelButton: true,
-      cancelButtonText: 'Cancel',
-      confirmButtonText: 'Yes',
+      cancelButtonText: 'ยกเลิก',
+      confirmButtonText: 'ใช่',
       buttonsStyling: false,
       reverseButtons: true,
       customClass: {
@@ -40,8 +40,8 @@ export class NavbarComponent {
 
         Swal.fire({
           icon: 'success',
-          title: 'Logged out',
-          text: 'See you again!',
+          title: 'ออกจากระบบแล้ว',
+          text: 'พบกันใหม่นะ!',
           timer: 1500,
           showConfirmButton: false,
         }).then(() => {

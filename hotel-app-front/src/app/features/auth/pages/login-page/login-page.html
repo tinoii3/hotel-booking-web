@@ -1,49 +1,49 @@
 <div class="auth-page">
   <div class="auth-card">
     <div class="auth-header">
-      <h3>Welcome</h3>
-      <p>Sign in to continue booking your stay</p>
+      <h3>ยินดีต้อนรับ</h3>
+      <p>เข้าสู่ระบบเพื่อทำรายการจองที่พักของคุณ</p>
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="login()">
       <div class="form-group mb-3">
-        <label>Username</label>
+        <label>ชื่อผู้ใช้</label>
 
         <input
           type="text"
           class="form-control"
           formControlName="username"
-          placeholder="Enter username"
+          placeholder="กรอกชื่อผู้ใช้"
         />
 
         @if (loginForm.get('username')?.touched && loginForm.get('username')?.invalid) {
-          <div class="text-danger mt-1">Username is required</div>
+          <div class="text-danger mt-1">กรุณากรอกชื่อผู้ใช้</div>
         }
       </div>
 
       <div class="form-group mb-4">
-        <label>Password</label>
+        <label>รหัสผ่าน</label>
 
         <input
           type="password"
           class="form-control"
           formControlName="password"
-          placeholder="Enter password"
+          placeholder="กรอกรหัสผ่าน"
         />
 
         @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
-          <div class="text-danger mt-1">Password is required</div>
+          <div class="text-danger mt-1">กรุณากรอกรหัสผ่าน</div>
         }
       </div>
 
       <button type="submit" class="btn btn-primary w-100 mb-3">
-        Login
+        เข้าสู่ระบบ
       </button>
     </form>
 
     <div class="auth-footer">
-      <span>Don't have an account?</span>
-      <a routerLink="/auth/register">Register</a>
+      <span>ยังไม่มีบัญชีใช่ไหม?</span>
+      <a routerLink="/auth/register" class="text-decoration-underline">สมัครสมาชิก</a>
     </div>
   </div>
 </div>

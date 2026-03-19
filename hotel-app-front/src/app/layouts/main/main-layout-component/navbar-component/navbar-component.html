@@ -1,30 +1,5 @@
-<!-- <nav class="navbar navbar-expand-lg px-3 shadow-sm">
-  <a class="navbar-brand fw-bold" routerLink="/">Hotel</a>
-
-  <div class="ms-auto">
-    @if (isLoggedIn()) {
-      <div class="d-flex align-items-center gap-3">
-        <button class="btn btn-outline-light fw-semibold" (click)="logout()">Logout</button>
-      </div>
-    } @else {
-      <div class="d-flex gap-3">
-        <a routerLink="/auth/login" class="btn btn-primary fw-semibold" style="width: 100px">
-          Login
-        </a>
-
-        <a
-          routerLink="/auth/register"
-          class="btn btn-outline-light fw-semibold"
-          style="width: 100px"
-        >
-          Register
-        </a>
-      </div>
-    }
-  </div>
-</nav> -->
 <nav class="navbar navbar-expand-lg px-4 shadow-sm">
-  <a class="navbar-brand fw-bold" routerLink="/hotel/home">Hotel</a>
+  <a class="navbar-brand fw-bold" routerLink="/hotel/home">โรงแรม</a>
 
   <div class="ms-auto d-flex align-items-center gap-2">
     <div class="d-flex align-items-center gap-2 me-4">
@@ -33,7 +8,7 @@
         routerLinkActive="fw-bold text-decoration-underline"
         class="nav-link fw-semibold px-2"
       >
-        Home
+        หน้าแรก
       </a>
 
       <a
@@ -41,7 +16,7 @@
         routerLinkActive="fw-bold text-decoration-underline"
         class="nav-link fw-semibold px-2"
       >
-        Booking
+        จองห้องพัก
       </a>
 
       <a
@@ -49,19 +24,19 @@
         routerLinkActive="fw-bold text-decoration-underline"
         class="nav-link fw-semibold px-2"
       >
-        Payment
+        ชำระเงิน
       </a>
     </div>
 
     @if (isLoggedIn()) {
       <div class="d-flex align-items-center">
-        <button class="btn btn-outline-light fw-semibold px-4" (click)="logout()">Logout</button>
+        <button class="btn btn-outline-light fw-semibold px-4" (click)="logout()">ออกจากระบบ</button>
       </div>
     } @else {
       <div class="d-flex gap-3">
-        <a routerLink="/auth/login" class="btn btn-primary fw-semibold px-4"> Login </a>
+        <a routerLink="/auth/login" class="btn btn-primary fw-semibold px-4"> เข้าสู่ระบบ </a>
 
-        <a routerLink="/auth/register" class="btn btn-outline-light fw-semibold px-4"> Register </a>
+        <a routerLink="/auth/register" class="btn btn-outline-light fw-semibold px-4"> สมัครสมาชิก </a>
       </div>
     }
   </div>

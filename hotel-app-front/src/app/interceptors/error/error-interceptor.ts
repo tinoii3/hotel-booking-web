@@ -12,8 +12,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
         Swal.fire({
           icon: 'error',
-          title: 'Unauthorized',
-          text: 'Please login again'
+          title: 'ไม่สามารถเข้าถึงได้',
+          text: 'กรุณาเข้าสู่ระบบอีกครั้ง'
         });
 
       }
@@ -23,7 +23,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         Swal.fire({
           icon: 'error',
           title: 'Server error',
-          text: 'Something went wrong. Please try again later.'
+          text: 'เกิดข้อผิดพลาดที่ไม่คาดคิด โปรดลองอีกครั้งในภายหลัง'
         });
 
       }

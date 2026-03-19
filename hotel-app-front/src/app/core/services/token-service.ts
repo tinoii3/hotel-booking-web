@@ -37,20 +37,14 @@ export class TokenService {
       return null;
     }
 
-    console.log('Raw JWT:', token);
-
     const payload = token.split('.')[1];
-
     const decoded = JSON.parse(atob(payload));
-
-    console.log('Decoded JWT payload:', decoded);
 
     return decoded;
   }
 
   getUserRole(): string | null {
     const decoded = this.decodeToken();
-    console.log('DECODED TOKEN ROLE', decoded?.role);
     return decoded?.role ?? null;
   }
 }

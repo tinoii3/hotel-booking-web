@@ -45,14 +45,10 @@ export const registerService = async ({
   username,
   password,
   email,
-  first_name,
-  last_name,
 }: {
   username: string;
   password: string;
   email?: string;
-  first_name?: string;
-  last_name?: string;
 }) => {
   const existingUser = await findUserByUsername(username);
 
@@ -62,21 +58,13 @@ export const registerService = async ({
 
   const hashedPassword = await hashPassword(password);
 
-  const result = await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx: any) => {
     const user = await tx.users.create({
       data: {
         user_name: username,
         user_password: hashedPassword,
         email,
-        first_name,
-        last_name,
         role: "customer",
-      },
-    });
-
-    await tx.customers.create({
-      data: {
-        user_id: user.id,
       },
     });
 
@@ -118,13 +106,6 @@ export const refreshTokenLogic = async (rawToken: string) => {
     sub: user.id,
     role: user.role,
   });
-
-  // console.log(
-  //   "decode new access token",
-  //   newAccessToken
-  //     .split(".")
-  //     .map((part) => Buffer.from(part, "base64").toString()),
-  // );
 
   return {
     access_token: newAccessToken,
