@@ -7,6 +7,7 @@ import uploadRoutes from "./upload.routes.js";
 import manageStaffRoutes from "./manage-staff.routes.js";
 import reservationsRoutes from "./reservation.routes.js";
 import homePageRoutes from "./home-page.routes.js";
+import roomBooking from "./roombooking.route.js"
 
 const router = Router();
 
@@ -19,6 +20,8 @@ router.use("/auth", authRoutes);
 router.use("/home", homePageRoutes);
 
 router.use("/bookings", bookingRoute);
+
+router.use("/roombooking", roomBooking)
 
 router.use(
   "/manage-room",
