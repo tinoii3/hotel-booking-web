@@ -1,7 +1,7 @@
 info:
   name: rever
   type: http
-  seq: 13
+  seq: 12
 
 http:
   method: GET

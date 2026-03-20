@@ -1,7 +1,7 @@
 info:
   name: booking-user-id
   type: http
-  seq: 12
+  seq: 11
 
 http:
   method: GET

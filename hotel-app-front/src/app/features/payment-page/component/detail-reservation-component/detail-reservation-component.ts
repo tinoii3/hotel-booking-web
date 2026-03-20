@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { TokenService } from '../../../../core/services/token-service';
 import { Booking } from '../../models/booking-model';
-import { BookingService } from '../../service/booking-service';
+import { PaymentService } from '../../service/payment-service';
 import { DecimalPipe } from '@angular/common';
 
 @Component({
@@ -16,7 +16,7 @@ export class DetailReservationComponent implements OnInit {
   booking: Booking | null = null;
 
   constructor(
-    private bookingService: BookingService,
+    private paymentService: PaymentService,
     private tokenService: TokenService
   ) {}
 
@@ -26,11 +26,10 @@ export class DetailReservationComponent implements OnInit {
 
     if (!userId) return;
 
-    this.bookingService.getUserBookings(userId).subscribe({
+    this.paymentService.getUserBookings(userId).subscribe({
       next: (res) => {
-        const pending = res.find(b => b.status === 'PENDING');
 
-        this.booking = pending || res[0];
+        this.booking = res;
         this.bookingLoaded.emit(this.booking);
       },
       error: (err) => {

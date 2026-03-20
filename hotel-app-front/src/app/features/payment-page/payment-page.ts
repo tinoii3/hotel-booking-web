@@ -4,8 +4,9 @@ import { DetailComponent } from './component/detail-component/detail-component';
 import { DetailReservationComponent } from './component/detail-reservation-component/detail-reservation-component';
 import { UserService } from '../../core/services/user-service';
 import { Booking } from './models/booking-model';
-import { BookingStatus } from '../../core/constants/status.constanst';
-import { PaymentStatus } from '../../core/constants/status.constanst';
+import { PaymentService } from './service/payment-service';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-payment-page',
@@ -25,7 +26,11 @@ export class PaymentPage {
   paymentValid = false;
   user_id: number = 0;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private paymentService: PaymentService,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.userService.user$.subscribe((user) => {
@@ -59,26 +64,38 @@ export class PaymentPage {
 
     const payload = {
       booking_id: this.booking!.id,
-      booking: {
-        user_id: this.user_id,
-        first_name: this.detailForm.first_name,
-        last_name: this.detailForm.last_name,
-        email: this.detailForm.email,
-        phone: this.detailForm.phone,
-        note: this.detailForm.note,
-        status: BookingStatus.CONFIRMED,
-      },
-      payment: {
-        payment_method: 'CARD',
-        amount: this.booking!.total_price,
-        status: PaymentStatus.COMPLETED,
-        pay_at: new Date(),
-      },
+      first_name: this.detailForm.first_name,
+      last_name: this.detailForm.last_name,
+      email: this.detailForm.email,
+      phone: this.detailForm.phone,
+      note: this.detailForm.note,
+      payment_method: 'CARD',
     };
 
     console.log('🔥 FINAL PAYLOAD:', payload);
 
-    // this.paymentService.pay(payload).subscribe(...)
+    this.paymentService.createPayment(payload).subscribe({
+      next: (res) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'ชำระเงินสำเร็จ 🎉',
+          text: 'การจองของคุณได้รับการยืนยันแล้ว',
+          timer: 1500,
+          showConfirmButton: false,
+        }).then(() => {
+          this.router.navigate(['/hotel']);
+        });
+      },
+      error: (err) => {
+        console.error('Payment failed:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'ชำระเงินไม่สำเร็จ',
+          text: err.error?.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
+          confirmButtonColor: '#1e3a5f',
+        });
+      },
+    });
   }
   canSubmit(): boolean {
     return this.detailValid && this.paymentValid && !!this.booking;
