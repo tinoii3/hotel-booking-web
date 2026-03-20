@@ -1,27 +1,22 @@
 <div class="bg-white border border-dark-subtle rounded-3 overflow-hidden">
     <div class="d-flex justify-content-end align-items-center gap-2 px-4 py-3 border-bottom">
         <h5 class="m-0 fw-bold align-self-center me-auto">การจอง (Reservations)</h5>
-
         <div class="dropdown">
             <button class="btn btn-outline-dark d-flex align-items-center gap-2 rounded-3"
                 type="button" [class.room-filter-btn--active]="selectedRoomType !== 'all'"
                 (click)="toggleDropdown()">
-
                 <i class="bi bi-funnel"></i>
                 {{ selectedRoomType === 'all' ? 'ประเภทห้อง' : selectedRoomType }}
                 <i class="bi bi-chevron-down small"></i>
             </button>
-
             <ul class="dropdown-menu dropdown-menu-end"
                 [class.show]="isDropdownOpen"
                 [style.display]="isDropdownOpen ? 'block' : 'none'">
-
                 <li>
                     <a class="dropdown-item" href="javascript:void(0)" (click)="filterType('all')">
                         ทั้งหมด
                     </a>
                 </li>
-
                 @for (type of roomTypes; track type.id) {
                 <li>
                     <a class="dropdown-item"
@@ -31,7 +26,6 @@
                     </a>
                 </li>
                 }
-
             </ul>
         </div>
 
@@ -39,35 +33,24 @@
             <button class="btn btn-outline-dark d-flex align-items-center gap-2 rounded-3"
                 type="button" [class.room-filter-btn--active]="selectedStatus !== 'all'"
                 (click)="toggleStatusDropdown()">
-
                 <i class="bi bi-funnel"></i>
                 {{ selectedStatus === 'all' ? 'สถานะการจอง' : getStatusLabel(selectedStatus) }}
                 <i class="bi bi-chevron-down small"></i>
             </button>
-
             <ul class="dropdown-menu dropdown-menu-end"
                 [class.show]="isStatusDropdownOpen"
                 [style.display]="isStatusDropdownOpen ? 'block' : 'none'">
-
                 <li>
                     <a class="dropdown-item" href="javascript:void(0)" (click)="filterStatus('all')">
                         ทั้งหมด
                     </a>
                 </li>
-
                 <li><a class="dropdown-item" href="javascript:void(0)" (click)="filterStatus('PENDING')">รอการชำระ</a></li>
                 <li><a class="dropdown-item" href="javascript:void(0)" (click)="filterStatus('CONFIRMED')">ยืนยันการจอง</a></li>
                 <li><a class="dropdown-item" href="javascript:void(0)" (click)="filterStatus('CANCELLED')">ยกเลิกการจอง</a></li>
                 <li><a class="dropdown-item" href="javascript:void(0)" (click)="filterStatus('EXPIRED')">หมดเวลา</a></li>
-
             </ul>
         </div>
-        @if (selectedRoomType !== 'all' || selectedStatus !== 'all'){
-        <button class="btn btn-outline-secondary rounded-3"
-            (click)="clearFilters()">
-            <fa-icon [icon]="faTrashCan" class="me-1"></fa-icon>
-        </button>
-        }   
     </div>
 
     <div class="table-responsive">
@@ -128,38 +111,32 @@
                     <td class="align-top ps-4">
                         {{ r.first_name }} {{ r.last_name }}
                     </td>
-
                     <td class="align-top">
                         @for (item of r.booking_items; track $index) {
                             <div>{{ item.rooms?.room_number }}</div>
                         }
                     </td>
-
                     <td class="align-top">
                         @for (item of r.booking_items; track $index) {
                             <div>{{ item.rooms?.room_types?.name }}</div>
                         }
                     </td>
-
                     <td class="align-top">
                         {{ r.check_in | date:'yyyy-MM-dd' }}
                     </td>
-
                     <td class="align-top">
                         {{ r.check_out | date:'yyyy-MM-dd' }}
                     </td>
-
                     <td>
                         <span class="badge rounded-pill px-3 py-2"
                             [ngClass]="{
-                                'bg-warning text-dark': r.status === 'PENDING',
-                                'bg-success': r.status === 'CONFIRMED',
-                                'bg-danger': r.status === 'CANCELLED',
-                                'bg-primary': r.status === 'COMPLETED'
+                                'badge-pending': r.status === 'PENDING',
+                                'badge-confirmed': r.status === 'CONFIRMED',
+                                'badge-cancelled': r.status === 'CANCELLED',
+                                'badge-expired': r.status === 'EXPIRED'
                             }">
 
                             {{ getStatusLabel(r.status) }}
-
                         </span>
                     </td>
                     <td class="text-left">
@@ -170,7 +147,6 @@
                     </td>
                 </tr>
                 }
-
                 @empty {
                 <tr>
                     <td colspan="6" class="text-center py-4 text-muted">
@@ -178,23 +154,18 @@
                     </td>
                 </tr>
                 }
-
             </tbody>
         </table>
     </div>
 
     <div class="d-flex justify-content-between align-items-center px-4 py-3 border-top">
-
         <span class="text-muted small">
             แสดงหน้า {{ currentPage }} จาก {{ totalPages }} หน้า
         </span>
-
         <app-pagination-layout-component
             [currentPage]="currentPage"
             [totalPages]="totalPages"
             (pageChange)="onPageChange($event)">
         </app-pagination-layout-component>
-
     </div>
-
 </div>

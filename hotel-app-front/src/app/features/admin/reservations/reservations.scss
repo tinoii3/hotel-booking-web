@@ -4,14 +4,24 @@
   color: #1473FF;
 }
 
-.badge-available {
+.badge-confirmed {
   background-color: #e6f9ee;
   color: #1a8c45;
 }
 
-.badge-unavailable {
+.badge-cancelled {
   background-color: #fff0f0;
   color: #e00;
+}
+
+.badge-expired {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.badge-pending {
+  background-color: #f0e7c5;
+  color: #fed73b;
 }
 
 // --- ตารางและโครงสร้างหลัก ---

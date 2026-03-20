@@ -174,8 +174,7 @@ export class Reservation implements OnInit {
       inputOptions: {
         PENDING: 'รอการชำระ',
         CONFIRMED: 'ยืนยันการจอง',
-        CANCELLED: 'ยกเลิกการจอง',
-        EXPIRED: 'หมดเวลา'
+        CANCELLED: 'ยกเลิกการจอง'
       },
       showCancelButton: true,
       confirmButtonText: 'ยืนยัน',
