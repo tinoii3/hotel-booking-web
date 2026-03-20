@@ -265,15 +265,6 @@ export class RoombookingPage implements OnInit {
       return;
     }
 
-    if (this.cartItems.length === 0) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'ตะกร้าว่างเปล่า',
-        text: 'กรุณาเลือกห้องพักลงตะกร้าก่อนดำเนินการต่อ',
-      });
-      return;
-    }
-
     const itemsPayload = this.cartItems.map((item) => ({
       room_id: item.roomId,
       room_name: item.roomName,
