@@ -46,7 +46,8 @@ export const upsertBooking = async (body: any) => {
     });
 
     const expiresAt = new Date();
-    expiresAt.setHours(expiresAt.getHours() + 10);
+    // expiresAt.setHours(expiresAt.getHours() + 10);
+    expiresAt.setMinutes(expiresAt.getMinutes() + 10);
 
     const bookingData = {
         user_id,
