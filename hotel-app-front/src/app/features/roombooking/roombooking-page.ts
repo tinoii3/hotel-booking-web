@@ -111,7 +111,7 @@ export class RoombookingPage implements OnInit {
     this.f_checkin = data.check_in;
     this.f_checkout = data.check_out;
     this.f_roomtype = data.room_type;
-    this.f_guest = data.guest;
+    this.f_guest = data.guests;
     this.searchRooms();
   }
 
