@@ -1,12 +1,21 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
 import Swal from 'sweetalert2';
+import { HttpContextToken } from '@angular/common/http';
+
+export const SKIP_ERROR_ALERT = new HttpContextToken<boolean>(() => false);
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
+  const skipAlert = req.context.get(SKIP_ERROR_ALERT);
+
   return next(req).pipe(
     catchError((error) => {
+      if (skipAlert) {
+        return throwError(() => error);
+      }
+
       let errorMessage = 'เกิดข้อผิดพลาดที่ไม่คาดคิด';
-      
+
       if (error.status === 401) {
         errorMessage = 'กรุณาเข้าสู่ระบบอีกครั้ง';
       } else if (error.status === 404) {
