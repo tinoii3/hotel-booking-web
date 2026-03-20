@@ -1,0 +1,137 @@
+<div class="modal-backdrop fade show"></div>
+<div class="modal fade show" style="display: block;" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4">
+            <div class="modal-header border-bottom">
+                <h5 class="modal-title">{{ editId === null ? 'เพิ่มห้องพัก' : 'แก้ไขห้องพัก' }}</h5>
+                <button type="button" class="btn-close" (click)="closed.emit()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3">
+
+                    <div class="col-6">
+                        <label class="form-label fw-semibold small">เลขห้อง</label>
+                        <input type="text" class="form-control rounded-3" [(ngModel)]="f_room_number"
+                            placeholder="เช่น 001">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-semibold small">ชั้น</label>
+                        <input type="number" class="form-control rounded-3" [(ngModel)]="f_floor" placeholder="เช่น 4">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-semibold small">ประเภทห้อง</label>
+                        <select class="form-select rounded-3" [(ngModel)]="f_room_type_id">
+                            @for (type of roomTypes; track type.id) {
+                            <option [value]="type.id">{{ type.name }} ({{ type.price_per_night }} บ.)</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-semibold small">ผู้ดูแลห้อง (Staff)</label>
+                        <select class="form-select rounded-3" [(ngModel)]="f_staff_id">
+                            <option value="">-- ไม่ระบุ --</option>
+                            @for (staff of staffs; track staff.id) {
+                            <option [value]="staff.id">{{ staff.staff_name }}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-semibold small">จำนวนผู้ใหญ่ (คน)</label>
+                        <input type="number" class="form-control rounded-3" [(ngModel)]="f_adults" placeholder="เช่น 2">
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label fw-semibold small">จำนวนเด็ก (คน)</label>
+                        <input type="number" class="form-control rounded-3" [(ngModel)]="f_children"
+                            placeholder="เช่น 1">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-semibold small">สถานะ</label>
+                        <select class="form-select rounded-3" [(ngModel)]="f_status">
+                            <option value="available">ว่าง</option>
+                            <option value="occupied">เช็คอิน</option>
+                            <option value="maintenance">ไม่พร้อมใช้งาน</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 border-top pt-3 mt-3">
+                        <label class="form-label fw-semibold small mb-2">จัดการรูปภาพห้องพัก</label>
+
+                        @if (existingImages.length > 0) {
+                        <div class="mb-3">
+                            <p class="small text-muted mb-2">รูปภาพปัจจุบัน (คลิกดาวเพื่อตั้งหน้าปก)</p>
+                            <div class="d-flex flex-wrap gap-2 p-2 bg-white rounded-3 border">
+                                @for (img of existingImages; track img.id) {
+                                <div class="position-relative d-inline-block">
+                                    <button type="button"
+                                        class="btn btn-sm position-absolute top-0 start-0 m-1 p-0 border-0"
+                                        style="z-index: 10;" (click)="setExistingAsCover(img, $event)">
+                                        <fa-icon [icon]="faStar" class="fs-5 drop-shadow"
+                                            [ngClass]="img.is_cover ? 'text-warning' : 'text-white'"></fa-icon>
+                                    </button>
+                                    <button type="button"
+                                        class="btn btn-sm btn-danger position-absolute top-0 end-0 rounded-circle"
+                                        style="transform: translate(30%, -30%); padding: 0.1rem 0.35rem; font-size: 0.7rem; z-index: 10;"
+                                        (click)="removeExistingImage(img.id, $event)">
+                                        <fa-icon [icon]="faXmark" />
+                                    </button>
+                                    <img [src]="img.image_path" class="img-thumbnail object-fit-cover shadow-sm"
+                                        style="width: 80px; height: 80px; cursor: zoom-in;"
+                                        (click)="openImageViewer(img.image_path, true)">
+                                    @if (img.is_cover) { <span
+                                        class="position-absolute bottom-0 start-50 translate-middle-x badge bg-warning text-dark"
+                                        style="font-size: 0.6rem; margin-bottom: -5px;">หน้าปก</span> }
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        }
+
+                        <div class="mb-3">
+                            <p class="small text-muted mb-2">เพิ่มรูปภาพใหม่</p>
+                            <input type="file" class="form-control rounded-3" multiple
+                                accept="image/jpeg,image/png,image/webp" (change)="onFileSelected($event)">
+                        </div>
+
+                        @if (previewUrls.length > 0) {
+                        <div>
+                            <p class="small text-muted mb-2">พรีวิวรูปภาพที่เลือกใหม่</p>
+                            <div
+                                class="d-flex flex-wrap gap-2 p-2 bg-light rounded-3 border border-primary border-opacity-25">
+                                @for (url of previewUrls; track $index) {
+                                <div class="position-relative d-inline-block">
+                                    <button type="button"
+                                        class="btn btn-sm position-absolute top-0 start-0 m-1 p-0 border-0"
+                                        style="z-index: 10;" (click)="setPreviewAsCover($index, $event)">
+                                        <fa-icon [icon]="faStar" class="fs-5 drop-shadow"
+                                            [ngClass]="coverPreviewIndex === $index ? 'text-warning' : 'text-white'"></fa-icon>
+                                    </button>
+                                    <button type="button"
+                                        class="btn btn-sm btn-danger position-absolute top-0 end-0 rounded-circle"
+                                        style="transform: translate(30%, -30%); padding: 0.1rem 0.35rem; font-size: 0.7rem; z-index: 10;"
+                                        (click)="removePreviewImage($index, $event)">
+                                        <fa-icon [icon]="faXmark" />
+                                    </button>
+                                    <img [src]="url" class="img-thumbnail object-fit-cover shadow-sm"
+                                        style="width: 80px; height: 80px; cursor: zoom-in;"
+                                        (click)="openImageViewer(url, false)">
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer border-top">
+                <button class="btn btn-dark btn-sm rounded-3" (click)="closed.emit()">ยกเลิก</button>
+                <button class="btn btn-primary btn-sm rounded-3" (click)="saveRoom()">บันทึก</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (isImageViewerOpen) {
+<app-image-viewer [url]="fullSizeImageUrl" (close)="isImageViewerOpen = false"></app-image-viewer>
+}

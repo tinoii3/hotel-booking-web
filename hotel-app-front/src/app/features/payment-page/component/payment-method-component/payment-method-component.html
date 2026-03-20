@@ -1,0 +1,56 @@
+<h5 class="section-title">วิธีการชำระเงิน</h5>
+
+<form [formGroup]="form" class="payment-form">
+
+  <div class="form-group mb-3">
+    <label class="form-label">หมายเลขบัตร</label>
+    <div class="input-wrapper">
+      <i class="icon bi bi-credit-card"></i>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="cardNumber"
+        placeholder="1234 5678 9012 3456"
+        maxlength="19"
+        appCardMask
+      />
+    </div>
+
+    @if (form.get('cardNumber')?.touched && form.get('cardNumber')?.invalid) {
+      <small class="text-danger">หมายเลขบัตรไม่ถูกต้อง</small>
+    }
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label">วันหมดอายุ</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="expiry"
+        placeholder="MM/YY"
+        maxlength="5"
+        appExpiryMask
+      />
+
+      @if (form.get('expiry')?.touched && form.get('expiry')?.invalid) {
+        <small class="text-danger">รูปแบบไม่ถูกต้อง</small>
+      }
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">CVV</label>
+      <input
+        type="password"
+        class="form-control"
+        formControlName="cvv"
+        placeholder="123"
+        maxlength="4"
+      />
+
+      @if (form.get('cvv')?.touched && form.get('cvv')?.invalid) {
+        <small class="text-danger">CVV ไม่ถูกต้อง</small>
+      }
+    </div>
+  </div>
+</form>

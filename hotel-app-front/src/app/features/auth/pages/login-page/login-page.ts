@@ -39,15 +39,15 @@ export class LoginPage {
 
         Swal.fire({
           icon: 'success',
-          title: 'Login successful',
-          text: 'Welcome back!',
+          title: 'เข้าสู่ระบบสำเร็จ',
+          text: 'ยินดีต้อนรับ',
           timer: 1500,
           showConfirmButton: false,
         }).then(() => {
           if (res.role === 'admin') {
             this.router.navigate(['/admin/']);
           } else {
-            this.router.navigate(['/hotel/roombooking']);
+            this.router.navigate(['/hotel/']);
           }
         });
 
@@ -59,8 +59,8 @@ export class LoginPage {
 
           Swal.fire({
             icon: 'error',
-            title: 'Login failed',
-            text: err.error?.message || 'Invalid username or password',
+            title: 'เข้าสู่ระบบไม่สำเร็จ',
+            text: err.error?.message || 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
             confirmButtonColor: '#1e3a5f',
           });
 
@@ -69,13 +69,13 @@ export class LoginPage {
           Swal.fire({
             icon: 'error',
             title: 'Server error',
-            text: 'Something went wrong. Please try again later.',
+            text: 'เกิดข้อผิดพลาดบนเซิร์ฟเวอร์ โปรดลองอีกครั้งในภายหลัง',
             confirmButtonColor: '#1e3a5f',
           });
 
         }
 
-        console.error('LOGIN ERROR', err);
+        console.error('เข้าสู่ระบบไม่สำเร็จ', err);
 
       },
     });

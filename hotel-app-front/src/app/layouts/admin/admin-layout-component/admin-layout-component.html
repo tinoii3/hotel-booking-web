@@ -10,7 +10,7 @@
         <ul class="nav nav-pills flex-column mb-auto gap-1">
             <li>
                 <a href="/admin/dashboard" routerLinkActive="active" class="nav-link text-white">
-                    <i class="bi bi-people me-2"></i> Dashboard
+                    <i class="bi bi-people me-2"></i> แดชบอร์ด
                 </a>
             </li>
             <li class="nav-item">
@@ -19,34 +19,29 @@
                 </a>
             </li>
             <li>
-                <a href="/admin/reserv-room" routerLinkActive="active" class="nav-link text-white">
+                <a routerLink="/admin/reserv-room" routerLinkActive="active" class="nav-link text-white">
                     <i class="bi bi-people me-2"></i> การจอง
+                </a>
+            </li>
+            <li>
+                <a routerLink="/admin/manage-staff" routerLinkActive="active" class="nav-link text-white">
+                    <i class="bi bi-people me-2"></i> การจัดการผู้ดูแล
                 </a>
             </li>
         </ul>
         <hr>
-        <div class="dropdown">
-            <a href="javascript:void(0)"
-                class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                data-bs-toggle="dropdown">
-                <i class="bi bi-person-circle fs-5 me-2"></i>
-                <strong>ผู้ดูแลระบบ</strong>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                <li><a class="dropdown-item" href="javascript:void(0)">ตั้งค่า</a></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="javascript:void(0)">ออกจากระบบ</a></li>
-            </ul>
-        </div>
+        <a href="javascript:void(0)" class="d-flex align-items-center text-white text-decoration-none"
+            (click)="logout()">
+            <i class="bi bi-box-arrow-right fs-5 me-2"></i>
+            <strong>ออกจากระบบ</strong>
+        </a>
     </div>
 
     <div class="flex-grow-1 bg-light d-flex flex-column content-area">
 
         <header class="p-3 bg-white border-bottom shadow-sm">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0 fw-bold text-dark">จัดการห้องพัก</h5>
+                <h5 class="mb-0 fw-bold text-dark">{{ pageTitle }}</h5>
             </div>
         </header>
 

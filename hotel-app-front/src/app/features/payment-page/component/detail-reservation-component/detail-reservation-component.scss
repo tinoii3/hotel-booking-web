@@ -1,0 +1,53 @@
+.reservation-box {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+
+  .section-title {
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .room-item {
+    margin-bottom: 16px;
+
+    .room-name {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .row-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .subtotal {
+      text-align: right;
+      font-weight: 600;
+      margin-top: 8px;
+      color: #111827;
+    }
+
+    hr {
+      margin-top: 12px;
+      border-color: #e5e7eb;
+    }
+  }
+
+  .total-box {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 12px;
+
+    .total-price {
+      font-size: 1.2rem;
+      color: #111827;
+    }
+  }
+}

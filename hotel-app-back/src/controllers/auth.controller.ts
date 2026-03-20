@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { loginService, logoutService, refreshTokenLogic, registerService } from "../services/auth.service.js";
+import { loginService, logoutService, refreshTokenLogic, registerService, getUserProfile } from "../services/auth.service.js";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -40,10 +40,10 @@ export const refreshToken = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   try {
-    const { token } = req.body;
+    const { refresh_token } = req.body;
 
-    if (token) {
-      await logoutService(token);
+    if (refresh_token) {
+      await logoutService(refresh_token);
     }
 
     res.status(200).json({ message: "Logged out successfully"});
@@ -51,3 +51,17 @@ export const logout = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Something went wrong"});
   }
 }
+
+export const profile = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user?.sub;
+
+    const user = await getUserProfile(userId);
+
+    res.json(user);
+  } catch (error: any) {
+    res.status(404).json({
+      message: error.message || 'User not found',
+    });
+  }
+};

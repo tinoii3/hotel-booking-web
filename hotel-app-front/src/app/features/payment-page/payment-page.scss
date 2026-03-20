@@ -1,0 +1,53 @@
+.payment-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.right {
+  border-left: 1px solid #e5e7eb;
+  padding-left: 24px;
+
+  @media (max-width: 768px) {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 24px;
+  }
+}
+
+/* SECTION CARD */
+.section {
+  //   background: #fafafa;
+  //   border: 1px solid #e5e7eb;
+  //   border-radius: 12px;
+  padding-top: 10px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+}
+
+button {
+  height: 44px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+
+  &:disabled {
+    background: #ccc;
+    border: none;
+  }
+
+  &:hover:not(:disabled) {
+    background: #3a3a3a;
+  }
+}

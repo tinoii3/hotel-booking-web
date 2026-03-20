@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>api - API Documentation</title>
+    <style>
+        body { margin: 0; padding: 0; }
+        #opencollection-container { width: 100vw; height: 100vh; }
+    </style>
+    <link rel="stylesheet" href="https://cdn.opencollection.com/docs.css">
+    <script src="https://cdn.opencollection.com/docs.js"></script>
+</head>
+<body>
+    <div id="opencollection-container"></div>
+    <script>
+        const collectionData = "opencollection: 1.0.0\ninfo:\n  name: api\nconfig:\n  proxy:\n    inherit: true\n    config:\n      protocol: http\n      hostname: ''\n      port: ''\n      auth:\n        username: ''\n        password: ''\n      bypassProxy: ''\n  environments:\n    - name: hotel-api-env\n      variables:\n        - name: localhost\n          secret: true\n        - name: prod\n          secret: true\nitems:\n  - info:\n      name: admin-login\n      type: http\n      seq: 1\n    http:\n      method: POST\n      url: '{{localhost}}/api/auth/login'\n      body:\n        type: json\n        data: |-\n          {\n            \"username\": \"admin111\",\n            \"password\": \"111111\"\n          }\n      auth: inherit\n    settings:\n      encodeUrl: true\n      timeout: 0\n      followRedirects: true\n      maxRedirects: 5\n  - info:\n      name: bookings\n      type: http\n      seq: 6\n    http:\n      method: GET\n      url: '{{localhost}}/api/bookings/booking'\n      auth: inherit\n    settings:\n      encodeUrl: true\n      timeout: 0\n      followRedirects: true\n      maxRedirects: 5\n  - info:\n      name: logout\n      type: http\n      seq: 4\n    http:\n      method: POST\n      url: '{{localhost}}/api/auth/logout'\n      body:\n        type: json\n        data: |-\n          {\n              \"refresh_token\": \"2aa56f308468ecea784d4725dee7342180620339ed570742ce687b84a6c744e41acdb34341dfe3d153c93799e9ea7f80cf380373ebeb59423782b9ee0faf21e4\"\n          }\n      auth: inherit\n    settings:\n      encodeUrl: true\n      timeout: 0\n      followRedirects: true\n      maxRedirects: 5\n  - info:\n      name: manage-info\n      type: http\n      seq: 5\n    http:\n      method: GET\n      url: '{{localhost}}/api/manage-room/rooms'\n      auth:\n        type: bearer\n        token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTc3MzY3MjU0MSwiZXhwIjoxNzczNjcyNjAxfQ.kvnjn58WHd8LHh2OfLBRlsYDrU_AHAfGvf2Lch3PPH8\n    settings:\n      encodeUrl: true\n      timeout: 0\n      followRedirects: true\n      maxRedirects: 5\n  - info:\n      name: refresh-token\n      type: http\n      seq: 3\n    http:\n      method: POST\n      url: '{{localhost}}/api/auth/refresh'\n      body:\n        type: json\n        data: |-\n          {\n            \"refresh_token\": \"b286f2af56499bec2033c7484a502543d384b96a45f64bce2556ecd4793c73b4913a2405e987d869a370d9c77eb6b280fc5a565be169bfbdd6eea476bd944cc7\"\n          }\n      auth: inherit\n    settings:\n      encodeUrl: true\n      timeout: 0\n      followRedirects: true\n      maxRedirects: 5\n  - info:\n      name: users-login\n      type: http\n      seq: 2\n    http:\n      method: POST\n      url: '{{localhost}}/api/auth/login'\n      body:\n        type: json\n        data: |-\n          {\n            \"username\": \"users\",\n            \"password\": \"888888\"\n          }\n      auth: inherit\n    settings:\n      encodeUrl: true\n      timeout: 0\n      followRedirects: true\n      maxRedirects: 5\n  - info:\n      name: img-room\n      type: http\n      seq: 7\n    http:\n      method: GET\n      url: http://localhost:3000/uploads/rooms/1773814119480-94632939.avif\n      auth: inherit\n    settings:\n      encodeUrl: true\n      timeout: 0\n      followRedirects: true\n      maxRedirects: 5\n  - info:\n      name: upload-img-rooms\n      type: http\n      seq: 8\n    http:\n      method: POST\n      url: '{{localhost}}'\n      auth: inherit\n    settings:\n      encodeUrl: true\n      timeout: 0\n      followRedirects: true\n      maxRedirects: 5\nrequest:\n  auth:\n    type: bearer\n    token: ''\nbundled: true\nextensions:\n  bruno:\n    ignore:\n      - node_modules\n      - .git\n    exportedAt: '2026-03-18T07:44:52.133Z'\n    exportedUsing: Bruno/3.1.4\n";
+        new window.OpenCollection({
+            target: document.getElementById('opencollection-container'),
+            opencollection: collectionData,
+            theme: 'light'
+        });
+    </script>
+</body>
+</html>

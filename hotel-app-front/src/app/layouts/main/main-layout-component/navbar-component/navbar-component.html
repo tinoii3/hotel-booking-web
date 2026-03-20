@@ -1,17 +1,42 @@
-<nav class="navbar navbar-expand-lg px-3 shadow-sm">
-  <a class="navbar-brand fw-bold" routerLink="/">Hotel</a>
+<nav class="navbar navbar-expand-lg px-4 shadow-sm">
+  <a class="navbar-brand fw-bold" routerLink="/hotel/home">โรงแรม</a>
 
-  <div class="ms-auto">
-    @if (auth.isLoggedIn()) {
-      <button class="btn btn-outline-light" (click)="logout()">Logout</button>
+  <div class="ms-auto d-flex align-items-center gap-2">
+    <div class="d-flex align-items-center gap-2 me-4">
+      <a
+        routerLink="/hotel/home"
+        routerLinkActive="fw-bold text-decoration-underline"
+        class="nav-link fw-semibold px-2"
+      >
+        หน้าแรก
+      </a>
+
+      <a
+        routerLink="/hotel/roombooking"
+        routerLinkActive="fw-bold text-decoration-underline"
+        class="nav-link fw-semibold px-2"
+      >
+        จองห้องพัก
+      </a>
+
+      <a
+        routerLink="/hotel/payment"
+        routerLinkActive="fw-bold text-decoration-underline"
+        class="nav-link fw-semibold px-2"
+      >
+        ชำระเงิน
+      </a>
+    </div>
+
+    @if (isLoggedIn()) {
+      <div class="d-flex align-items-center">
+        <button class="btn btn-outline-light fw-semibold px-4" (click)="logout()">ออกจากระบบ</button>
+      </div>
     } @else {
-      <div style="display: flex; gap: 20px;">
-        <div>
-          <a routerLink="/auth/login" class="btn btn-outline-light fw-semibold" style="width: 100px;"> Login </a>
-        </div>
-        <div>
-          <a routerLink="/auth/register" class="btn bg-white text-primary fw-semibold shadow-sm" style="width: 100px;"> Register </a>
-        </div>
+      <div class="d-flex gap-3">
+        <a routerLink="/auth/login" class="btn btn-dark fw-semibold px-4"> เข้าสู่ระบบ </a>
+
+        <a routerLink="/auth/register" class="btn btn-outline-light fw-semibold px-4"> สมัครสมาชิก </a>
       </div>
     }
   </div>

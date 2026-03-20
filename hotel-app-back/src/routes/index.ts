@@ -1,7 +1,15 @@
 import { Router } from "express";
-import serviceRoutes from "./service.routes.js";
-import manageRoomRoutes from "./manage-room.routes.js" 
+import manageRoomRoutes from "./manage-room.routes.js";
 import authRoutes from "./auth.routes.js";
+import { authenticate, authorize } from "../middlewares/auth.middleware.js";
+import bookingRoute from "./booking.routes.js";
+import uploadRoutes from "./upload.routes.js";
+import dashboardRoutes from "./dashboard.routes.js";
+import manageStaffRoutes from "./manage-staff.routes.js";
+import reservationsRoutes from "./reservation.routes.js";
+import homePageRoutes from "./home-page.routes.js";
+import roomBooking from "./roombooking.route.js";
+import paymentRoute from "./payment.routes.js";
 
 const router = Router();
 
@@ -11,9 +19,42 @@ router.get("/", (_req, res) => {
 
 router.use("/auth", authRoutes);
 
-router.use("/services", serviceRoutes);
+router.use("/home", homePageRoutes);
 
-router.use("/manage-room", manageRoomRoutes);
+router.use("/bookings", bookingRoute);
+
+router.use("/roombooking", roomBooking);
+
+router.use(
+  "/payment", 
+  authenticate, 
+  authorize(["customer"]), 
+  paymentRoute
+);
+
+router.use(
+  "/manage-room",
+  authenticate,
+  authorize(["admin"]),
+  manageRoomRoutes,
+);
+
+router.use("/upload", authenticate, authorize(["admin"]), uploadRoutes);
+
+router.use(
+  "/manage-staff",
+  authenticate,
+  authorize(["admin"]),
+  manageStaffRoutes,
+);
+
+router.use(
+  "/reservations",
+  authenticate,
+  authorize(["admin"]),
+  reservationsRoutes,
+);
+router.use("/dashboard", authenticate, authorize(["admin"]), dashboardRoutes);
 
 // Customer only route
 // router.get(

@@ -4,6 +4,7 @@ import {
   findRefreshTokenByHash,
   rotateRefreshToken,
   logoutUser,
+  userProfile,
 } from "../repository/auth.repository.js";
 import { comparePassword, hashPassword, hashToken } from "../utils/hash.js";
 import { signToken } from "../utils/jwt.js";
@@ -17,15 +18,12 @@ export const loginService = async (username: string, password: string) => {
   const isValid = await comparePassword(password, user.user_password);
   if (!isValid) throw new Error("Invalid credentials");
 
-  console.log("User authenticated:", user);
-
   const accessToken = signToken({
     sub: user.id,
     role: user.role,
   });
 
   const rawRefreshToken = crypto.randomBytes(64).toString("hex");
-
 
   const hashedRefreshToken = hashToken(rawRefreshToken);
 
@@ -40,7 +38,7 @@ export const loginService = async (username: string, password: string) => {
   return {
     access_token: accessToken,
     refresh_token: rawRefreshToken,
-    role: user.role
+    role: user.role,
   };
 };
 
@@ -48,14 +46,10 @@ export const registerService = async ({
   username,
   password,
   email,
-  first_name,
-  last_name,
 }: {
   username: string;
   password: string;
   email?: string;
-  first_name?: string;
-  last_name?: string;
 }) => {
   const existingUser = await findUserByUsername(username);
 
@@ -65,21 +59,13 @@ export const registerService = async ({
 
   const hashedPassword = await hashPassword(password);
 
-  const result = await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx: any) => {
     const user = await tx.users.create({
       data: {
         user_name: username,
         user_password: hashedPassword,
         email,
-        first_name,
-        last_name,
         role: "customer",
-      },
-    });
-
-    await tx.customers.create({
-      data: {
-        user_id: user.id,
       },
     });
 
@@ -110,23 +96,33 @@ export const refreshTokenLogic = async (rawToken: string) => {
     throw new Error("Refresh token expired");
   }
 
+  const user = await prisma.users.findUnique({ where: { id: stored.user_id } });
+
   const newRawToken = crypto.randomBytes(64).toString("hex");
   const newHashedToken = hashToken(newRawToken);
 
   await rotateRefreshToken(newHashedToken, hashedToken, stored);
 
   const newAccessToken = signToken({
-    sub: stored.user_id,
+    sub: user.id,
+    role: user.role,
   });
 
   return {
     access_token: newAccessToken,
-    refresh_token: newRawToken
+    refresh_token: newRawToken,
   };
 };
 
 export const logoutService = async (rawToken: string) => {
-    const hashedToken = hashToken(rawToken);
+  const hashedToken = hashToken(rawToken);
 
-    await logoutUser(hashedToken);
+  await logoutUser(hashedToken);
+};
+
+export const getUserProfile = async (userId: number) => {
+  const user = await userProfile(userId);
+  if (!user) throw new Error("User not found");
+
+  return user;
 }

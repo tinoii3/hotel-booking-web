@@ -1,74 +1,80 @@
 <div class="auth-page">
   <div class="auth-card">
     <div class="auth-header">
-      <h3>Create Account</h3>
-      <p>Start booking your perfect stay</p>
+      <h3>สมัครสมาชิก</h3>
+      <p>สร้างบัญชีของคุณเพื่อเริ่มต้นการจองที่พัก</p>
     </div>
 
     <form [formGroup]="registerForm" (ngSubmit)="register()">
       <div class="form-group mb-3">
-        <label>Username</label>
+        <label>ชื่อผู้ใช้</label>
         <input
           type="text"
           class="form-control"
           formControlName="username"
-          placeholder="Enter your Username"
+          placeholder="กรุณากรอกชื่อผู้ใช้"
         />
         @if (registerForm.get('username')?.touched && registerForm.get('username')?.invalid) {
-          <div class="text-danger mt-1">Username is required</div>
+          <div class="text-danger mt-1">กรุณากรอกชื่อผู้ใช้</div>
         }
       </div>
       <div class="form-group mb-3">
-        <label>Email</label>
-        <input
-          type="email"
-          class="form-control"
-          formControlName="email"
-          placeholder="Enter your email"
-        />
+        <label>อีเมล</label>
+        <input type="email" class="form-control" formControlName="email" placeholder="example@email.com" />
         @if (
           registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']
         ) {
-          <div class="text-danger mt-1">Email is required</div>
+          <div class="text-danger mt-1">กรุณากรอกอีเมล</div>
         }
 
         @if (registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']) {
-          <div class="text-danger mt-1">Please enter a valid email address</div>
+          <div class="text-danger mt-1">กรุณากรอกอีเมลให้ถูกต้อง</div>
         }
       </div>
 
       <div class="form-group mb-3">
-        <label>Password</label>
+        <label>รหัสผ่าน</label>
         <input
           type="password"
           class="form-control"
           formControlName="password"
-          placeholder="Create password"
+          placeholder="กรุณากรอกรหัสผ่าน"
+          minlength="6"
         />
-        @if (registerForm.get('password')?.touched && registerForm.get('password')?.invalid) {
-          <div class="text-danger mt-1">Password is required</div>
+        @if (
+          registerForm.get('password')?.touched &&
+          registerForm.get('password')?.errors?.['required']
+        ) {
+          <div class="text-danger mt-1">กรุณากรอกรหัสผ่าน</div>
+        }
+
+        @if (
+          registerForm.get('password')?.touched &&
+          registerForm.get('password')?.errors?.['minlength']
+        ) {
+          <div class="text-danger mt-1">รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร</div>
         }
       </div>
 
       <div class="form-group mb-4">
-        <label>Confirm Password</label>
+        <label>ยืนยันรหัสผ่าน</label>
         <input
           type="password"
           class="form-control"
           formControlName="confirmPassword"
-          placeholder="Confirm password"
+          placeholder="ยืนยันรหัสผ่าน"
         />
         @if (registerForm.get('confirmPassword')?.errors?.['mismatch']) {
-          <div class="text-danger mt-1">Passwords do not match</div>
+          <div class="text-danger mt-1">รหัสผ่านไม่ตรงกัน</div>
         }
       </div>
 
-      <button type="submit" class="btn btn-primary w-100 mb-3">Register</button>
+      <button type="submit" class="btn btn-dark w-100 mb-3">สมัครสมาชิก</button>
     </form>
 
     <div class="auth-footer">
-      <span>Already have an account?</span>
-      <a routerLink="/auth/login">Login</a>
+      <span>มีบัญชีอยู่แล้ว?</span>
+      <a routerLink="/auth/login" class="text-decoration-underline">เข้าสู่ระบบ</a>
     </div>
   </div>
 </div>

@@ -1,0 +1,34 @@
+<form [formGroup]="form" class="search-bar">
+  <div class="field">
+    <label> เช็คอิน </label>
+    <input type="date" formControlName="check_in" [min]="minCheckInDate" [max]="form.value.check_out || null"/>
+  </div>
+
+  <div class="field">
+    <label> เช็คเอาต์ </label>
+    <input type="date" formControlName="check_out" [min]="form.value.check_in || minCheckInDate" />
+  </div>
+
+  <div class="field">
+    <label> ประเภทห้อง </label>
+    <select formControlName="room_type">
+      @for (room of roomTypes; track room.value) {
+        <option [value]="room.value">{{ room.label }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="field">
+    <label> จำนวนแขก </label>
+    <select formControlName="guests">
+      @for (g of guestOptions; track g.label) {
+        <option [ngValue]="g">{{ g.label }}</option>
+      }
+    </select>
+  </div>
+
+  <button type="button" class="btn-search" (click)="onSearch()">
+    <fa-icon [icon]="faSearch"></fa-icon>
+    ค้นหา
+  </button>
+</form>
