@@ -205,4 +205,15 @@ export class Reservation implements OnInit {
         return status;
     }
   }
+
+  clearFilters() {
+  this.selectedRoomType = 'all';
+  this.selectedStatus = 'all';
+  this.currentSortBy = 'created_at';
+  this.currentSortOrder = 'desc';
+  this.isDropdownOpen = false;
+  this.isStatusDropdownOpen = false;
+  this.currentPage = 1;
+  this.loadReservations(1);
+}
 }
