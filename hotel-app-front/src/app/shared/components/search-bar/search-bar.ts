@@ -78,8 +78,6 @@ export class SearchBar implements OnInit {
       return;
     }
 
-    console.log('SEARCH PAYLOAD:', this.form.value);
-
     this.search.emit(this.form.value);
   }
 }
