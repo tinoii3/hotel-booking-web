@@ -19,4 +19,8 @@ export class PaymentService {
   createPayment(payload: Payment) {
     return this.http.post<any>(`${this.apiUrl}/payment/create-payment`, payload);
   }
+
+  cancelBooking(bookingId: number) {
+    return this.http.post(`/api/payment/${bookingId}/cancel`, {});
+  }
 }

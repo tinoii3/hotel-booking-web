@@ -6,9 +6,10 @@ import {
 } from "../repository/booking.repository.js";
 import { BookingStatus } from "../utils/constants.js";
 import { PaymentStatus } from "../utils/constants.js";
-import * as manageRepo from "../repository/manage-room.repository.js"
+import * as paymentRepo from "../repository/payment.repository.js";
+import * as bookingRepo from "../repository/booking.repository.js";
 
-export const processPaymentService = async (payload: any, userId: number) => {
+export const processPayment = async (payload: any, userId: number) => {
   return prisma.$transaction(async (tx: any) => {
     const booking = await findBookingById(tx, payload.booking_id);
 
@@ -39,11 +40,36 @@ export const processPaymentService = async (payload: any, userId: number) => {
       pay_at: new Date(),
     });
 
-    await manageRepo.updateRoomsToOccupied(tx, payload.booking_id);
+    await paymentRepo.updateRoomsToReserved(tx, payload.booking_id);
 
     return {
       booking: updatedBooking,
       payment: createdPayment,
     };
+  });
+};
+
+export const cancelBooking = async (
+  bookingId: number,
+  userId: number,
+) => {
+  return prisma.$transaction(async (tx: any) => {
+
+    const booking = await bookingRepo.findBookingById(tx, bookingId);
+
+    if (!booking) throw new Error("Booking not found");
+
+    if (booking.user_id !== userId) throw new Error("Unauthorized");
+    
+    if (booking.status !== "PENDING")
+      throw new Error(`Cannot cancel booking ${booking.status}`);
+
+    if (booking.expires_at && booking.expires_at < new Date())
+      throw new Error("Booking has expired");
+
+    await bookingRepo.updateBooking(tx, bookingId, { status: "CANCELED" });
+    await bookingRepo.releaseRooms(tx, bookingId);
+
+    return { message: "Booking canceled" };
   });
 };

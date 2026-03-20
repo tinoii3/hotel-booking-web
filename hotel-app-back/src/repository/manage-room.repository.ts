@@ -1,5 +1,4 @@
 import { prisma } from "../lib/prisma.js";
-import { RoomStatus } from "../utils/constants.js";
 
 export const roomFindAll = async (
   skip: number,
@@ -135,23 +134,5 @@ export const setRoomCover = async (imageId: number) => {
   return prisma.room_images.update({
     where: { id: imageId },
     data: { is_cover: true },
-  });
-};
-
-export const updateRoomsToOccupied = async (tx: any, bookingId: number) => {
-  const items = await tx.booking_items.findMany({
-    where: { booking_id: bookingId }
-  });
-
-  const roomIds = items.map((item: any) => item.room_id);
-
-  await tx.rooms.updateMany({
-    where: {
-      id: { in: roomIds },
-      status: RoomStatus.available
-    },
-    data: {
-      status: RoomStatus.reserved
-    }
   });
 };

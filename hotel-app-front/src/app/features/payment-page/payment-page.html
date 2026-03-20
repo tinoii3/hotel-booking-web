@@ -23,6 +23,17 @@
             >
               ชำระเงิน
             </button>
+            <div class="mt-4">
+              <button
+                type="button"
+                class="btn btn-danger rounded-3 fw-semibold"
+                style="width: 100%; margin: 0 auto; display: block"
+                (click)="onCancelBooking()"
+                [disabled]="!booking || booking.status !== 'PENDING'"
+              >
+                ยกเลิกการจอง
+              </button>
+            </div>
           </div>
         </div>
 

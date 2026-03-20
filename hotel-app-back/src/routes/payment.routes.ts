@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { processPaymentController } from '../controllers/payment.controller.js';
+import { processPayment, cancelBooking} from '../controllers/payment.controller.js';
 
 const router = Router();
 
-router.post('/create-payment', processPaymentController);
+router.post('/create-payment', processPayment);
+router.post('/:id/cancel', cancelBooking);
 
 export default router;
