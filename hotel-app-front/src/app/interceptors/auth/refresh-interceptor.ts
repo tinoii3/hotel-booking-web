@@ -5,6 +5,7 @@ import { TokenService } from '../../core/services/token-service';
 import { environment } from '../../../environments/environment';
 
 import { BehaviorSubject, catchError, filter, switchMap, take, throwError } from 'rxjs';
+import Swal from 'sweetalert2';
 
 let isRefreshing = false;
 const refreshTokenSubject = new BehaviorSubject<string | null>(null);
@@ -72,6 +73,12 @@ export const refreshInterceptor: HttpInterceptorFn = (req, next) => {
             isRefreshing = false;
 
             tokenService.clearToken();
+
+            Swal.fire({
+              icon: 'warning',
+              title: 'Session หมดอายุ',
+              text: 'กรุณาเข้าสู่ระบบใหม่',
+            });
 
             return throwError(() => err);
           }),
