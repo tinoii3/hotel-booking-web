@@ -109,8 +109,12 @@
                             'badge-unavailable': r.status === 'maintenance' ,
                             'badge-reserved': r.status === 'reserved'
                             }">
-                            {{ r.status === 'available' ? 'ว่าง' : (r.status === 'occupied' ? 'เช็คอิน' :
-                            'ไม่พร้อมใช้งาน') }}
+                            {{
+                            r.status === 'available' ? 'ว่าง' :
+                            r.status === 'occupied' ? 'เช็คอินแล้ว' :
+                            r.status === 'reserved' ? 'ถูกจองแล้ว' :
+                            'ไม่พร้อมใช้งาน'
+                            }}
                         </span>
                     </td>
                     <td class="pe-3">
