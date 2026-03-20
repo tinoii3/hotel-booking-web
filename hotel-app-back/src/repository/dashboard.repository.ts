@@ -6,7 +6,10 @@ export const getAvailableRoomsCount = async () => prisma.rooms.count({ where: { 
 
 export const getTodayCheckInsCount = async (startOfDay: Date, endOfDay: Date) => {
     return prisma.booking.count({
-        where: { check_in: { gte: startOfDay, lte: endOfDay } }
+        where: { 
+            check_in: { gte: startOfDay, lte: endOfDay },
+            status: 'CONFIRMED' 
+        },
     });
 }
 
@@ -24,6 +27,9 @@ export const getMonthlyRevenue = async (startOfMonth: Date, endOfMonth: Date) =>
 export const getRecentBookings = async (limit: number) => {
     return prisma.booking.findMany({
         take: limit,
+        where: {
+            status: 'CONFIRMED'
+        },
         orderBy: { created_at: 'desc' },
         include: { 
             users: true, 
@@ -37,11 +43,11 @@ export const getRecentBookings = async (limit: number) => {
 export const getBookingsForLastNDays = async (startDate: Date) => {
     return prisma.booking.findMany({
         where: {
-            status: { notIn: ['cancelled'] }, 
-            created_at: { gte: startDate }
+            status: 'CONFIRMED', 
+            check_in: { gte: startDate }
         },
         select: {
-            created_at: true,
+            check_in: true, 
             booking_items: { select: { id: true } } 
         }
     });
