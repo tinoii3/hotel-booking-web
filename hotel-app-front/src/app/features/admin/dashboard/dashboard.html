@@ -2,52 +2,40 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h4 class="mb-1 fw-bold">แดชบอร์ด</h4>
-            
         </div>
     </div>
 
     <div class="row g-3 mb-4">
         <div class="col-12 col-md-6 col-lg-3">
             <div class="bg-white border border-secondary-subtle rounded-3 p-3 d-flex align-items-center gap-3">
-                <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 d-flex align-items-center justify-content-center">
-                    
-                </div>
+                <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 d-flex align-items-center justify-content-center"></div>
                 <div>
                     <p class="text-muted small mb-0 fw-semibold">ห้องพักทั้งหมด</p>
                     <h4 class="mb-0 fw-bold">{{ stats.totalRooms }}</h4>
                 </div>
             </div>
         </div>
-        
         <div class="col-12 col-md-6 col-lg-3">
             <div class="bg-white border border-secondary-subtle rounded-3 p-3 d-flex align-items-center gap-3">
-                <div class="bg-success bg-opacity-10 text-success rounded-circle p-3 d-flex align-items-center justify-content-center">
-                    
-                </div>
+                <div class="bg-success bg-opacity-10 text-success rounded-circle p-3 d-flex align-items-center justify-content-center"></div>
                 <div>
                     <p class="text-muted small mb-0 fw-semibold">ห้องว่าง</p>
                     <h4 class="mb-0 fw-bold">{{ stats.availableRooms }}</h4>
                 </div>
             </div>
         </div>
-
         <div class="col-12 col-md-6 col-lg-3">
             <div class="bg-white border border-secondary-subtle rounded-3 p-3 d-flex align-items-center gap-3">
-                <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-3 d-flex align-items-center justify-content-center">
-                    
-                </div>
+                <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-3 d-flex align-items-center justify-content-center"></div>
                 <div>
                     <p class="text-muted small mb-0 fw-semibold">เช็คอินวันนี้</p>
                     <h4 class="mb-0 fw-bold">{{ stats.todayCheckIns }}</h4>
                 </div>
             </div>
         </div>
-
         <div class="col-12 col-md-6 col-lg-3">
             <div class="bg-white border border-secondary-subtle rounded-3 p-3 d-flex align-items-center gap-3">
-                <div class="bg-info bg-opacity-10 text-info rounded-circle p-3 d-flex align-items-center justify-content-center">
-                    
-                </div>
+                <div class="bg-info bg-opacity-10 text-info rounded-circle p-3 d-flex align-items-center justify-content-center"></div>
                 <div>
                     <p class="text-muted small mb-0 fw-semibold">เช็คเอาท์วันนี้</p>
                     <h4 class="mb-0 fw-bold">0</h4>
@@ -57,51 +45,12 @@
     </div>
 
     <div class="row g-3 mb-4">
-        <div class="col-12 col-lg-8">
-            <div class="bg-white border border-secondary-subtle rounded-3 p-4 h-100">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h6 class="mb-0 fw-bold">แนวโน้มรายได้ </h6>
-                </div>
-                <div class="chart-container">
-                    <canvas #revenueChartCanvas></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-lg-4">
-            <div class="bg-white border border-secondary-subtle rounded-3 p-4 h-100">
-                <h6 class="mb-4 fw-bold">ห้องยอดฮิต</h6>
-                
-                @for (room of popularRooms; track room.name) {
-                <div class="mb-3">
-                    <div class="d-flex justify-content-between small mb-1">
-                        <span class="fw-semibold">{{ room.name }}</span>
-                        <span class="text-muted">{{ room.count }} จอง ({{ room.percentage }}%)</span>
-                    </div>
-                    <div class="progress progress-sm">
-                        <div class="progress-bar bg-primary rounded-pill" 
-                             role="progressbar" 
-                             [style.width.%]="room.percentage">
-                        </div>
-                    </div>
-                </div>
-                }
-
-                @if (popularRooms.length === 0) {
-                    <div class="text-center text-muted py-5 small">ยังไม่มีข้อมูลการจองเพียงพอ</div>
-                }
-            </div>
-        </div>
-    </div>
-
-    <div class="row g-3">
         <div class="col-12">
-            <div class="bg-white border border-secondary-subtle rounded-3 overflow-hidden h-100">
+            <div class="bg-white border border-secondary-subtle rounded-3 overflow-hidden h-100 ">
                 <div class="d-flex justify-content-between align-items-center px-4 py-3 border-bottom">
                     <h6 class="mb-0 fw-bold">รายการจองล่าสุด</h6>
-                    <a href="/admin/reserv-room" class="text-decoration-none small">ดูทั้งหมด</a>
+                    <a href="/admin/reservations" class="text-decoration-none small">ดูทั้งหมด</a>
                 </div>
-
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0 custom-table">
                         <thead class="bg-white border-bottom">
@@ -123,7 +72,6 @@
                                 <td class="py-3">{{ b.checkOut || '-' }}</td>
                             </tr>
                             }
-                            
                             @if (recentBookings.length === 0) {
                                 <tr>
                                     <td colspan="5" class="text-center py-5 text-muted small">ยังไม่มีรายการจองล่าสุด</td>
@@ -131,6 +79,59 @@
                             }
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-lg-8">
+            <div class="bg-white border border-secondary-subtle rounded-3 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h6 class="mb-0 fw-bold">แนวโน้มรายได้</h6>
+                    <input type="month" class="form-control form-control-sm w-auto" 
+                           [value]="selectedRevenueMonth"
+                           (change)="onRevenueMonthChange($event)">
+                </div>
+                <div class="chart-container" style="position: relative; height:300px; width:100%">
+                    <canvas #revenueChartCanvas></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="bg-white border border-secondary-subtle rounded-3 p-4 h-100">
+                <h6 class="mb-4 fw-bold">ประเภทห้องที่นิยม</h6>
+                
+                @if (popularRooms.length > 0) {
+                    <div class="chart-container" style="position: relative; height:300px; width:100%">
+                        <canvas #popularRoomsChartCanvas></canvas>
+                    </div>
+                } @else {
+                    <div class="text-center text-muted py-5 small">ยังไม่มีข้อมูลการจองเพียงพอ</div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-12">
+            <div class="bg-white border border-secondary-subtle rounded-3 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h6 class="mb-0 fw-bold">สถิติการจองห้องพัก</h6>
+                        <p class="text-muted small mb-0 mt-1">ข้อมูล ณ วันที่ {{ currentDate }}</p>
+                    </div>
+                    
+                    <select class="form-select form-select-sm w-auto" 
+                            (change)="onChartDaysChange($event)">
+                        <option value="7">ย้อนหลัง 7 วัน</option>
+                        <option value="15" selected>ย้อนหลัง 15 วัน</option>
+                        <option value="30">ย้อนหลัง 30 วัน</option>
+                    </select>
+                </div>
+                <div class="chart-container" style="position: relative; height:300px; width:100%">
+                    <canvas #bookingChartCanvas></canvas>
                 </div>
             </div>
         </div>
