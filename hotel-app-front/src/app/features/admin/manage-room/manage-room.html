@@ -103,9 +103,12 @@
                     <td>{{ r.children || 0 }} คน</td>
                     <td>{{ r.room_types?.capacity || 0 }} คน</td>
                     <td>
-                        <span class="badge rounded-pill px-3 py-2"
-                            [ngClass]="{
-                            'badge-checkin': r.status === 'occupied', 'badge-available': r.status === 'available', 'badge-unavailable': r.status === 'maintenance' }">
+                        <span class="badge rounded-pill px-3 py-2" [ngClass]="{
+                            'badge-checkin': r.status === 'occupied', 
+                            'badge-available': r.status === 'available', 
+                            'badge-unavailable': r.status === 'maintenance' ,
+                            'badge-reserved': r.status === 'reserved'
+                            }">
                             {{ r.status === 'available' ? 'ว่าง' : (r.status === 'occupied' ? 'เช็คอิน' :
                             'ไม่พร้อมใช้งาน') }}
                         </span>
@@ -141,9 +144,7 @@
 </div>
 
 @if (isAddTypeModalOpen) {
-<app-room-type-modal 
-    (closed)="isAddTypeModalOpen = false" 
-    (saved)="loadRoomTypes()">
+<app-room-type-modal (closed)="isAddTypeModalOpen = false" (saved)="loadRoomTypes()">
 </app-room-type-modal>
 }
 
