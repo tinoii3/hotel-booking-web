@@ -3,7 +3,6 @@ import manageRoomRoutes from "./manage-room.routes.js";
 import authRoutes from "./auth.routes.js";
 import { authenticate, authorize } from "../middlewares/auth.middleware.js";
 import bookingRoute from "./booking.routes.js";
-import uploadRoutes from "./upload.routes.js";
 import dashboardRoutes from "./dashboard.routes.js";
 import manageStaffRoutes from "./manage-staff.routes.js";
 import reservationsRoutes from "./reservation.routes.js";
@@ -38,8 +37,6 @@ router.use(
   authorize(["admin"]),
   manageRoomRoutes,
 );
-
-router.use("/upload", authenticate, authorize(["admin"]), uploadRoutes);
 
 router.use(
   "/manage-staff",

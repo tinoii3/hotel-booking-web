@@ -6,16 +6,17 @@ import * as uploadService from "../services/upload.service.js";
 export const getAllRooms = async (
     page: number,
     limit: number,
-    filterType?: string,
+    filter?: string,
     sortBy?: string,
     sortOrder?: string
 ) => {
     const skip = (page - 1) * limit;
     const take = limit;
-    const whereCondition: any =
-        filterType && filterType !== "all"
-            ? { room_types: { name: filterType } }
-            : {};
+    const whereCondition: any = {};
+    
+    if (filter && filter !== 'all') {
+        whereCondition.room_type_id = Number(filter);
+    }
 
     const validSortOrder = sortOrder?.toLocaleLowerCase() === "desc" ? "desc" : "asc";
     let orderByCondition: any = {};
