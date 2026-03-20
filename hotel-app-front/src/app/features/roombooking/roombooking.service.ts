@@ -20,7 +20,7 @@ export class RoombookingService {
             .set('children', children.toString());
 
         if (roomType && roomType !== 'all') {
-            params = params.set('room_type', roomType);
+            params = params.set('room_type', roomType.toString());
         }
 
         return this.http.get(`${this.baseUrl}/search`, { params });
