@@ -129,9 +129,9 @@
                                 'badge-pending': r.status === 'PENDING',
                                 'badge-confirmed': r.status === 'CONFIRMED',
                                 'badge-cancelled': r.status === 'CANCELLED',
-                                'badge-expired': r.status === 'EXPIRED'
+                                'badge-expired': r.status === 'EXPIRED',
+                                'badge-invalid': r.status === 'ข้อมูลไม่ถูกต้อง'
                             }">
-
                             {{ getStatusLabel(r.status) }}
                         </span>
                     </td>

@@ -201,10 +201,8 @@ export class Reservation implements OnInit {
         return 'ยกเลิกการจอง';
       case 'EXPIRED':
         return 'หมดเวลา';
-      case 'COMPLETED':
-        return 'เสร็จสิ้น';
       default:
-        return status;
+        return 'ข้อมูลไม่ถูกต้อง';
     }
   }
 
