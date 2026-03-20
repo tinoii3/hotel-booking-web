@@ -14,10 +14,10 @@ export const searchRooms = async (req: Request, res: Response) => {
   }
 };
 
-export const createBooking = async (req: Request, res: Response) => {
+export const upsertBooking = async (req: Request, res: Response) => {
   try {
     const bookingData = req.body;
-    const bookingResult = await roombookingService.createBooking(bookingData);
+    const bookingResult = await roombookingService.upsertBooking(bookingData);
 
     res.status(201).json({
       message: "สร้างรายการจองสำเร็จ",

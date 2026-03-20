@@ -25,7 +25,7 @@ export const processSearchRooms = async (query: any) => {
     };
 };
 
-export const createBooking = async (body: any) => {
+export const upsertBooking = async (body: any) => {
     const { user_id, check_in, check_out, first_name, last_name, email, phone, note, items } = body;
 
     const checkInDate = new Date(check_in);
@@ -63,5 +63,5 @@ export const createBooking = async (body: any) => {
         expires_at: expiresAt
     };
 
-    return await roombookingRepo.createBookingRecord(bookingData, formattedItems);
+    return await roombookingRepo.upsertBooking(bookingData, formattedItems);
 };
