@@ -14,4 +14,9 @@ export enum PaymentStatus {
     FAILED = "FAILED",
 }
 
-
+export enum RoomStatus {
+    available = "available",
+    occupied = "occupied",
+    maintenance = "maintenance",
+    reserved = "reserved",
+}
