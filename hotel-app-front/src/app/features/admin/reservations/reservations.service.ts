@@ -5,25 +5,37 @@ import { Observable } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
 export class ReservationService {
-    private http = inject(HttpClient);
-    private baseUrl = `${environment.apiUrl}/reservations`;
+  private http = inject(HttpClient);
+  private baseUrl = `${environment.apiUrl}/reservations`;
 
-    getReservations(
-        page: number,
-        limit: number,
-        roomType: string,
-        status: string
+  getReservations(
+    page: number,
+    limit: number,
+    roomType: string,
+    status: string,
+    sortBy: string,
+    sortOrder: string
+  ): Observable<any> {
+    const url = `${this.baseUrl}/get-reservations` +
+      `?page=${page}` +
+      `&limit=${limit}` +
+      `&roomType=${roomType}` +
+      `&status=${status}` +
+      `&sortBy=${sortBy}` +
+      `&sortOrder=${sortOrder}`;
+
+    return this.http.get(url);
+  }
+
+  getRoomTypes(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/manage-room/room-types`);
+  }
+
+  updateReservationStatus(
+    id: number,
+    payload: { status: string }
     ): Observable<any> {
-        const url = `${this.baseUrl}/rooms` +
-            `?page=${page}` +
-            `&limit=${limit}` +
-            `&roomType=${roomType}` +
-            `&status=${status}`
-
-        return this.http.get(url);
-    }
-
-    getRoomTypes(): Observable<any> {
-        return this.http.get(`${this.baseUrl}/room-types`);
+    return this.http.patch(`${this.baseUrl}/${id}/status`, payload);
     }
 }
+

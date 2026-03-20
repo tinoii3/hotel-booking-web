@@ -76,7 +76,7 @@ export const routes: Routes = [
       {
         path: 'reservations',
         loadComponent: () =>
-          import('./features/admin/reservations/reservations').then((m) => m.ReservRoom),
+          import('./features/admin/reservations/reservations').then((m) => m.Reservation),
       },
       {
         path: 'manage-staff',

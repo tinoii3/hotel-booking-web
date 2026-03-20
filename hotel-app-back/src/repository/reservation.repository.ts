@@ -3,38 +3,15 @@ import { prisma } from "../lib/prisma.js"
 export const reservationsFindAll = async (
   skip: number,
   take: number,
-  roomType?: string,
-  status?: string
+  whereCondition: any,
+  orderByCondition: any
 ) => {
-  const whereCondition = {
-    ...(roomType && {
-      booking_items: {
-        some: {
-          rooms: {
-            room_types: {
-              name: roomType
-            }
-          }
-        }
-      }
-    }),
-    ...(status && {
-      booking: {
-        some: {
-          status: status
-        }
-      }
-    })
-  };
-
   const [reservations, totalReservations] = await Promise.all([
     prisma.booking.findMany({
       skip,
       take,
-      orderBy: {
-        created_at: 'desc'
-      },
       where: whereCondition,
+      orderBy: orderByCondition,
       select: {
         id: true,
         first_name: true,
@@ -42,7 +19,6 @@ export const reservationsFindAll = async (
         check_in: true,
         check_out: true,
         status: true,
-
         booking_items: {
           select: {
             rooms: {
@@ -66,4 +42,14 @@ export const reservationsFindAll = async (
   ]);
 
   return { reservations, totalReservations };
-}
+};
+
+export const updateReservationStatus = async (
+  id: number,
+  status: string
+) => {
+  return await prisma.booking.update({
+    where: { id },
+    data: { status }
+  });
+};
