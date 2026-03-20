@@ -1,26 +1,27 @@
 import { prisma } from "../lib/prisma.js";
 
-export const bookingFindAll = async () => {
-  return prisma.booking.findMany();
-};
-
-export const bookingFindByUserId = async (user_id: number) => {
-  return prisma.booking.findMany({
+export const findPendingBookingByUserId = async (user_id: number) => {
+  return prisma.booking.findFirst({
+    where: {
+      user_id,
+      status: 'PENDING',
+    },
     include: {
       booking_items: true,
     },
-    where: { user_id: user_id },
+    orderBy: {
+      created_at: 'desc',
+    },
   });
 };
 
-export const bookingItemsFindAll = async () => {
-  return prisma.booking_items.findMany();
+export const findBookingById = (tx: any, id: number) => {
+  return tx.booking.findUnique({ where: { id } });
 };
 
-export const bookingAndItemsFindAll = async () => {
-  return prisma.booking.findMany({
-    include: {
-      booking_items: true,
-    },
+export const updateBooking = (tx: any, id: number, data: any) => {
+  return tx.booking.update({
+    where: { id },
+    data,
   });
 };

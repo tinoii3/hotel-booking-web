@@ -1,7 +1,7 @@
 info:
   name: room-type-info
   type: http
-  seq: 10
+  seq: 9
 
 http:
   method: GET

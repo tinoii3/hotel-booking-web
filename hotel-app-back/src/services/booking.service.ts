@@ -1,17 +1,6 @@
 import * as bookingRepo from "../repository/booking.repository.js";
 
-export const getAllBookings = async () => {
-    return bookingRepo.bookingFindAll();
-}
 
-export const getBookingFindByUserId = async (user_id: number) => {
-    return bookingRepo.bookingFindByUserId(user_id);
-}
-
-export const getAllBookingItems = async () => {
-    return bookingRepo.bookingItemsFindAll();
-}
-
-export const getAllBookingsAndItems = async () => {
-    return bookingRepo.bookingAndItemsFindAll();
+export const findPendingBookingByUserId = async (user_id: number) => {
+    return bookingRepo.findPendingBookingByUserId(user_id);
 }

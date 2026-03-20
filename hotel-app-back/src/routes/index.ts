@@ -8,7 +8,8 @@ import dashboardRoutes from "./dashboard.routes.js";
 import manageStaffRoutes from "./manage-staff.routes.js";
 import reservationsRoutes from "./reservation.routes.js";
 import homePageRoutes from "./home-page.routes.js";
-import roomBooking from "./roombooking.route.js"
+import roomBooking from "./roombooking.route.js";
+import paymentRoute from "./payment.routes.js";
 
 const router = Router();
 
@@ -22,7 +23,14 @@ router.use("/home", homePageRoutes);
 
 router.use("/bookings", bookingRoute);
 
-router.use("/roombooking", roomBooking)
+router.use("/roombooking", roomBooking);
+
+router.use(
+  "/payment", 
+  authenticate, 
+  authorize(["customer"]), 
+  paymentRoute
+);
 
 router.use(
   "/manage-room",
@@ -31,32 +39,22 @@ router.use(
   manageRoomRoutes,
 );
 
-router.use(
-  "/upload",
-  authenticate,
-  authorize(["admin"]),
-  uploadRoutes
-);
+router.use("/upload", authenticate, authorize(["admin"]), uploadRoutes);
 
 router.use(
   "/manage-staff",
   authenticate,
   authorize(["admin"]),
-  manageStaffRoutes
+  manageStaffRoutes,
 );
 
 router.use(
   "/reservations",
   authenticate,
   authorize(["admin"]),
-  reservationsRoutes
+  reservationsRoutes,
 );
-router.use(
-  "/dashboard",
-  authenticate,
-  authorize(["admin"]), 
-  dashboardRoutes
-);
+router.use("/dashboard", authenticate, authorize(["admin"]), dashboardRoutes);
 
 // Customer only route
 // router.get(
