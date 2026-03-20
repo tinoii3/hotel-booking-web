@@ -1,3 +1,7 @@
+$primary-color: #1a1a1a;
+$border-color: #e5e7eb;
+$text-light: #666;
+
 .container {
   max-width: 1000px;
 }
@@ -46,4 +50,52 @@ ul {
   justify-content: center;
   width: 35px;
   height: 35px;
+}
+
+.search-widget {
+  max-width: 900px;
+  margin: -2rem auto 0;
+  background: white;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  box-shadow: 0 4px 6px rgba(253, 253, 253, 0.05);
+  align-items: flex-end;
+
+  .input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    label {
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    input,
+    select {
+      padding: 0.5rem;
+      border: 1px solid $border-color;
+      border-radius: 6px;
+      width: 100%;
+    }
+  }
+  .btn-search {
+    background: $primary-color;
+    color: white;
+    border: none;
+    padding: 0.7rem 2rem;
+    border-radius: 8px;
+    height: fit-content;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.hero {
+  margin-bottom: 2rem;
 }

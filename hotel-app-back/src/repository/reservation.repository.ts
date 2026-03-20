@@ -1,52 +1,55 @@
 import { prisma } from "../lib/prisma.js"
 
-export const reservationFindAll = async (
+export const reservationsFindAll = async (
   skip: number,
   take: number,
-  roomType?: string,
-  paymentStatus?: string
+  whereCondition: any,
+  orderByCondition: any
 ) => {
-  const whereCondition = {
-    ...(roomType && {
-      rooms: {
-        room_types: {
-          name: roomType
-        }
-      }
-    }),
-    ...(paymentStatus && {
-      payments: {
-        some: {
-          status: paymentStatus
-        }
-      }
-    })
-  };
   const [reservations, totalReservations] = await Promise.all([
-    prisma.reservations.findMany({
-      skip: skip,
-      take: take,
-      orderBy: {
-        created_at: 'desc'
-      },
+    prisma.booking.findMany({
+      skip,
+      take,
       where: whereCondition,
-      include: {
-        users: true,
-        rooms: {
-          include: {
-            room_types: true
+      orderBy: orderByCondition,
+      select: {
+        id: true,
+        first_name: true,
+        last_name: true,
+        check_in: true,
+        check_out: true,
+        status: true,
+        booking_items: {
+          select: {
+            rooms: {
+              select: {
+                room_number: true,
+                room_types: {
+                  select: {
+                    name: true
+                  }
+                }
+              }
+            }
           }
-        },
-        payments: true
+        }
       }
     }),
-    prisma.reservations.count({
+
+    prisma.booking.count({
       where: whereCondition
     })
   ]);
-  return { reservations, totalReservations };
-}
 
-export const roomTypeFindAll = async () => {
-    return prisma.room_types.findMany();
-}
+  return { reservations, totalReservations };
+};
+
+export const updateReservationStatus = async (
+  id: number,
+  status: string
+) => {
+  return await prisma.booking.update({
+    where: { id },
+    data: { status }
+  });
+};

@@ -1,4 +1,4 @@
-export const ACCESS_TOKEN_EXPIRE = "15m";
+export const ACCESS_TOKEN_EXPIRE = "1m";
 export const ACCESS_TOKEN_EXPIRE_SECONDS = 15 * 60;
 
 export enum BookingStatus {
@@ -14,4 +14,9 @@ export enum PaymentStatus {
     FAILED = "FAILED",
 }
 
-
+export enum RoomStatus {
+    available = "available",
+    occupied = "occupied",
+    maintenance = "maintenance",
+    reserved = "reserved",
+}

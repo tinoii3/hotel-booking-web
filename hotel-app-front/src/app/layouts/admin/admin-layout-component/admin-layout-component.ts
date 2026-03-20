@@ -21,7 +21,7 @@ export class AdminLayout {
   private routeTitles: { [key: string]: string } = {
     '/admin/dashboard': 'Dashboard',
     '/admin/manage-room': 'จัดการห้องพัก',
-    '/admin/reserv-room': 'การจอง',
+    '/admin/reservations': 'การจอง',
     '/admin/manage-staff': 'การจัดการผู้ดูแล'
   };
 
@@ -41,8 +41,8 @@ export class AdminLayout {
 
   logout() {
     Swal.fire({
-      title: 'Logout?',
-      text: 'You will need to login again.',
+      title: 'ออกจากระบบ?',
+      text: 'คุณจะต้องเข้าสู่ระบบอีกครั้ง',
       icon: 'warning',
       showCancelButton: true,
       cancelButtonText: 'Cancel',

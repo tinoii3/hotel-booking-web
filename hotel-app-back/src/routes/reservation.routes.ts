@@ -1,10 +1,9 @@
 import { Router } from "express";
-import * as manageRoomController from "../controllers/manage-room.controller.js";
-import * as reservRoomController from "../controllers/reservation.controller.js";
+import * as reservationController from "../controllers/reservation.controller.js";
 
 const router = Router();
 
-router.get("/rooms", manageRoomController.getRooms);
-router.get("/get-reservations", reservRoomController.getReservations);
+router.get("/get-reservations", reservationController.getReservations);
+router.patch("/:id/status", reservationController.updateReservationStatus);
 
 export default router;

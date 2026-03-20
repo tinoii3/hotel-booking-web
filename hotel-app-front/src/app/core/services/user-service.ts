@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, tap } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { SKIP_ERROR_ALERT } from '../../interceptors/error/error-interceptor';
 
 export interface UserProfile {
   id: number;
@@ -28,12 +29,20 @@ export class UserService {
       return of(this.userSubject.value);
     }
 
-    return this.http.get<UserProfile>(`${this.apiUrl}/auth/user-profile`).pipe(
-      tap((user) => {
-        this.userSubject.next(user);
-        this.loaded = true;
+    return this.http
+      .get<UserProfile>(`${this.apiUrl}/auth/user-profile`, {
+        context: new HttpContext().set(SKIP_ERROR_ALERT, true),
       })
-    );
+      .pipe(
+        tap((user) => {
+          this.userSubject.next(user);
+          this.loaded = true;
+        }),
+        catchError(() => {
+          this.userSubject.next(null);
+          return of(null);
+        }),
+      );
   }
 
   setUser(user: UserProfile) {
@@ -50,4 +59,3 @@ export class UserService {
     return this.userSubject.value;
   }
 }
-

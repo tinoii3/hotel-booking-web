@@ -4,6 +4,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { SearchBar } from '../../shared/components/search-bar/search-bar';
 import { HomePageService } from './service/home-page-service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -14,10 +15,36 @@ import Swal from 'sweetalert2';
 })
 export class HomePage {
   private homePageService = inject(HomePageService);
+  private router = inject(Router);
 
   onSearch(data: any) {
-    // TODO: call API หรือ navigate ไปหน้าอื่น
-    console.log('Search data:', data);
+    this.router.navigate(['/hotel/roombooking'], {
+      queryParams: {
+        check_in: data.check_in,
+        check_out: data.check_out,
+        room_type: data.room_type,
+        adults: data.guests.adults,
+        children: data.guests.children,
+      },
+    });
+  }
+
+  goToBooking() {
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+
+    const formatDate = (date: Date) => date.toISOString().split('T')[0];
+
+    this.router.navigate(['/hotel/roombooking'], {
+      queryParams: {
+        check_in: formatDate(today),
+        check_out: formatDate(tomorrow),
+        room_type: 'all',
+        adults: 1,
+        children: 0,
+      },
+    });
   }
 
   get filteredRooms() {

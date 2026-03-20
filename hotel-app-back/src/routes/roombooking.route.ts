@@ -4,7 +4,6 @@ import * as roombookingController from "../controllers/roombooking.controller.js
 const router = Router();
 
 router.get("/search", roombookingController.searchRooms);
-router.get("/rooms", roombookingController.getRooms);
-router.post("/book", roombookingController.createBooking);
+router.post("/booking", roombookingController.upsertBooking);
 
 export default router;

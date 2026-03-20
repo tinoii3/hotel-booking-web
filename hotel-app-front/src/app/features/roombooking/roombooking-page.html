@@ -1,50 +1,7 @@
 <div class="bg-light min-vh-100 py-4">
     <div class="container" style="max-width: 1000px;">
-        <div class="bg-white border border-dark-subtle rounded-3 p-4 mb-4 shadow-sm">
-            <div class="row g-3 align-items-end">
-                <div class="col-md">
-                    <label class="form-label fw-semibold small mb-2 px-1">เช็คอิน</label>
-                    <div class="search-input-wrapper">
-                        <i class="bi bi-calendar"></i>
-                        <input type="date" class="form-control rounded-3 text-secondary" [(ngModel)]="f_checkin">
-                    </div>
-                </div>
-                <div class="col-md">
-                    <label class="form-label fw-semibold small mb-2 px-1">เช็คเอาต์</label>
-                    <div class="search-input-wrapper">
-                        <i class="bi bi-calendar"></i>
-                        <input type="date" class="form-control rounded-3 text-secondary" [(ngModel)]="f_checkout">
-                    </div>
-                </div>
-                <div class="col-md">
-                    <label class="form-label fw-semibold small mb-2 px-1">ประเภทห้อง</label>
-                    <div class="search-input-wrapper">
-                        <i class="bi bi-house"></i>
-                        <select class="form-select rounded-3 text-secondary" [(ngModel)]="f_type">
-                            @for (type of roomTypes; track type) {
-                            <option [value]="type">{{ type }}</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md">
-                    <label class="form-label fw-semibold small mb-2 px-1">จำนวนผู้เข้าพัก</label>
-                    <div class="search-input-wrapper">
-                        <i class="bi bi-people"></i>
-                        <select class="form-select rounded-3 text-secondary" [(ngModel)]="f_guest">
-                            <option value="1-0">ผู้ใหญ่ 1 : เด็ก 0</option>
-                            <option value="2-0">ผู้ใหญ่ 2 : เด็ก 0</option>
-                            <option value="2-1">ผู้ใหญ่ 2 : เด็ก 1</option>
-                            <option value="2-2">ผู้ใหญ่ 2 : เด็ก 2</option>
-                            <option value="3-0">ผู้ใหญ่ 3 : เด็ก 0</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-auto">
-                    <button class="btn btn-dark w-100 rounded-3 fw-semibold px-4" style="height: 42px;"
-                        (click)="searchRooms()">ค้นหา</button>
-                </div>
-            </div>
+        <div class="hero">
+            <app-search-bar (search)="onSearch($event)"></app-search-bar>
         </div>
 
         @for (room of filteredRooms; track room.id) {
@@ -82,7 +39,8 @@
                     <div class="d-flex align-items-center gap-4">
                         <h5 class="mb-0 fw-bold">THB {{ room.totalPrice | number }}</h5>
                         <button class="btn btn-dark px-4 py-2 rounded-3 fw-semibold"
-                            (click)="addToCart(room)">เพิ่ม</button>
+                            (click)="addToCart(room)">เพิ่ม
+                        </button>
                     </div>
                 </div>
             </div>
@@ -175,10 +133,10 @@
 
                 <h4 class="fw-bold mb-3">{{ selectedRoom.name }}</h4>
                 <div class="d-flex gap-4 text-muted small mb-4 fw-semibold">
-                    <span><i class="bi bi-aspect-ratio me-1"></i> {{ selectedRoom.sqm }} sqm.</span>
-                    <span><i class="bi bi-tv me-1"></i> {{ selectedRoom.bedType }}</span>
-                    <span><i class="bi bi-people me-1"></i> {{ selectedRoom.maxAdults + selectedRoom.maxChildren }}
-                        ท่าน</span>
+                    <span><fa-icon [icon]="faSquare" /> {{ selectedRoom.sqm }} sqm.</span>
+                    <span><fa-icon [icon]="faPeopleLine" /> {{ selectedRoom.maxCapasity }}
+                        ท่าน
+                    </span>
                 </div>
 
                 <div class="position-relative mb-3">
@@ -187,10 +145,10 @@
 
                     <div class="position-absolute bottom-0 end-0 m-3 d-flex gap-2">
                         <button class="btn btn-light bg-white border-0 shadow-sm rounded-1 p-2" (click)="prevImage()">
-                            <i class="bi bi-chevron-left"></i>
+                            <fa-icon [icon]="faAngleLeft" />
                         </button>
                         <button class="btn btn-dark border-0 shadow-sm rounded-1 p-2" (click)="nextImage()">
-                            <i class="bi bi-chevron-right"></i>
+                            <fa-icon [icon]="faAngleRight" />
                         </button>
                     </div>
                 </div>

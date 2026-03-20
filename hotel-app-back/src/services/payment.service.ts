@@ -6,6 +6,7 @@ import {
 } from "../repository/booking.repository.js";
 import { BookingStatus } from "../utils/constants.js";
 import { PaymentStatus } from "../utils/constants.js";
+import * as manageRepo from "../repository/manage-room.repository.js"
 
 export const processPaymentService = async (payload: any, userId: number) => {
   return prisma.$transaction(async (tx: any) => {
@@ -37,6 +38,8 @@ export const processPaymentService = async (payload: any, userId: number) => {
       status: PaymentStatus.COMPLETED,
       pay_at: new Date(),
     });
+
+    await manageRepo.updateRoomsToOccupied(tx, payload.booking_id);
 
     return {
       booking: updatedBooking,

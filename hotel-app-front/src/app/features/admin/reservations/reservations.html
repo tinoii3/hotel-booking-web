@@ -1,0 +1,159 @@
+<div class="bg-white border border-dark-subtle rounded-3 overflow-hidden">
+    <div class="d-flex justify-content-end align-items-center gap-2 px-4 py-3 border-bottom">
+        <h5 class="m-0 fw-bold align-self-center me-auto">การจอง (Reservations)</h5>
+        <div class="dropdown">
+            <button class="btn btn-outline-dark d-flex align-items-center gap-2 rounded-3"
+                type="button" [class.room-filter-btn--active]="selectedRoomType !== 'all'"
+                (click)="toggleDropdown()">
+                <i class="bi bi-funnel"></i>
+                {{ selectedRoomType === 'all' ? 'ประเภทห้อง' : selectedRoomType }}
+                <i class="bi bi-chevron-down small"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end"
+                [class.show]="isDropdownOpen"
+                [style.display]="isDropdownOpen ? 'block' : 'none'">
+                <li>
+                    <a class="dropdown-item" href="javascript:void(0)" (click)="filterType('all')">
+                        ทั้งหมด
+                    </a>
+                </li>
+                @for (type of roomTypes; track type.id) {
+                <li>
+                    <a class="dropdown-item"
+                        href="javascript:void(0)"
+                        (click)="filterType(type.name)">
+                        {{ type.name }}
+                    </a>
+                </li>
+                }
+            </ul>
+        </div>
+
+        <div class="dropdown">
+            <button class="btn btn-outline-dark d-flex align-items-center gap-2 rounded-3"
+                type="button" [class.room-filter-btn--active]="selectedStatus !== 'all'"
+                (click)="toggleStatusDropdown()">
+                <i class="bi bi-funnel"></i>
+                {{ selectedStatus === 'all' ? 'สถานะการจอง' : getStatusLabel(selectedStatus) }}
+                <i class="bi bi-chevron-down small"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end"
+                [class.show]="isStatusDropdownOpen"
+                [style.display]="isStatusDropdownOpen ? 'block' : 'none'">
+                <li>
+                    <a class="dropdown-item" href="javascript:void(0)" (click)="filterStatus('all')">
+                        ทั้งหมด
+                    </a>
+                </li>
+                <li><a class="dropdown-item" href="javascript:void(0)" (click)="filterStatus('PENDING')">รอการชำระ</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" (click)="filterStatus('CONFIRMED')">ยืนยันการจอง</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" (click)="filterStatus('CANCELLED')">ยกเลิกการจอง</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" (click)="filterStatus('EXPIRED')">หมดเวลา</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle mb-0">
+            <thead class="table-light border-bottom user-select-none">
+                <tr>
+                    <th class="room-table__th room-table__th--first" (click)="sortData('first_name')">
+                        ชื่อ-นามสกุล
+                        <fa-icon [icon]="getFaSortIcon('first_name', 'text')"
+                            class="ms-1 small"
+                            [class.opacity-25]="currentSortBy !== 'first_name'">
+                        </fa-icon>
+                    </th>
+                    <th class="room-table__th">เลขห้อง</th>
+                    <th class="room-table__th">ประเภทห้อง</th>
+                    <th class="room-table__th" (click)="sortData('check_in')">
+                        Check-in
+                        <fa-icon [icon]="getFaSortIcon('check_in', 'date')"
+                            class="ms-1 small"
+                            [class.opacity-25]="currentSortBy !== 'check_in'">
+                        </fa-icon>
+                    </th>
+                    <th class="room-table__th" (click)="sortData('check_out')">
+                        Check-out
+                        <fa-icon [icon]="getFaSortIcon('check_out', 'date')"
+                            class="ms-1 small"
+                            [class.opacity-25]="currentSortBy !== 'check_out'">
+                        </fa-icon>
+                    </th>
+                    <th class="room-table__th" (click)="sortData('status')">
+                        สถานะการจอง
+                        <fa-icon [icon]="getFaSortIcon('status', 'text')"
+                            class="ms-1 small"
+                            [class.opacity-25]="currentSortBy !== 'status'">
+                        </fa-icon>
+                    </th>
+                    <th class="room-table__th text-center"></th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (r of reservations; track r.id) {
+                <tr>
+
+                    <td class="align-top ps-4">
+                        {{ r.first_name }} {{ r.last_name }}
+                    </td>
+                    <td class="align-top">
+                        @for (item of r.booking_items; track $index) {
+                            <div>{{ item.rooms?.room_number }}</div>
+                        }
+                    </td>
+                    <td class="align-top">
+                        @for (item of r.booking_items; track $index) {
+                            <div>{{ item.rooms?.room_types?.name }}</div>
+                        }
+                    </td>
+                    <td class="align-top">
+                        {{ r.check_in | date:'yyyy-MM-dd' }}
+                    </td>
+                    <td class="align-top">
+                        {{ r.check_out | date:'yyyy-MM-dd' }}
+                    </td>
+                    <td>
+                        <span class="badge rounded-pill px-3 py-2"
+                            [ngClass]="{
+                                'badge-pending': r.status === 'PENDING',
+                                'badge-confirmed': r.status === 'CONFIRMED',
+                                'badge-cancelled': r.status === 'CANCELLED',
+                                'badge-expired': r.status === 'EXPIRED'
+                            }">
+
+                            {{ getStatusLabel(r.status) }}
+                        </span>
+                    </td>
+                    <td class="text-left">
+                        <button class="btn btn-edit btn-sm rounded-3 d-flex align-items-center gap-1"
+                            (click)="openStatusPopup(r)">
+                            <fa-icon [icon]="faPenToSquare" />
+                        </button>
+                    </td>
+                </tr>
+                }
+                @empty {
+                <tr>
+                    <td colspan="6" class="text-center py-4 text-muted">
+                        ไม่มีข้อมูลการจอง
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center px-4 py-3 border-top">
+        <span class="text-muted small">
+            แสดงหน้า {{ currentPage }} จาก {{ totalPages }} หน้า
+        </span>
+        <app-pagination-layout-component
+            [currentPage]="currentPage"
+            [totalPages]="totalPages"
+            (pageChange)="onPageChange($event)">
+        </app-pagination-layout-component>
+    </div>
+</div>
