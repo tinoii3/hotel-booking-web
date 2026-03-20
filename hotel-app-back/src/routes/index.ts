@@ -4,6 +4,7 @@ import authRoutes from "./auth.routes.js";
 import { authenticate, authorize } from "../middlewares/auth.middleware.js";
 import bookingRoute from "./booking.routes.js";
 import uploadRoutes from "./upload.routes.js";
+import dashboardRoutes from "./dashboard.routes.js";
 import manageStaffRoutes from "./manage-staff.routes.js";
 import reservationsRoutes from "./reservation.routes.js";
 import homePageRoutes from "./home-page.routes.js";
@@ -49,6 +50,12 @@ router.use(
   authenticate,
   authorize(["admin"]),
   reservationsRoutes
+);
+router.use(
+  "/dashboard",
+  authenticate,
+  authorize(["admin"]), 
+  dashboardRoutes
 );
 
 // Customer only route

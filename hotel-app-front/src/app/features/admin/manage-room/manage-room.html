@@ -141,7 +141,9 @@
 </div>
 
 @if (isAddTypeModalOpen) {
-<app-room-type-modal (closed)="isAddTypeModalOpen = false" (saved)="loadRoomTypes()">
+<app-room-type-modal 
+    (closed)="isAddTypeModalOpen = false" 
+    (saved)="loadRoomTypes()">
 </app-room-type-modal>
 }
 

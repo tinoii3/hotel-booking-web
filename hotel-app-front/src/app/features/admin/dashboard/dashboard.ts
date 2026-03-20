@@ -2,7 +2,6 @@ import { Component, OnInit, inject, ChangeDetectorRef, AfterViewInit, ElementRef
 import { CommonModule } from '@angular/common';
 import dayjs from 'dayjs';
 import 'dayjs/locale/th';
-import { LucideAngularModule } from 'lucide-angular';
 import Swal from 'sweetalert2';
 import { DashboardService } from './dashboard.service';
 import { Chart, registerables } from 'chart.js';
@@ -12,7 +11,7 @@ Chart.register(...registerables);
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule],
+  imports: [CommonModule], // เอา LucideAngularModule ออกแล้ว
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
@@ -24,7 +23,7 @@ export class Dashboard implements OnInit, AfterViewInit {
   chartInstance: any;
 
   currentDate: string = '';
-  isLoading: boolean = true;
+  isLoading: boolean = false; // ปิด Loading ไว้เลย
 
   stats = { 
     totalRooms: 0, 
@@ -35,8 +34,7 @@ export class Dashboard implements OnInit, AfterViewInit {
   
   recentBookings: any[] = [];
   popularRooms: any[] = [];
-  topRatedRooms: any[] = [];
-  revenueChartData: any = { labels: [], data: [] };
+  revenueChartData: any = { labels: [], data: [] }; // ลบ topRatedRooms ออก
 
   ngOnInit() {
     dayjs.locale('th');
@@ -45,29 +43,27 @@ export class Dashboard implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    // ให้สร้างกราฟเปล่าทิ้งไว้ก่อน
+    this.initChart();
   }
 
   loadDashboardData() {
-    this.isLoading = true;
-    
     this.dashboardService.getDashboardSummary().subscribe({
       next: (response: any) => {
         if (response.data) {
           this.stats = response.data.stats || this.stats;
           this.recentBookings = response.data.recentBookings || [];
           this.popularRooms = response.data.popularRooms || [];
-          this.topRatedRooms = response.data.topRatedRooms || [];
           this.revenueChartData = response.data.revenueChart || { labels: [], data: [] };
-          
-          this.initChart(); 
         }
         
-        this.isLoading = false;
+        // อัปเดตกราฟใหม่ด้วยข้อมูลจริงจาก Backend
+        this.updateChartData();
+        
         this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('เกิดข้อผิดพลาดในการโหลด Dashboard:', error);
-        this.isLoading = false;
         Swal.fire({
           icon: 'error',
           title: 'เกิดข้อผิดพลาด!',
@@ -75,56 +71,52 @@ export class Dashboard implements OnInit, AfterViewInit {
           confirmButtonText: 'ปิดหน้าต่าง',
           confirmButtonColor: '#dc3545'
         });
-        this.cdr.detectChanges();
       }
     });
   }
 
-  getStars(rating: number): number[] {
-    return Array(rating || 0).fill(0);
-  }
-
   initChart() {
     if (this.chartInstance) {
-      this.chartInstance.destroy();
+      this.chartInstance.destroy(); // ล้างกราฟเก่าทิ้งก่อน (ถ้ามี)
     }
-    
-    if (!this.revenueChartCanvas) return;
 
+    if (!this.revenueChartCanvas || !this.revenueChartCanvas.nativeElement) return;
     const ctx = this.revenueChartCanvas.nativeElement.getContext('2d');
     
+    // สร้างสี Gradient สวยๆ ใต้กราฟเส้น
     const gradient = ctx.createLinearGradient(0, 0, 0, 300);
     gradient.addColorStop(0, 'rgba(13, 110, 253, 0.5)');
     gradient.addColorStop(1, 'rgba(13, 110, 253, 0.0)');
 
     this.chartInstance = new Chart(ctx, {
-      type: 'line',
+      type: 'line', // เป็นกราฟเส้น
       data: {
-        labels: this.revenueChartData.labels,
+        labels: [],
         datasets: [{
           label: 'รายได้ (บาท)',
-          data: this.revenueChartData.data,
-          borderColor: '#0d6efd',
-          backgroundColor: gradient,
+          data: [],
+          borderColor: '#0d6efd', // สีเส้น
+          backgroundColor: gradient, // สีพื้นใต้เส้น
           borderWidth: 2,
           pointBackgroundColor: '#ffffff',
           pointBorderColor: '#0d6efd',
           pointBorderWidth: 2,
           pointRadius: 4,
-          fill: true,
-          tension: 0.4
+          fill: true, // เปิดให้เติมสีใต้เส้น
+          tension: 0.4 // ทำเส้นให้โค้งมนนิดๆ
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { display: false },
+          legend: { display: false }, // ซ่อนป้ายกำกับด้านบน
           tooltip: {
             callbacks: {
               label: function(context) {
                 let label = context.dataset.label || '';
                 if (label) label += ': ';
+                // กราฟเส้น ใช้ context.parsed.y เพื่อดึงค่าแกนตั้งมาแสดงตอนเอาเมาส์ชี้
                 if (context.parsed.y !== null) {
                   label += new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(context.parsed.y);
                 }
@@ -136,13 +128,22 @@ export class Dashboard implements OnInit, AfterViewInit {
         scales: {
           y: { 
             beginAtZero: true,
-            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+            grid: { color: 'rgba(0, 0, 0, 0.05)' } // เส้นตารางแนวนอนจางๆ
           },
           x: { 
-            grid: { display: false }
+            grid: { display: false } // ซ่อนเส้นตารางแนวตั้ง
           }
         }
       }
     });
+  }
+
+  updateChartData() {
+    if (this.chartInstance && this.revenueChartData.labels.length > 0) {
+      // เอาข้อมูลที่ได้จาก Backend มายัดใส่ตัวกราฟ แล้วสั่งให้มันอัปเดตตัวเอง
+      this.chartInstance.data.labels = this.revenueChartData.labels;
+      this.chartInstance.data.datasets[0].data = this.revenueChartData.data;
+      this.chartInstance.update(); 
+    }
   }
 }

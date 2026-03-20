@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule, FormGroup} from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 
 @Component({
@@ -18,24 +18,16 @@ export class DetailComponent {
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(/^0[0-9]{9}$/),
-        ],
-      ],
+      phone: ['', [Validators.required, Validators.pattern(/^0[0-9]{9}$/)]],
       note: [''],
     });
 
-    this.form.valueChanges
-      .pipe(debounceTime(300))
-      .subscribe((value) => {
-        this.formChange.emit({
-          value,
-          valid: this.form.valid,
-        });
+    this.form.valueChanges.pipe(debounceTime(300)).subscribe((value) => {
+      this.formChange.emit({
+        value,
+        valid: this.form.valid,
       });
+    });
   }
 
   get f() {
@@ -48,5 +40,9 @@ export class DetailComponent {
 
   getValue() {
     return this.form.value;
+  }
+
+  markAllTouched() {
+    this.form.markAllAsTouched();
   }
 }

@@ -26,7 +26,7 @@
         </div>
 
         <div class="subtotal">
-          THB {{ item.subtotal }}
+          THB {{ item.subtotal | number }}
         </div>
 
         <hr />
@@ -37,7 +37,7 @@
     <div class="total-box">
       <span>ราคารวมทั้งหมด</span>
       <span class="total-price">
-        THB {{ b.total_price }}
+        THB {{ b.total_price | number }}
       </span>
     </div>
 

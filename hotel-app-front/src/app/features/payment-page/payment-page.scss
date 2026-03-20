@@ -37,3 +37,17 @@
   padding-left: 15px;
 }
 
+button {
+  height: 44px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+
+  &:disabled {
+    background: #ccc;
+    border: none;
+  }
+
+  &:hover:not(:disabled) {
+    background: #3a3a3a;
+  }
+}
