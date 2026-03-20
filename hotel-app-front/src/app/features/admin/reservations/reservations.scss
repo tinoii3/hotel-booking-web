@@ -20,8 +20,8 @@
 }
 
 .badge-pending {
-  background-color: #f0e7c5;
-  color: #fed73b;
+  background-color: #fff0f0;
+  color: rgb(189, 139, 2);
 }
 
 // --- ตารางและโครงสร้างหลัก ---
@@ -151,4 +151,42 @@
       background: var(--bs-secondary, #6c757d);
     }
   }
+}
+
+.filter-btn {
+  box-shadow: none !important;
+}
+
+.filter-btn-active {
+  background-color: #1e3a5f;
+  border-color: #1e3a5f;
+  color: white;
+}
+
+.filter-btn-outline {
+  background-color: white;
+  border-color: #1e3a5f;
+  color: #1e3a5f;
+}
+
+.filter-btn:hover,
+.filter-btn:focus,
+.filter-btn:active {
+  box-shadow: none !important;
+}
+
+.filter-btn-active:hover,
+.filter-btn-active:focus,
+.filter-btn-active:active {
+  background-color: #1e3a5f;
+  border-color: #1e3a5f;
+  color: white;
+}
+
+.filter-btn-outline:hover,
+.filter-btn-outline:focus,
+.filter-btn-outline:active {
+  background-color: white;
+  border-color: #1e3a5f;
+  color: #1e3a5f;
 }

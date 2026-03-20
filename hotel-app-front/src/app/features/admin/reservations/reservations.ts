@@ -179,8 +179,11 @@ export class Reservation implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'ยืนยัน',
       cancelButtonText: 'ยกเลิก',
-      confirmButtonColor: '#0d6efd',
-      cancelButtonColor: '#6c757d'
+      customClass: {
+        cancelButton: 'btn-dialog btn-dialog-secondary',
+        confirmButton: 'btn-dialog btn-dialog-primary',
+      },
+      reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed && result.value) {
         this.updateReservationStatus(reservation.id, result.value);
