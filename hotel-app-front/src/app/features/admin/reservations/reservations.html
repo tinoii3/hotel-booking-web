@@ -64,20 +64,8 @@
                             [class.opacity-25]="currentSortBy !== 'first_name'">
                         </fa-icon>
                     </th>
-                    <th class="room-table__th" (click)="sortData('room_number')">
-                        เลขห้อง
-                        <fa-icon [icon]="getFaSortIcon('room_number', 'number')"
-                            class="ms-1 small"
-                            [class.opacity-25]="currentSortBy !== 'room_number'">
-                        </fa-icon>
-                    </th>
-                    <th class="room-table__th" (click)="sortData('room_type')">
-                        ประเภทห้อง
-                        <fa-icon [icon]="getFaSortIcon('room_type', 'text')"
-                            class="ms-1 small"
-                            [class.opacity-25]="currentSortBy !== 'room_type'">
-                        </fa-icon>
-                    </th>
+                    <th class="room-table__th">เลขห้อง</th>
+                    <th class="room-table__th">ประเภทห้อง</th>
                     <th class="room-table__th" (click)="sortData('check_in')">
                         Check-in
                         <fa-icon [icon]="getFaSortIcon('check_in', 'date')"
