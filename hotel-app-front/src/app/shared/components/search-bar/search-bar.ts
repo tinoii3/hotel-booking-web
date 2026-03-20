@@ -4,6 +4,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { LucideAngularModule, Calendar, Users, BedDouble } from 'lucide-angular';
 import { GUEST_OPTIONS, ROOM_TYPES } from '../../../core/constants/search.constants';
+import { formatDateToThai } from '../../utils/date';
 
 @Component({
   selector: 'app-search-bar',
@@ -36,12 +37,10 @@ export class SearchBar implements OnInit {
   }
 
   ngOnInit() {
-    const today = new Date();
-    this.minCheckInDate = this.formatDate(today);
-
+    this.minCheckInDate = formatDateToThai();
     this.form.patchValue({
-      check_in: this.formatDate(today),
-      check_out: this.formatDate(new Date(today.getTime() + 86400000)),
+      check_in: formatDateToThai(),
+      check_out: formatDateToThai(new Date(Date.now() + 86400000)),
     });
 
     this.form.get('check_in')?.valueChanges.subscribe((checkIn: any) => {

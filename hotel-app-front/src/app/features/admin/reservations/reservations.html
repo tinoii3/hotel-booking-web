@@ -2,9 +2,12 @@
     <div class="d-flex justify-content-end align-items-center gap-2 px-4 py-3 border-bottom">
         <h5 class="m-0 fw-bold align-self-center me-auto">การจอง (Reservations)</h5>
         <div class="dropdown">
-            <button class="btn btn-outline-dark d-flex align-items-center gap-2 rounded-3"
-                type="button" [class.room-filter-btn--active]="selectedRoomType !== 'all'"
+            <button
+                class="btn rounded-3 filter-btn"
+                [ngClass]="selectedRoomType !== 'all' ? 'filter-btn-active' : 'filter-btn-outline'"
+                type="button"
                 (click)="toggleDropdown()">
+
                 <i class="bi bi-funnel"></i>
                 {{ selectedRoomType === 'all' ? 'ประเภทห้อง' : selectedRoomType }}
                 <i class="bi bi-chevron-down small"></i>
@@ -30,9 +33,14 @@
         </div>
 
         <div class="dropdown">
-            <button class="btn btn-outline-dark d-flex align-items-center gap-2 rounded-3"
-                type="button" [class.room-filter-btn--active]="selectedStatus !== 'all'"
+            <button
+                class="btn rounded-3 filter-btn"
+                [ngClass]="selectedStatus === 'all' && selectedRoomType === 'all'
+                    ? 'filter-btn-active'
+                    : (selectedStatus !== 'all' ? 'filter-btn-active' : 'filter-btn-outline')"
+                type="button"
                 (click)="toggleStatusDropdown()">
+
                 <i class="bi bi-funnel"></i>
                 {{ selectedStatus === 'all' ? 'สถานะการจอง' : getStatusLabel(selectedStatus) }}
                 <i class="bi bi-chevron-down small"></i>
@@ -97,7 +105,7 @@
                 <tr>
 
                     <td class="align-top ps-4">
-                        {{ r.first_name }} {{ r.last_name }}
+                        {{ r.first_name || r.last_name ? (r.first_name || '') + ' ' + (r.last_name || '') : 'ไม่มีข้อมูล' }}
                     </td>
                     <td class="align-top">
                         @for (item of r.booking_items; track $index) {
@@ -110,10 +118,10 @@
                         }
                     </td>
                     <td class="align-top">
-                        {{ r.check_in | date:'yyyy-MM-dd' }}
+                        {{ r.check_in | date:'dd-MM-yyyy' }}
                     </td>
                     <td class="align-top">
-                        {{ r.check_out | date:'yyyy-MM-dd' }}
+                        {{ r.check_out | date:'dd-MM-yyyy' }}
                     </td>
                     <td>
                         <span class="badge rounded-pill px-3 py-2"
@@ -121,9 +129,9 @@
                                 'badge-pending': r.status === 'PENDING',
                                 'badge-confirmed': r.status === 'CONFIRMED',
                                 'badge-cancelled': r.status === 'CANCELLED',
-                                'badge-expired': r.status === 'EXPIRED'
+                                'badge-expired': r.status === 'EXPIRED',
+                                'badge-invalid': r.status === 'ข้อมูลไม่ถูกต้อง'
                             }">
-
                             {{ getStatusLabel(r.status) }}
                         </span>
                     </td>

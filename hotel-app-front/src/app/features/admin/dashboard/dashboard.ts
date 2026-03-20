@@ -11,7 +11,7 @@ Chart.register(...registerables);
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule], // เอา LucideAngularModule ออกแล้ว
+  imports: [CommonModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
@@ -20,10 +20,17 @@ export class Dashboard implements OnInit, AfterViewInit {
   private cdr = inject(ChangeDetectorRef);
 
   @ViewChild('revenueChartCanvas') revenueChartCanvas!: ElementRef;
+  @ViewChild('bookingChartCanvas') bookingChartCanvas!: ElementRef;
+  @ViewChild('popularRoomsChartCanvas') popularRoomsChartCanvas?: ElementRef;
+  
   chartInstance: any;
+  bookingChartInstance: any;
+  popularRoomsChartInstance: any;
 
   currentDate: string = '';
-  isLoading: boolean = false; // ปิด Loading ไว้เลย
+  isLoading: boolean = false;
+  selectedDays: number = 15;
+  selectedRevenueMonth: string = '';
 
   stats = { 
     totalRooms: 0, 
@@ -34,33 +41,43 @@ export class Dashboard implements OnInit, AfterViewInit {
   
   recentBookings: any[] = [];
   popularRooms: any[] = [];
-  revenueChartData: any = { labels: [], data: [] }; // ลบ topRatedRooms ออก
+  revenueChartData: any = { labels: [], data: [] };
+  bookingChartData: any[] = [];
 
   ngOnInit() {
     dayjs.locale('th');
     this.currentDate = dayjs().format('D MMMM YYYY');
+    this.selectedRevenueMonth = dayjs().format('YYYY-MM');
     this.loadDashboardData();
   }
 
   ngAfterViewInit() {
-    // ให้สร้างกราฟเปล่าทิ้งไว้ก่อน
     this.initChart();
+    setTimeout(() => {
+        this.updateBookingChart(this.selectedDays);
+    }, 100);
   }
 
   loadDashboardData() {
-    this.dashboardService.getDashboardSummary().subscribe({
+    const [year, month] = this.selectedRevenueMonth.split('-');
+
+    this.dashboardService.getDashboardSummary(month, year).subscribe({
       next: (response: any) => {
         if (response.data) {
           this.stats = response.data.stats || this.stats;
           this.recentBookings = response.data.recentBookings || [];
           this.popularRooms = response.data.popularRooms || [];
           this.revenueChartData = response.data.revenueChart || { labels: [], data: [] };
+          this.bookingChartData = response.data.dailyBookings || []; 
         }
         
-        // อัปเดตกราฟใหม่ด้วยข้อมูลจริงจาก Backend
         this.updateChartData();
-        
+        this.updateBookingChart(this.selectedDays); 
         this.cdr.detectChanges();
+        
+        if (this.popularRooms.length > 0) {
+            this.updatePopularRoomsChart();
+        }
       },
       error: (error) => {
         console.error('เกิดข้อผิดพลาดในการโหลด Dashboard:', error);
@@ -77,46 +94,44 @@ export class Dashboard implements OnInit, AfterViewInit {
 
   initChart() {
     if (this.chartInstance) {
-      this.chartInstance.destroy(); // ล้างกราฟเก่าทิ้งก่อน (ถ้ามี)
+      this.chartInstance.destroy();
     }
 
     if (!this.revenueChartCanvas || !this.revenueChartCanvas.nativeElement) return;
     const ctx = this.revenueChartCanvas.nativeElement.getContext('2d');
     
-    // สร้างสี Gradient สวยๆ ใต้กราฟเส้น
     const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-    gradient.addColorStop(0, 'rgba(13, 110, 253, 0.5)');
-    gradient.addColorStop(1, 'rgba(13, 110, 253, 0.0)');
+    gradient.addColorStop(0, 'rgba(30, 58, 95, 0.5)');
+    gradient.addColorStop(1, 'rgba(30, 58, 95, 0.0)');
 
     this.chartInstance = new Chart(ctx, {
-      type: 'line', // เป็นกราฟเส้น
+      type: 'line',
       data: {
         labels: [],
         datasets: [{
           label: 'รายได้ (บาท)',
           data: [],
-          borderColor: '#0d6efd', // สีเส้น
-          backgroundColor: gradient, // สีพื้นใต้เส้น
+          borderColor: '#1e3a5f',
+          backgroundColor: gradient,
           borderWidth: 2,
           pointBackgroundColor: '#ffffff',
-          pointBorderColor: '#0d6efd',
+          pointBorderColor: '#1e3a5f',
           pointBorderWidth: 2,
           pointRadius: 4,
-          fill: true, // เปิดให้เติมสีใต้เส้น
-          tension: 0.4 // ทำเส้นให้โค้งมนนิดๆ
+          fill: true,
+          tension: 0.4
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { display: false }, // ซ่อนป้ายกำกับด้านบน
+          legend: { display: false },
           tooltip: {
             callbacks: {
               label: function(context) {
                 let label = context.dataset.label || '';
                 if (label) label += ': ';
-                // กราฟเส้น ใช้ context.parsed.y เพื่อดึงค่าแกนตั้งมาแสดงตอนเอาเมาส์ชี้
                 if (context.parsed.y !== null) {
                   label += new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(context.parsed.y);
                 }
@@ -128,10 +143,15 @@ export class Dashboard implements OnInit, AfterViewInit {
         scales: {
           y: { 
             beginAtZero: true,
-            grid: { color: 'rgba(0, 0, 0, 0.05)' } // เส้นตารางแนวนอนจางๆ
+            grid: { color: 'rgba(0, 0, 0, 0.05)' }
           },
           x: { 
-            grid: { display: false } // ซ่อนเส้นตารางแนวตั้ง
+            grid: { display: false },
+            ticks: {
+              maxTicksLimit: 7, 
+              maxRotation: 0,   
+              autoSkip: true    
+            }
           }
         }
       }
@@ -139,11 +159,120 @@ export class Dashboard implements OnInit, AfterViewInit {
   }
 
   updateChartData() {
-    if (this.chartInstance && this.revenueChartData.labels.length > 0) {
-      // เอาข้อมูลที่ได้จาก Backend มายัดใส่ตัวกราฟ แล้วสั่งให้มันอัปเดตตัวเอง
+    if (this.chartInstance && this.revenueChartData && this.revenueChartData.labels.length > 0) {
       this.chartInstance.data.labels = this.revenueChartData.labels;
       this.chartInstance.data.datasets[0].data = this.revenueChartData.data;
       this.chartInstance.update(); 
     }
+  }
+
+  onChartDaysChange(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    this.selectedDays = parseInt(selectElement.value, 10);
+    this.updateBookingChart(this.selectedDays);
+  }
+
+  onRevenueMonthChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.value) {
+      this.selectedRevenueMonth = input.value;
+      this.loadDashboardData();
+    }
+  }
+
+  updateBookingChart(days: number) {
+    if (!this.bookingChartCanvas || !this.bookingChartCanvas.nativeElement) return;
+    
+    if (this.bookingChartInstance) {
+      this.bookingChartInstance.destroy();
+    }
+
+    const ctx = this.bookingChartCanvas.nativeElement.getContext('2d');
+    
+    let labels: string[] = [];
+    let data: number[] = [];
+
+    for (let i = days - 1; i >= 0; i--) {
+      const targetDate = dayjs().subtract(i, 'day');
+      labels.push(targetDate.format('D MMM')); 
+
+      const dateString = targetDate.format('YYYY-MM-DD'); 
+      const foundData = this.bookingChartData.find(item => item.date === dateString);
+      
+      data.push(foundData ? foundData.count : 0);
+    }
+
+    this.bookingChartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'จำนวนห้องที่ถูกจอง',
+          data: data,
+          backgroundColor: '#1e3a5f',
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { stepSize: 1 }
+          }
+        }
+      }
+    });
+  }
+
+  updatePopularRoomsChart() {
+    if (!this.popularRoomsChartCanvas || !this.popularRoomsChartCanvas.nativeElement) return;
+
+    if (this.popularRoomsChartInstance) {
+      this.popularRoomsChartInstance.destroy();
+    }
+
+    const ctx = this.popularRoomsChartCanvas.nativeElement.getContext('2d');
+    
+    const labels = this.popularRooms.map((r: any) => `${r.name} (${r.percentage}%)`);
+    const data = this.popularRooms.map((r: any) => r.percentage);
+
+    const backgroundColors = [
+      '#1e3a5f', 
+      '#cba135', 
+      '#2f4f75', 
+      '#162d49', 
+      '#6c757d'
+    ];
+
+    this.popularRoomsChartInstance = new Chart(ctx, {
+      type: 'pie', 
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: backgroundColors.slice(0, data.length),
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const roomName = context.label.split(' (')[0]; 
+                return ` ${roomName}: ${context.raw}%`;
+              }
+            }
+          }
+        }
+      }
+    });
   }
 }

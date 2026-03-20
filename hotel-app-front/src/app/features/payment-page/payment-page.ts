@@ -93,7 +93,7 @@ export class PaymentPage {
       email: this.detailForm.email,
       phone: this.detailForm.phone,
       note: this.detailForm.note,
-      payment_method: 'CARD',
+      payment_method: 'CREDIT CARD',
     };
 
     this.paymentService.createPayment(payload).subscribe({
@@ -119,7 +119,45 @@ export class PaymentPage {
       },
     });
   }
+
   canSubmit(): boolean {
     return this.detailValid && this.paymentValid && !!this.booking;
+  }
+
+  onCancelBooking() {
+    if (!this.booking) return;
+
+    Swal.fire({
+      icon: 'warning',
+      title: 'ยืนยันการยกเลิกการจอง',
+      text: 'คุณต้องการยกเลิกการจองนี้หรือไม่?',
+      showCancelButton: true,
+      confirmButtonText: 'ยกเลิกการจอง',
+      cancelButtonText: 'กลับ',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.paymentService.cancelBooking(this.booking!.id).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'ยกเลิกการจองเรียบร้อย',
+              timer: 1500,
+              showConfirmButton: false,
+            });
+            this.booking!.status = 'CANCELED';
+            this.router.navigate(['/hotel']);
+          },
+          error: (err: any) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'เกิดข้อผิดพลาด',
+              text: err.error?.message || 'ไม่สามารถยกเลิกการจองได้',
+            });
+          },
+        });
+      }
+    });
   }
 }

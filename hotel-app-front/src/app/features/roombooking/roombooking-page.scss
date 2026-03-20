@@ -3,7 +3,10 @@ $border-color: #e5e7eb;
 $text-light: #666;
 
 .container {
-  max-width: 1000px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
 }
 .room-image {
   height: 220px;

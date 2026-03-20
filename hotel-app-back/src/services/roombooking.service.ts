@@ -1,19 +1,17 @@
 import * as roombookingRepo from "../repository/roombooking.repository.js";
 
 export const processSearchRooms = async (query: any) => {
-    const adults = Number(query.adults) || 1;
-    const children = Number(query.children) || 0;
+    const adults = Number(query.adults);
+    const children = Number(query.children);
     const roomType = query.room_type;
     const whereCondition: any = {
-        adults: { gte: adults },
-        children: { gte: children },
+        adults: { lte: adults },
+        children: { lte: children },
         status: 'available',
     };
 
     if (roomType && roomType !== 'all') {
-        whereCondition.room_types = {
-            id: Number(roomType)
-        };
+        whereCondition.room_type_id = Number(roomType);
     }
 
     const availableRooms = await roombookingRepo.searchAvailableRooms(whereCondition);
@@ -46,7 +44,8 @@ export const upsertBooking = async (body: any) => {
     });
 
     const expiresAt = new Date();
-    expiresAt.setHours(expiresAt.getHours() + 24);
+    // expiresAt.setHours(expiresAt.getHours() + 10);
+    expiresAt.setMinutes(expiresAt.getMinutes() + 10);
 
     const bookingData = {
         user_id,
