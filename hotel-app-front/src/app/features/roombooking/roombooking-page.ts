@@ -3,10 +3,16 @@ import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SearchBar } from '../../shared/components/search-bar/search-bar';
 import { RoombookingService } from './roombooking.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../core/services/user-service';
-import { faTrashCan, faSquare, faPeopleLine, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
-import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import {
+  faTrashCan,
+  faSquare,
+  faPeopleLine,
+  faAngleLeft,
+  faAngleRight,
+} from '@fortawesome/free-solid-svg-icons';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import Swal from 'sweetalert2';
 
 interface Room {
@@ -43,7 +49,7 @@ export interface SearchCriteria {
   standalone: true,
   imports: [CommonModule, DecimalPipe, FormsModule, SearchBar, FaIconComponent],
   templateUrl: './roombooking-page.html',
-  styleUrl: './roombooking-page.scss'
+  styleUrl: './roombooking-page.scss',
 })
 export class RoombookingPage implements OnInit {
   faSquare = faSquare;
@@ -62,7 +68,8 @@ export class RoombookingPage implements OnInit {
 
   private roomService = inject(RoombookingService);
   private router = inject(Router);
-  constructor(private userService: UserService) { }
+  private route = inject(ActivatedRoute);
+  constructor(private userService: UserService) {}
 
   userId!: number;
   email!: string;
@@ -80,7 +87,24 @@ export class RoombookingPage implements OnInit {
       this.userId = user.id;
       this.email = user.email ?? '';
     });
-    this.searchRooms();
+    this.route.queryParams.subscribe((params: any) => {
+      if (!params['check_in']) {
+        this.searchRooms();
+        return;
+      }
+
+      this.f_checkin = params['check_in'];
+      this.f_checkout = params['check_out'];
+      this.f_roomtype = params['room_type'];
+
+      this.f_guest = {
+        adults: Number(params['adults'] || 1),
+        children: Number(params['children'] || 0),
+        label: '',
+      };
+
+      this.searchRooms();
+    });
   }
 
   onSearch(data: any) {
@@ -132,7 +156,7 @@ export class RoombookingPage implements OnInit {
             sqm: r.room_types?.size_sqm || 30,
             maxCapasity: r.room_types?.capacity || 2,
             pricePerNight: price,
-            totalPrice: price * nights
+            totalPrice: price * nights,
           };
         });
       },
@@ -140,9 +164,9 @@ export class RoombookingPage implements OnInit {
         Swal.fire({
           icon: 'error',
           title: 'ค้นหาล้มเหลว',
-          text: err.error?.message || 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้'
+          text: err.error?.message || 'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้',
         });
-      }
+      },
     });
   }
 
@@ -156,14 +180,14 @@ export class RoombookingPage implements OnInit {
   }
 
   addToCart(room: Room) {
-    const isAlreadyAdded = this.cartItems.some(item => item.roomId === room.id);
+    const isAlreadyAdded = this.cartItems.some((item) => item.roomId === room.id);
     if (isAlreadyAdded) {
       Swal.fire({
         icon: 'warning',
         title: 'ห้องนี้อยู่ใหตะกร้าแล้ว',
         text: 'คุณได้เลือกห้องนี้ไปแล้ว กรุณาเลือกห้องอื่นเพิ่มเติมนะครับ',
         timer: 2000,
-        showCancelButton: false
+        showCancelButton: false,
       });
       return;
     }
@@ -179,7 +203,7 @@ export class RoombookingPage implements OnInit {
       adults: searchAdults,
       children: searchChildren,
       nights: nights,
-      totalPrice: room.pricePerNight * nights
+      totalPrice: room.pricePerNight * nights,
     });
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
   }
@@ -197,7 +221,7 @@ export class RoombookingPage implements OnInit {
       Swal.fire({
         icon: 'warning',
         title: 'ตะกร้าว่างเปล่า',
-        text: 'กรุณาเลือกห้องพักก่อนดำเนินการต่อ'
+        text: 'กรุณาเลือกห้องพักก่อนดำเนินการต่อ',
       });
     }
 
@@ -207,7 +231,7 @@ export class RoombookingPage implements OnInit {
         title: 'กรุณาเข้าสู่ระบบ',
         text: 'คุณต้องเข้าสู่ระบบก่อนทำการจองห้องพักครับ',
         confirmButtonText: 'ไปหน้าเข้าสู่ระบบ',
-        confirmButtonColor: '#000000'
+        confirmButtonColor: '#000000',
       }).then((result) => {
         if (result.isConfirmed) {
           this.router.navigate(['/auth/login']);
@@ -220,7 +244,7 @@ export class RoombookingPage implements OnInit {
       Swal.fire({
         icon: 'error',
         title: 'ข้อมูลไม่ครบ',
-        text: 'กรุณาระบุวันที่เช็คอินและเช็คเอาต์'
+        text: 'กรุณาระบุวันที่เช็คอินและเช็คเอาต์',
       });
       return;
     }
@@ -229,7 +253,7 @@ export class RoombookingPage implements OnInit {
       Swal.fire({
         icon: 'warning',
         title: 'ตะกร้าว่างเปล่า',
-        text: 'กรุณาเลือกห้องพักลงตะกร้าก่อนดำเนินการต่อ'
+        text: 'กรุณาเลือกห้องพักลงตะกร้าก่อนดำเนินการต่อ',
       });
       return;
     }
@@ -250,20 +274,20 @@ export class RoombookingPage implements OnInit {
       this.f_checkout = formatDate(tomorrow);
     }
 
-    const itemsPayload = this.cartItems.map(item => ({
+    const itemsPayload = this.cartItems.map((item) => ({
       room_id: item.roomId,
       room_name: item.roomName,
       price_per_night: item.pricePerNight,
       adults: item.adults,
-      children: item.children
+      children: item.children,
     }));
 
     let totalGuests = 0;
     let totalPrices = 0;
 
-    this.cartItems.forEach(item => {
-      totalGuests += (item.adults + item.children);
-      totalPrices += item.totalPrice
+    this.cartItems.forEach((item) => {
+      totalGuests += item.adults + item.children;
+      totalPrices += item.totalPrice;
     });
 
     const totalNights = this.cartItems[0].nights;
@@ -280,7 +304,7 @@ export class RoombookingPage implements OnInit {
       total_price: totalPrices,
       total_guests: totalGuests,
       total_nights: totalNights,
-      items: itemsPayload
+      items: itemsPayload,
     };
 
     this.roomService.createBooking(payload).subscribe({
@@ -295,7 +319,7 @@ export class RoombookingPage implements OnInit {
           title: 'สร้างรายการจองสำเร็จ!',
           text: 'กำลังพาท่านไปหน้าชำระเงิน...',
           timer: 2000,
-          showConfirmButton: false
+          showConfirmButton: false,
         }).then(() => {
           if (newBookingId) {
             this.router.navigate(['/hotel/payment'], { queryParams: { booking_id: newBookingId } });
@@ -311,9 +335,9 @@ export class RoombookingPage implements OnInit {
           icon: 'error',
           title: 'เกิดข้อผิดพลาด',
           text: errorMessage,
-          confirmButtonColor: '#dc3545'
+          confirmButtonColor: '#dc3545',
         });
-      }
+      },
     });
   }
 
@@ -330,19 +354,23 @@ export class RoombookingPage implements OnInit {
 
   nextImage() {
     if (this.selectedRoom && this.selectedRoom.images) {
-      this.currentImageIndex = (this.currentImageIndex < this.selectedRoom.images.length - 1)
-        ? this.currentImageIndex + 1
-        : 0;
+      this.currentImageIndex =
+        this.currentImageIndex < this.selectedRoom.images.length - 1
+          ? this.currentImageIndex + 1
+          : 0;
     }
   }
 
   prevImage() {
     if (this.selectedRoom && this.selectedRoom.images) {
-      this.currentImageIndex = (this.currentImageIndex > 0)
-        ? this.currentImageIndex - 1
-        : this.selectedRoom.images.length - 1;
+      this.currentImageIndex =
+        this.currentImageIndex > 0
+          ? this.currentImageIndex - 1
+          : this.selectedRoom.images.length - 1;
     }
   }
 
-  selectImage(index: number) { this.currentImageIndex = index; }
+  selectImage(index: number) {
+    this.currentImageIndex = index;
+  }
 }
