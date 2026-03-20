@@ -1,8 +1,8 @@
 export const ROOM_TYPES = [
   { label: 'ทุกประเภทห้องพัก', value: 'all' },
-  { label: 'ห้องสูท', value: 1 },
+  { label: 'ห้องมาตรฐาน', value: 1 },
   { label: 'ห้องดีลักซ์', value: 2 },
-  { label: 'ห้องมาตรฐาน', value: 3 },
+  { label: 'ห้องสูท', value: 3 },
   { label: 'ห้องสุดพิเศษ', value: 4 },
   { label: 'ห้องสตูดิโอ', value: 5 },
 ];
