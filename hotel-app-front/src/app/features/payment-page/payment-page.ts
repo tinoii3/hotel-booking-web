@@ -55,6 +55,29 @@ export class PaymentPage {
   }
 
   onSubmitPayment() {
+    if (!this.userService.getSnapshot()) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'กรุณาเข้าสู่ระบบก่อน',
+        text: 'คุณต้องเข้าสู่ระบบก่อนทำรายการชำระเงิน',
+        confirmButtonColor: '#000000',
+      }).then(() => {
+        this.router.navigate(['/auth/login']);
+      });
+
+      return;
+    }
+
+    if (!this.booking) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'ไม่มีรายการจอง',
+        text: 'กรุณาเลือกห้องก่อนทำการชำระเงิน',
+        confirmButtonColor: '#000000',
+      });
+      return;
+    }
+
     this.detailComp.markAllTouched();
     this.paymentComp.markAllTouched();
 
@@ -71,8 +94,6 @@ export class PaymentPage {
       note: this.detailForm.note,
       payment_method: 'CARD',
     };
-
-    console.log('🔥 FINAL PAYLOAD:', payload);
 
     this.paymentService.createPayment(payload).subscribe({
       next: (res) => {
