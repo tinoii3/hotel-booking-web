@@ -33,9 +33,10 @@ export class PaymentPage {
   ) {}
 
   ngOnInit() {
+    this.userService.loadProfile().subscribe();
+
     this.userService.user$.subscribe((user) => {
       if (!user) return;
-
       this.user_id = user.id;
     });
   }

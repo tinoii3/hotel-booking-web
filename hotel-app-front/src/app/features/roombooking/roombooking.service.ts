@@ -10,36 +10,24 @@ export class RoombookingService {
     private http = inject(HttpClient);
     private baseUrl = `${environment.apiUrl}/roombooking`;
 
-    searchRooms(checkIn: string, checkOut: string, type: string, adults: number, children: number): Observable<any> {
+    searchAvailableRooms(
+        roomType: string | number,
+        adults: number,
+        children: number
+    ): Observable<any> {
         let params = new HttpParams()
-            .set('check_in', checkIn)
-            .set('check_out', checkOut)
             .set('adults', adults.toString())
             .set('children', children.toString());
 
-        if (type && type !== 'ทั้งหมด') {
-            params = params.set('type', type);
+        if (roomType && roomType !== 'all') {
+            params = params.set('room_type', roomType);
         }
 
         return this.http.get(`${this.baseUrl}/search`, { params });
     }
-    getRooms(
-        page: number,
-        limit: number,
-        filter: string,
-        sortBy: string,
-        sortOrder: string
-    ): Observable<any> {
-        const url = `${this.baseUrl}/rooms` +
-            `?page=${page}` +
-            `&limit=${limit}` +
-            `&filter=${filter}` +
-            `&sortBy=${sortBy}` +
-            `&sortOrder=${sortOrder}`
 
-        return this.http.get(url);
+    createBooking(payload: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/booking`, payload);
     }
-    createBooking(bookingData: any): Observable<any> {
-        return this.http.post(`${this.baseUrl}/book`, bookingData);
-    }
+
 }

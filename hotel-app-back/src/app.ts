@@ -1,14 +1,21 @@
 import express from "express";
 import apiRoutes from "./routes/index.js";
-import path from "path";
+import cors from 'cors';
 
 const app = express();
 const port = 3000;
 
+app.use(cors({
+  origin: [
+    'http://localhost:4200',
+    'https://hotel-paradise-eta.vercel.app'
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 
 app.use("/api/", apiRoutes);
-// app.use('/api/uploads', express.static(path.join(process.cwd(), 'assets', 'uploads')));
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}/api`);
