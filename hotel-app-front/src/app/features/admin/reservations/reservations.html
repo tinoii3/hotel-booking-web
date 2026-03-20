@@ -105,7 +105,7 @@
                 <tr>
 
                     <td class="align-top ps-4">
-                        {{ r.first_name }} {{ r.last_name }}
+                        {{ r.first_name || r.last_name ? (r.first_name || '') + ' ' + (r.last_name || '') : 'ไม่มีข้อมูล' }}
                     </td>
                     <td class="align-top">
                         @for (item of r.booking_items; track $index) {
