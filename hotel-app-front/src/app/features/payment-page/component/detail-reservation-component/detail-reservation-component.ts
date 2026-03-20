@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { TokenService } from '../../../../core/services/token-service';
 import { Booking } from '../../models/booking-model';
 import { BookingService } from '../../service/booking-service';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'detail-reservation-component',
   templateUrl: './detail-reservation-component.html',
   styleUrl: './detail-reservation-component.scss',
+  imports: [DecimalPipe]
 })
 export class DetailReservationComponent implements OnInit {
+  @Output() bookingLoaded = new EventEmitter<Booking>();
 
   booking: Booking | null = null;
 
@@ -28,8 +31,7 @@ export class DetailReservationComponent implements OnInit {
         const pending = res.find(b => b.status === 'PENDING');
 
         this.booking = pending || res[0];
-
-        console.log('BOOKING DATA:', this.booking);
+        this.bookingLoaded.emit(this.booking);
       },
       error: (err) => {
         console.error(err);

@@ -11,7 +11,6 @@ import { ExpiryMask } from '../../../../shared/directives/expiry-mask/expiry-mas
   styleUrl: './payment-method-component.scss',
 })
 export class PaymentMethodComponent {
-
   @Output() formChange = new EventEmitter<any>();
   @Output() submitPayment = new EventEmitter<any>();
 
@@ -19,42 +18,20 @@ export class PaymentMethodComponent {
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      cardNumber: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(/^\d{4}\s\d{4}\s\d{4}\s\d{4}$/)
-        ]
-      ],
-      expiry: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)
-        ]
-      ],
-      cvv: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(/^\d{3,4}$/)
-        ]
-      ],
+      cardNumber: ['', [Validators.required, Validators.pattern(/^\d{4}\s\d{4}\s\d{4}\s\d{4}$/)]],
+      expiry: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
+      cvv: ['', [Validators.required, Validators.pattern(/^\d{3,4}$/)]],
     });
 
-    this.form.valueChanges.subscribe(value => {
-      this.formChange.emit(value);
+    this.form.valueChanges.subscribe((value) => {
+      this.formChange.emit({
+        value,
+        valid: this.form.valid,
+      });
     });
   }
 
-  submit() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
-    console.log('PAYMENT PAYLOAD:', this.form.value);
-
-    this.submitPayment.emit(this.form.value);
+  markAllTouched() {
+    this.form.markAllAsTouched();
   }
 }

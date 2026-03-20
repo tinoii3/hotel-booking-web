@@ -1,12 +1,12 @@
 export enum BookingStatus {
-    PENDING = "รอการยืนยัน",
-    CONFIRMED = "ยืนยันแล้ว",
-    CANCELLED = "ยกเลิกแล้ว",
-    EXPIRED = "หมดอายุ",
+    PENDING = "PENDING",
+    CONFIRMED = "CONFIRMED",
+    CANCELLED = "CANCELLED",
+    EXPIRED = "EXPIRED",
 }
 
 export enum PaymentStatus {
-    PENDING = "รอการชำระเงิน",
-    COMPLETED = "ชำระเงินแล้ว",
-    FAILED = "ชำระเงินไม่สำเร็จ",
+    PENDING = "PENDING",
+    COMPLETED = "COMPLETED",
+    FAILED = "FAILED",
 }
