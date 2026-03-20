@@ -41,8 +41,8 @@ export class AdminLayout {
 
   logout() {
     Swal.fire({
-      title: 'Logout?',
-      text: 'You will need to login again.',
+      title: 'ออกจากระบบ?',
+      text: 'คุณจะต้องเข้าสู่ระบบอีกครั้ง',
       icon: 'warning',
       showCancelButton: true,
       cancelButtonText: 'Cancel',
