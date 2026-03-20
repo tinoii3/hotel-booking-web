@@ -26,11 +26,7 @@
   }
 }
 
-/* SECTION CARD */
 .section {
-  //   background: #fafafa;
-  //   border: 1px solid #e5e7eb;
-  //   border-radius: 12px;
   padding-top: 10px;
   padding-right: 15px;
   padding-bottom: 10px;
@@ -50,4 +46,17 @@ button {
   &:hover:not(:disabled) {
     background: #3a3a3a;
   }
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #3a3a3a;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: #fff;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #b02a37; /* สีเข้มขึ้นเฉพาะปุ่ม Cancel */
 }

@@ -67,7 +67,7 @@ export const cancelBooking = async (
     if (booking.expires_at && booking.expires_at < new Date())
       throw new Error("Booking has expired");
 
-    await bookingRepo.updateBooking(tx, bookingId, { status: "CANCELED" });
+    await bookingRepo.updateBooking(tx, bookingId, { status: "CANCELLED" });
     await bookingRepo.releaseRooms(tx, bookingId);
 
     return { message: "Booking canceled" };
