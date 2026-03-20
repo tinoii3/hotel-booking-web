@@ -28,6 +28,7 @@ export class ManageRoom implements OnInit {
   totalPages: number = 1;
   limit: number = 10;
   currentFilter: string = 'all';
+  currentFilterName: string = 'ทุกประเภทห้องพัก';
   currentSortBy: string = 'room_number';
   currentSortOrder: 'asc' | 'desc' = 'asc';
   isDropdownOpen: boolean = false;
@@ -99,8 +100,9 @@ export class ManageRoom implements OnInit {
 
   toggleDropdown() { this.isDropdownOpen = !this.isDropdownOpen; }
 
-  filterType(type: string) {
+  filterType(type: string, name: string = 'ทุกประเภทห้องพัก') {
     this.currentFilter = type;
+    this.currentFilterName = name;
     this.isDropdownOpen = false;
     this.currentPage = 1;
     this.loadRooms(this.currentPage);

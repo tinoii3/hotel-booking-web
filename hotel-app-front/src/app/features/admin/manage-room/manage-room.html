@@ -6,7 +6,7 @@
             <button class="btn room-filter-btn d-flex align-items-center gap-2" type="button"
                 [class.room-filter-btn--active]="currentFilter !== 'all'" (click)="toggleDropdown()">
                 <i class="bi" [ngClass]="currentFilter !== 'all' ? 'bi-funnel-fill' : 'bi-funnel'"></i>
-                <span>{{ currentFilter === 'all' ? 'ประเภท' : currentFilter }}</span>
+                <span>{{ currentFilter === 'all' ? 'ประเภท' : currentFilterName }}</span>
                 <i class="bi bi-chevron-down room-filter-btn__chevron"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-end room-dropdown" [class.show]="isDropdownOpen"
@@ -25,8 +25,8 @@
                 @for (type of roomTypes; track type.id) {
                 <li class="position-relative">
                     <a class="dropdown-item room-dropdown__item pe-5"
-                        [class.room-dropdown__item--active]="currentFilter === type.name" href="javascript:void(0)"
-                        (click)="filterType(type.name)">
+                        [class.room-dropdown__item--active]="currentFilter === type.id" href="javascript:void(0)"
+                        (click)="filterType(type.id, type.name)">
                         <span class="room-dropdown__dot"></span> {{ type.name }}
                     </a>
 
