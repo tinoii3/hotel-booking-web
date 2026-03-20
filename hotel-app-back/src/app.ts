@@ -8,7 +8,7 @@ const port = 3000;
 app.use(cors({
   origin: [
     'http://localhost:4200',
-    'https://hotel-paradise-eta.vercel.app/'
+    'https://hotel-paradise-eta.vercel.app'
   ],
   credentials: true
 }));
