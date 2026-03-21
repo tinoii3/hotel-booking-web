@@ -14,27 +14,6 @@ export const authenticate = (
 
   const token = authHeader.split(" ")[1];
 
-  // development mode token
-  if (process.env.NODE_ENV === "development") {
-    if (token === process.env.DEV_CUSTOMER_TOKEN) {
-      (req as any).user = { 
-        sub: process.env.DEV_CUSTOMER_ID,
-        role: "customer",
-        username: "dev_customer"
-      };
-      return next();
-    }
-    
-    if (token === process.env.DEV_ADMIN_TOKEN) {
-      (req as any).user = { 
-        sub: process.env.DEV_ADMIN_ID,
-        role: "admin",
-        username: "dev_admin"
-      };
-      return next();
-    }
-  }
-
   try {
     const decoded = verifyToken(token);
     (req as any).user = decoded;
