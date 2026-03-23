@@ -1,4 +1,3 @@
-import { createPayment } from "../repository/payment.repository.js";
 import { prisma } from "../lib/prisma.js";
 import {
   findBookingById,
@@ -32,7 +31,7 @@ export const processPayment = async (payload: any, userId: number) => {
       status: BookingStatus.CONFIRMED,
     });
 
-    const createdPayment = await createPayment(tx, {
+    const createdPayment = await paymentRepo.createPayment(tx, {
       booking_id: payload.booking_id,
       amount: booking.total_price,
       payment_method: payload.payment_method || "CREDIT CARD",

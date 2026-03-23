@@ -100,7 +100,7 @@ export class PaymentPage {
       next: (res) => {
         Swal.fire({
           icon: 'success',
-          title: 'ชำระเงินสำเร็จ 🎉',
+          title: 'ชำระเงินสำเร็จ',
           text: 'การจองของคุณได้รับการยืนยันแล้ว',
           timer: 1500,
           showConfirmButton: false,
