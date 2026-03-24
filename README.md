@@ -68,16 +68,16 @@ backend/src/
 
 ### 1️⃣ Clone Repository
 
-git clone <repo-url>
-cd project-root
+- git clone <repo-url>
+- cd project-root
 
 ---
 
 ## 🖥 Run Frontend
 
-cd apps/frontend
-npm install
-npm start
+- cd apps/frontend
+- npm install
+- npm start
 
 Runs on:
 http://localhost:4200
@@ -89,9 +89,9 @@ proxy.conf.json
 
 ## ⚙ Run Backend
 
-cd apps/backend
-npm install
-npm run dev
+- cd apps/backend
+- npm install
+- npm run dev
 
 Runs on:
 http://localhost:3000
