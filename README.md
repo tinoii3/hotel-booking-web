@@ -30,6 +30,7 @@ Full-Stack Hotel Booking Application.
 - JSON Web Token (JWT)
 - CORS
 - dotenv
+- Cloudinary
 
 ### Database
 - Supabase PostgreSQL
@@ -60,15 +61,6 @@ backend/src/
 - utils/          → Helper functions
 - types/          → Custom TypeScript types
 - app.ts          → Express app setup
-- server.ts       → Entry point
-
----
-
-## 📦 Naming Convention
-
-- camelCase for variables and functions
-- PascalCase for classes and components
-- kebab-case for file names
 
 ---
 
@@ -103,28 +95,6 @@ proxy.conf.json
 
 Runs on:
 http://localhost:3000
-
----
-
-## 🗄 Environment Variables (Backend)
-
-Create .env file inside apps/backend:
-
-- DATABASE_URL="MS_TEAM"
-- JWT_SECRET="ME_TEAM"
-
----
-
-## 📁 Shared Package
-
-packages/shared/
-
-Contains:
-- DTOs
-- Shared interfaces
-- Common types
-
-Used by both frontend and backend to ensure type safety.
 
 ---
 
