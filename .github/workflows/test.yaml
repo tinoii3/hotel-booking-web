@@ -1,0 +1,28 @@
+name: My-Pipeline
+'on':
+  push:
+    branches:
+      - feature
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: |
+          if ! command -v npm > /dev/null 2>&1; then npm install -g npm; fi
+          npm ci
+
+      - name: Check Code Quality
+        run: cargo clippy -- -D warnings
+
+      - name: Build Project
+        run: cargo build --release
