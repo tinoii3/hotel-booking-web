@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://hotel-boon-back.onrender.com/api',
+  apiUrl: 'https://hotel.klaisanit.site/api',
 };
